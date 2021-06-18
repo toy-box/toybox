@@ -4,7 +4,7 @@
 
 ```tsx
 import React, { useMemo } from 'react'
-import { MetaVerticalTable } from '@toy-box/meta-table'
+import { MetaVerticalTable } from '@toy-box/meta-components'
 
 const objectMeta = {
   key: 'bill',

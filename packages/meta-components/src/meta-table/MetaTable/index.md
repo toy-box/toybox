@@ -4,7 +4,7 @@
 
 ```tsx
 import React, { useMemo } from 'react'
-import { MetaTable } from '@toy-box/meta-table'
+import { MetaTable } from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
 
 const objectMeta = {
