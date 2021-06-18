@@ -1,0 +1,30 @@
+@import './theme.less';
+
+.@{prefix}-operate-column {
+  display: flex;
+  justify-content: flex-end;
+  button {
+    + button {
+      margin-left: 8px;
+    }
+  }
+}
+
+.ant-table-cell {
+  &.react-resizable {
+    position: relative;
+    background-clip: padding-box;
+  }
+  .resizable-title-handle {
+    position: absolute;
+    right: -2px;
+    bottom: 0;
+    z-index: 1;
+    width: 4px;
+    height: 100%;
+    cursor: col-resize;
+    &:hover {
+      background-color: @primary-color;
+    }
+  }
+}

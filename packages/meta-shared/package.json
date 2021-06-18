@@ -1,0 +1,27 @@
+{
+  "name": "@toy-box/meta-shared",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "es"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@types/react": ">=16.8.0 || >=17.0.0",
+    "@types/react-dom": ">=16.8.0 || >=17.0.0",
+    "antd": "^4.0.0",
+    "react": ">=16.8.0 || >=17.0.0",
+    "react-dom": ">=16.8.0",
+    "react-is": ">=16.8.0 || >=17.0.0"
+  }
+}

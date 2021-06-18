@@ -1,0 +1,67 @@
+import { FieldDate, FieldDateProps } from './Date'
+import { FieldString, FieldStringProps } from './String'
+import { FieldText } from './Text'
+import { FieldNumber } from './Number'
+import { FieldSelect, FieldSelectProps } from './Select'
+import { FieldRate } from './Rate'
+import { FieldCheckGroup, FieldCheckGroupProps } from './CheckGroup'
+import { FieldPercent } from './Percent'
+import { FieldBoolean, FieldBooleanProps } from './Boolean'
+import { FieldBusinessObject, FieldBusinessObjectProps } from './BusinessObject'
+import { FieldTreeSelectProps } from './TreeSelect'
+import { ReactNode } from 'react'
+
+type Component<P> =
+  | React.ComponentType<P>
+  | React.ForwardRefExoticComponent<P>
+  | React.FC<P>
+  | keyof React.ReactHTML
+
+export type CustomizeComponent = Component<any>
+
+export declare type FieldMode = 'read' | 'edit' | 'update'
+
+export interface BaseFieldProps {
+  field: Toybox.MetaSchema.Types.IFieldMeta
+  mode: FieldMode
+  disabled?: boolean
+  value?: any
+  onClick?: () => void
+  onChange?: (...args: any) => void
+}
+
+export interface SimpleTreeNode {
+  id: string | number
+  pId: string | number
+  title: ReactNode
+  value: string | number
+  disabled?: boolean
+}
+
+export declare type FieldProps =
+  | BaseFieldProps
+  | FieldStringProps
+  | FieldDateProps
+  | FieldBusinessObjectProps
+  | FieldBooleanProps
+  | FieldCheckGroupProps
+  | FieldSelectProps
+  | FieldTreeSelectProps
+
+export type FieldMap = Record<
+  string,
+  React.FC<FieldProps> | React.ForwardRefExoticComponent<FieldProps & any>
+>
+
+export const defaultFieldMap: FieldMap = {
+  string: FieldString,
+  text: FieldText,
+  number: FieldNumber,
+  date: FieldDate,
+  datetime: FieldDate,
+  singleOption: FieldSelect,
+  boolean: FieldBoolean,
+  rate: FieldRate,
+  percent: FieldPercent,
+  object: FieldSelect,
+}
