@@ -43,20 +43,17 @@ const FieldTextFC = (
     const dom = value || '-'
     return <div onClick={onClick}>{dom}</div>
   }
-  if (mode === 'edit' || mode === 'update') {
-    return (
-      <Input.TextArea
-        ref={inputRef}
-        defaultValue={field.defaultValue}
-        value={value}
-        onChange={handleChange}
-        placeholder={placeholder}
-        disabled={disabled}
-        {...otherProps}
-      />
-    )
-  }
-  return null
+  return (
+    <Input.TextArea
+      ref={inputRef}
+      defaultValue={field.defaultValue}
+      value={value}
+      onChange={handleChange}
+      placeholder={placeholder}
+      disabled={disabled}
+      {...otherProps}
+    />
+  )
 }
 
 export const FieldText = React.forwardRef(FieldTextFC)

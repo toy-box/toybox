@@ -32,22 +32,19 @@ const FieldNumberFC: ForwardRefRenderFunction<any, FieldNumberProps> = (
     return <span onClick={onClick}>{dom}</span>
   }
 
-  if (mode === 'edit' || mode === 'update') {
-    return (
-      <InputNumber
-        ref={inputRef}
-        value={value}
-        onChange={onChange}
-        defaultValue={field.defaultValue}
-        style={{ ...style, width: '100%' }}
-        precision={field.precision}
-        min={field.minimum}
-        max={field.maximum}
-        {...otherProps}
-      />
-    )
-  }
-  return null
+  return (
+    <InputNumber
+      ref={inputRef}
+      value={value}
+      onChange={onChange}
+      defaultValue={field.defaultValue}
+      style={{ ...style, width: '100%' }}
+      precision={field.precision}
+      min={field.minimum}
+      max={field.maximum}
+      {...otherProps}
+    />
+  )
 }
 
 export const FieldNumber = React.forwardRef(FieldNumberFC)

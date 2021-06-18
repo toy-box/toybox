@@ -158,33 +158,30 @@ const FieldTreeSelectFC: ForwardRefRenderFunction<any, FieldTreeSelectProps> = (
     },
     [labelValueCache, onChange]
   )
-
-  if (mode === 'edit' || mode === 'update') {
-    return (
-      <AntTreeSelect
-        ref={inputRef}
-        treeDataSimpleMode
-        value={innerValue}
-        treeCheckable={multiple}
-        labelInValue
-        multiple={multiple}
-        onChange={handleChange}
-        treeData={realTreeData}
-        showSearch={false}
-        loadData={onLoadData}
-        {...otherProps}
-      />
-    )
-  } else if (mode === 'read') {
+  if (mode === 'read') {
     return (
       <span>
-        {makeArray(innerValue)
-          .map((i) => i.title)
+        {makeArray(innerValue || [])
+          .map((i: LabeledValue) => i.label)
           .join(', ')}
       </span>
     )
   }
-  return null
+  return (
+    <AntTreeSelect
+      ref={inputRef}
+      treeDataSimpleMode
+      value={innerValue}
+      treeCheckable={multiple}
+      labelInValue
+      multiple={multiple}
+      onChange={handleChange}
+      treeData={realTreeData}
+      showSearch={false}
+      loadData={onLoadData}
+      {...otherProps}
+    />
+  )
 }
 
 export const FieldTreeSelect = React.forwardRef(FieldTreeSelectFC)

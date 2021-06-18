@@ -23,7 +23,7 @@ export declare type FieldMode = 'read' | 'edit' | 'update'
 
 export interface BaseFieldProps {
   field: Toybox.MetaSchema.Types.IFieldMeta
-  mode: FieldMode
+  mode?: FieldMode
   disabled?: boolean
   value?: any
   onClick?: () => void

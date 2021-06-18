@@ -18,7 +18,7 @@ export interface FieldBooleanProps extends BaseFieldProps {
 }
 
 const Boolean: ForwardRefRenderFunction<any, FieldBooleanProps> = (
-  { onChange, value, textValues, field, mode, onClick },
+  { onChange, value, textValues, field, mode = 'edit', onClick },
   ref: Ref<any>
 ) => {
   const locale = useLocale()
@@ -53,6 +53,7 @@ const Boolean: ForwardRefRenderFunction<any, FieldBooleanProps> = (
       return <div onClick={onClick}>{textValue}</div>
     case 'edit':
     case 'update':
+    default:
       return (
         <Switch
           ref={inputRef}
@@ -63,8 +64,6 @@ const Boolean: ForwardRefRenderFunction<any, FieldBooleanProps> = (
           defaultChecked={field.defaultValue}
         />
       )
-    default:
-      return null
   }
 }
 

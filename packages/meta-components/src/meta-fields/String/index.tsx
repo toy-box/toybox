@@ -43,20 +43,17 @@ const FieldStringFC: ForwardRefRenderFunction<any, FieldStringProps> = (
     const dom = value || '-'
     return <span onClick={onClick}>{dom}</span>
   }
-  if (mode === 'edit' || mode === 'update') {
-    return (
-      <Input
-        ref={inputRef}
-        value={value}
-        onChange={(e) => onChange && onChange(e.target.value)}
-        defaultValue={field.defaultValue}
-        placeholder={placeholder}
-        disabled={disabled}
-        {...otherProps}
-      />
-    )
-  }
-  return null
+  return (
+    <Input
+      ref={inputRef}
+      value={value}
+      onChange={(e) => onChange && onChange(e.target.value)}
+      defaultValue={field.defaultValue}
+      placeholder={placeholder}
+      disabled={disabled}
+      {...otherProps}
+    />
+  )
 }
 
 export const FieldString = React.forwardRef(FieldStringFC)

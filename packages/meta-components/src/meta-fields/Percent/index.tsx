@@ -105,23 +105,20 @@ const FieldPercentFC: ForwardRefRenderFunction<any, FieldPercentProps> = (
       </span>
     )
   }
-  if (mode === 'edit' || mode === 'update') {
-    return (
-      <InputNumber
-        value={innerValue}
-        onChange={handleChange}
-        defaultValue={field.defaultValue}
-        placeholder={placeholder}
-        ref={inputRef}
-        disabled={disabled}
-        formatter={handleFormatter}
-        parser={hanldeParser}
-        style={{ ...style, width: '100%' }}
-        precision={precision}
-      />
-    )
-  }
-  return null
+  return (
+    <InputNumber
+      value={innerValue}
+      onChange={handleChange}
+      defaultValue={field.defaultValue}
+      placeholder={placeholder}
+      ref={inputRef}
+      disabled={disabled}
+      formatter={handleFormatter}
+      parser={hanldeParser}
+      style={{ ...style, width: '100%' }}
+      precision={precision}
+    />
+  )
 }
 
 export const FieldPercent = React.forwardRef(FieldPercentFC)

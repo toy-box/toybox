@@ -48,7 +48,15 @@ const CheckGroup: ForwardRefRenderFunction<any, FieldCheckGroupProps> = (
   if (mode === 'read') {
     return <span>{text}</span>
   }
-  return null
+  return (
+    <Checkbox.Group
+      disabled={disabled}
+      defaultValue={field.defaultValue}
+      options={field.options}
+      value={value}
+      onChange={onChange}
+    />
+  )
 }
 
 export const FieldCheckGroup = React.forwardRef(CheckGroup)

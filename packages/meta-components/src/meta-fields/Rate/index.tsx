@@ -28,20 +28,17 @@ const FieldRateFC: ForwardRefRenderFunction<any, FieldRateProps> = (
   if (mode === 'read') {
     return <Rate value={value} disabled style={style} count={field.maximum} />
   }
-  if (mode === 'edit' || mode === 'update') {
-    return (
-      <Rate
-        value={value}
-        onChange={onChange}
-        defaultValue={field.defaultValue}
-        ref={inputRef}
-        disabled={disabled}
-        style={style}
-        count={field.maximum}
-      />
-    )
-  }
-  return null
+  return (
+    <Rate
+      value={value}
+      onChange={onChange}
+      defaultValue={field.defaultValue}
+      ref={inputRef}
+      disabled={disabled}
+      style={style}
+      count={field.maximum}
+    />
+  )
 }
 
 export const FieldRate = React.forwardRef(FieldRateFC)

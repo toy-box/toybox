@@ -87,26 +87,23 @@ const DateFC: ForwardRefRenderFunction<any, FieldDateProps> = (
       </span>
     )
   }
-  if (mode === 'edit' || mode === 'update') {
-    return (
-      <DatePicker
-        ref={ref}
-        value={innerValue}
-        defaultValue={defaultValue}
-        bordered={bordered}
-        placeholder={placeholder}
-        disabled={disabled}
-        onChange={innerOnChange}
-        picker={picker}
-        open={open}
-        style={{ width: '100%' }}
-        mode={dateMode}
-        showTime={showTime ? { format: 'HH:mm:ss' } : false}
-        onOpenChange={onOpenChange}
-      />
-    )
-  }
-  return null
+  return (
+    <DatePicker
+      ref={ref}
+      value={innerValue}
+      defaultValue={defaultValue}
+      bordered={bordered}
+      placeholder={placeholder}
+      disabled={disabled}
+      onChange={innerOnChange}
+      picker={picker}
+      open={open}
+      style={{ width: '100%' }}
+      mode={dateMode}
+      showTime={showTime ? { format: 'HH:mm:ss' } : false}
+      onOpenChange={onOpenChange}
+    />
+  )
 }
 
 export const FieldDate = React.forwardRef(DateFC)
