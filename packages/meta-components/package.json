@@ -38,6 +38,7 @@
     "lodash.debounce": "^4.0.8",
     "lodash.get": "^4.4.2",
     "lodash.intersection": "^4.4.0",
+    "qs": "^6.10.1",
     "react-resizable": "^3.0.4"
   },
   "devDependencies": {

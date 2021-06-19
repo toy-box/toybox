@@ -10,20 +10,12 @@ export function metaRender(
     columnMeta: ColumnMetaType,
     ColumnRender: FC<IColumnProps>
   ) => {
-    return ({
-      text,
-      record,
-      index,
-    }: {
-      text: any
-      record: { [key: string]: any }
-      index: number
-    }) => {
+    return (props: Omit<IColumnProps, 'columnMeta'>) => {
       return (
         <ColumnRender
-          text={text}
-          record={record}
-          index={index}
+          text={props.text}
+          record={props.record}
+          index={props.index}
           columnMeta={columnMeta}
         />
       )

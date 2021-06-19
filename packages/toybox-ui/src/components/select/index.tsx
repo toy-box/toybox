@@ -24,7 +24,7 @@ import {
   SelectValueType,
   OptionData,
   OptionGroupData,
-} from '../types/interface'
+} from '../../types/interface'
 
 declare type OptionsType = (OptionData | OptionGroupData)[]
 

@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { OptionData, OptionGroupData } from '../components/types/interface'
+import { OptionData, OptionGroupData } from '../types/interface'
 
 declare type OptionsType = (OptionData | OptionGroupData)[]
 

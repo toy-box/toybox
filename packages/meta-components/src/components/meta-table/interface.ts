@@ -1,6 +1,6 @@
 import { TableProps, TablePaginationConfig } from 'antd/lib/table'
 import { ButtonProps } from 'antd/lib/button'
-import { ReactNode } from 'react'
+import { JSXElementConstructor, ReactNode } from 'react'
 
 export type sorterFun = (prev: any, current: any) => number
 
@@ -44,6 +44,8 @@ export type PivotOptionType = {
   dimensions: string[]
 }
 
+export declare type ColumnComponentType = JSXElementConstructor<any>
+
 export interface IMetaTableProps<T = RowData>
   extends Pick<
     TableProps<T>,
@@ -59,6 +61,7 @@ export interface IMetaTableProps<T = RowData>
     | 'summary'
     | 'title'
     | 'scroll'
+    | 'onChange'
   > {
   resizableTitle?: boolean
   /**
@@ -68,7 +71,7 @@ export interface IMetaTableProps<T = RowData>
   /**
    * @description 自定义字段组件
    */
-  columnComponents?: Record<string, (...args: any) => React.ReactNode>
+  columnComponents?: Record<string, ColumnComponentType>
   /**
    * @description 操作字段组件配置
    */
@@ -77,14 +80,6 @@ export interface IMetaTableProps<T = RowData>
    * @description 操作字段表头
    */
   operateHeader?: ReactNode
-  /**
-   * @description 当表格查询条件变化时
-   */
-  onChange: (
-    pagination: TablePaginationConfig,
-    filters?: any,
-    sorter?: any
-  ) => void
   /**
    * @description 行自定义class
    */

@@ -1,0 +1,71 @@
+@import '../../../styles/theme.less';
+
+.@{prefix}-sortable-select {
+  .select-menu {
+    list-style: none;
+    padding-left: 0;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+}
+
+.@{prefix}sortable-select--item {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  width: 100%;
+  padding: 8px 16px;
+  font-size: 14px;
+  box-sizing: border-box;
+  user-select: none;
+  align-items: center;
+  min-height: 36px;
+  &.picked {
+    background: fade(@black, 25%);
+  }
+  .drag-handle {
+    margin-right: 8px;
+    color: fade(@black, 25%);
+    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    cursor: grab;
+    &:hover {
+      color: fade(@black, 85%);
+    }
+  }
+  .select-item__label {
+    flex-grow: 1;
+    text-align: left;
+  }
+  .selec-item__check {
+    font-size: 16px;
+    opacity: 0;
+    margin-left: 10px;
+    color: @primary-color;
+    &.checked {
+      opacity: 1;
+    }
+  }
+  .select-item__label,
+  .selec-item__check {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  &:hover {
+    background: fade(@black, 25%);
+  }
+  &.disabled {
+    &:hover {
+      cursor: not-allowed;
+    }
+    .select-item__label,
+    .selec-item__check {
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
+    .selec-item__check {
+      color: fade(@black, 45%);
+    }
+  }
+}
