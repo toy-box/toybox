@@ -1,5 +1,5 @@
 {
-  "name": "@toy-box/meta-shared",
+  "name": "@toy-box/toybox-shared",
   "version": "1.0.0",
   "main": "lib/index.js",
   "module": "es/index.js",

@@ -15,7 +15,7 @@ import {
   ChangeEventExtra,
   RawValueType,
 } from 'rc-tree-select/lib/interface'
-import { makeArray } from '@toy-box/meta-shared'
+import { makeArray } from '@toy-box/toybox-shared'
 import { BaseFieldProps, SimpleTreeNode } from '../interface'
 
 export interface LabeledValue extends AntLabeledValue {

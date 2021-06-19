@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import get from 'lodash.get'
 import { Switch } from 'antd'
-import { useLocale } from '@toy-box/meta-shared'
+import { useLocale } from '@toy-box/toybox-shared'
 import { BaseFieldProps } from '../interface'
 import localeMap from './locale'
 

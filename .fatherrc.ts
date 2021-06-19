@@ -1,7 +1,7 @@
 import externalGlobals from 'rollup-plugin-external-globals'
 
 export default {
-  pkgs: ['meta-schema', 'meta-shared', 'meta-components'],
+  pkgs: ['meta-schema', 'toybox-shared', 'meta-components'],
   esm: {
     type: 'babel',
     importLibToEs: true,
