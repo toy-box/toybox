@@ -1,0 +1,20 @@
+@import '../../styles/theme.less';
+
+@row-border: 1px dashed @border-color-split;
+@min-height: 116px;
+
+.@{prefix}-row {
+  display: flex;
+  align-items: flex-start;
+  min-height: @min-height;
+  padding: 8px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  &.allow-wrap {
+    flex-wrap: wrap;
+    overflow-x: hidden;
+  }
+  + .@{prefix}-row {
+    border-top: @row-border;
+  }
+}

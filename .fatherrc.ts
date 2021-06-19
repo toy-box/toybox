@@ -1,7 +1,19 @@
+import * as fs from 'fs'
 import externalGlobals from 'rollup-plugin-external-globals'
 
+const basicPkgs = [
+  'meta-schema',
+  'toybox-shared',
+  'toybox-ui',
+  'meta-components',
+]
+const packages = fs
+  .readdirSync('./packages')
+  .filter((pkg) => !basicPkgs.includes(pkg))
+
 export default {
-  pkgs: ['meta-schema', 'toybox-shared', 'meta-components'],
+  disableTypeCheck: true,
+  pkgs: basicPkgs.concat(packages),
   esm: {
     type: 'babel',
     importLibToEs: true,
@@ -11,14 +23,9 @@ export default {
     lazy: true,
   },
   extraRollupPlugins: [
-    externalGlobals(
-      {
-        '@toy-box/meta-schema': 'Toybox.MetaSchema',
-      },
-      {
-        exclude: ['**/*.{less,sass,scss}'],
-      }
-    ),
+    externalGlobals({
+      '@toy-box/meta-schema': 'Toybox.MetaSchema',
+    }),
   ],
   extraExternals: [],
   extraBabelPlugins: [

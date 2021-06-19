@@ -10,7 +10,7 @@
     "es"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es"
   },
   "author": "wishgood@gmail.com",
   "license": "MIT",
@@ -28,9 +28,11 @@
     "react-is": ">=16.8.0 || >=17.0.0"
   },
   "dependencies": {
+    "@ahooksjs/antd-table": "^0.2.3",
     "@airclass/icons": "^4.3.4",
     "@toy-box/meta-schema": "1.0.0",
     "@toy-box/toybox-shared": "1.0.0",
+    "@toy-box/toybox-ui": "1.0.0",
     "hoist-non-react-statics": "^3.3.1",
     "immutability-helper": "^3.1.1",
     "lodash.debounce": "^4.0.8",

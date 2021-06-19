@@ -1,0 +1,35 @@
+@import '../../../styles/theme.less';
+
+.@{prefix}-segment {
+  min-height: 104px;
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 8px;
+    &__title {
+      font-size: 18px;
+      font-weight: bolder;
+      position: relative;
+      margin-left: 16px;
+      &::before {
+        content: '';
+        background-color: @primary-color;
+        position: absolute;
+        height: calc(100% - 8px);
+        width: 4px;
+        left: -12px;
+        top: 4px;
+      }
+    }
+  }
+  &-content {
+    padding: 4px 0;
+    &--hidden {
+      display: none;
+    }
+  }
+  + .@{prefix}-segment {
+    border-top: 1px solid @border-color-split;
+  }
+}

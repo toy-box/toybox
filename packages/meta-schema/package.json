@@ -10,11 +10,7 @@
     "es"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf -rf lib esm dist && npm run build:cjs && npm run build:esm && npm run build:umd",
-    "build:cjs": "tsc --declaration",
-    "build:esm": "tsc --declaration --module es2015 --outDir esm",
-    "build:umd": "rollup --config"
+    "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es"
   },
   "author": "wishgood@gmail.com",
   "license": "MIT",

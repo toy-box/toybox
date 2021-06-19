@@ -9,7 +9,7 @@ export type LogicOpType = '$and' | '$or' | '$not' | '$nor'
 
 export interface ICompareOperation {
   source: string
-  op: UniteCompareOP
+  op: CompareOP
   target: number | string | number[] | string[] | Date | Date[]
 }
 
@@ -28,14 +28,9 @@ export enum CompareOP {
   NE = '$ne',
   NIN = '$nin',
   IS_NULL = '$isNull',
-}
-
-export enum DateCompareOP {
   UNIT_DATE_RANGE = '$unitDateRange',
   BETWEEN = '$between',
 }
-
-export type UniteCompareOP = CompareOP | DateCompareOP
 
 export type DateFilterUnitType = 'DAY' | 'WEEK' | 'MONTH' | 'SEASON' | 'YEAR'
 

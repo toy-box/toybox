@@ -26,6 +26,11 @@ export interface IFieldOption {
   disabled?: boolean
 }
 
+export interface IFieldItems {
+  type: MetaValueType | string
+  properties: { [key: string]: IFieldMeta }
+}
+
 export interface IFieldMeta {
   key: string
   name: string
@@ -51,6 +56,7 @@ export interface IFieldMeta {
   idKey?: string
   titleKey?: string
   properties?: { [key: string]: IFieldMeta }
+  items?: IFieldItems
   index?: number
   defaultValue?: any
   parentKey?: string
