@@ -11,8 +11,9 @@ import LocaleContext from 'antd/lib/locale-provider/context'
 import localeMap from '../locale'
 import { FilterBuilder } from '../../filter-builder'
 import { FieldService } from '../../filter-builder/interface'
-import { FilterType } from './FilterSearch'
+import { FilterType } from '..'
 
+import '../styles/filterDesigner.less'
 export interface IFilterDesignerProps {
   filterFieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
   value?: FilterType
@@ -56,9 +57,9 @@ export const FilterDesigner: FC<IFilterDesignerProps> = ({
   }, [value])
 
   return (
-    <div className="tbox-filter-searcher-containter">
+    <div className="tbox-filter-designer">
       <h3>{title}</h3>
-      <div className="tbox-filter-searcher-builder-wrapper">
+      <div className="tbox-filter-designer__builder-wrapper">
         <FilterBuilder
           filterFieldMetas={filterFieldMetas}
           value={compares}
@@ -66,14 +67,16 @@ export const FilterDesigner: FC<IFilterDesignerProps> = ({
           onChange={setCompares}
         />
       </div>
-      <Space>
-        <Button size="small" type="primary" onClick={handleSave}>
-          {localeData.lang.filter['savebtn']}
-        </Button>
-        <Button size="small" onClick={onCancel}>
-          {localeData.lang.filter['cancelBtn']}
-        </Button>
-      </Space>
+      <div className="tbox-filter-designer__bottom">
+        <Space>
+          <Button size="small" type="primary" onClick={handleSave}>
+            {localeData.lang.filter['savebtn']}
+          </Button>
+          <Button size="small" onClick={onCancel}>
+            {localeData.lang.filter['cancelBtn']}
+          </Button>
+        </Space>
+      </div>
     </div>
   )
 }
