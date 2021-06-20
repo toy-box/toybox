@@ -12,6 +12,7 @@ import { ListUnordered, TableLine, ArrowDownSLine } from '@airclass/icons'
 import { MetaValueType } from '@toy-box/meta-schema'
 import { Button, PaginationBar } from '@toy-box/toybox-ui'
 import { MetaTable } from '../meta-table'
+import { FilterSearch } from '../filter-search'
 import { LoadDataType, IndexModeType } from './types'
 import {
   IColumnVisible,
@@ -64,6 +65,7 @@ export interface IIndexViewProps {
    * @description 数据获取方法
    */
   loadData: LoadDataType
+  filterFieldKeys?: string[]
 }
 
 export const IndexView = React.forwardRef(
@@ -80,11 +82,13 @@ export const IndexView = React.forwardRef(
       selectionToggle,
       defaultSelectionType,
       loadData,
+      filterFieldKeys,
       urlQuery,
       children,
     }: IIndexViewProps & { children: React.ReactNode },
     ref: Ref<any>
   ) => {
+    const [params, setParams] = useState<any>()
     const [selectedRowKeys, setSelectedRowKeys] = useState<RawValue[]>([])
     // const [query, setQuery] = useQuery()
 
@@ -265,10 +269,35 @@ export const IndexView = React.forwardRef(
       paginationProps,
     ])
 
+    const filterFieldMetas = useMemo(() => {
+      const { properties } = objectMeta
+      if (properties) {
+        return Object.keys(properties)
+          .filter((key) => {
+            return filterFieldKeys
+              ? filterFieldKeys.includes(key)
+              : key != objectMeta.idKey
+          })
+          .map((key) => properties[key])
+      }
+      return []
+    }, [objectMeta, filterFieldKeys])
+
     return (
       <IndexViewContext.Provider value={content}>
         <div className={classNames('tbox-index-view', className)} style={style}>
-          {children ? children : <TableStatusBar />}
+          {children ? (
+            children
+          ) : (
+            <>
+              <FilterSearch
+                value={params}
+                onChange={setParams}
+                filterFieldMetas={filterFieldMetas}
+              />
+              <TableStatusBar />
+            </>
+          )}
           <IndexContent />
         </div>
       </IndexViewContext.Provider>

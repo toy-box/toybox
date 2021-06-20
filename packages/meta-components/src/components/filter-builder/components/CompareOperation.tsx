@@ -82,12 +82,21 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   filterFieldService,
 }) => {
   const context = useContext(FilterBuilderContext)
+  const selected = useMemo(
+    () => context.value.map((v) => v.source),
+    [context.value]
+  )
+
   const fieldOptions = useMemo(() => {
     return filterFieldMetas.map((field) => ({
       label: field.name,
       value: field.key,
+      disabled:
+        context.simple &&
+        field.key !== compare.source &&
+        selected.includes(field.key),
     }))
-  }, [filterFieldMetas])
+  }, [filterFieldMetas, compare.source, context.simple, selected])
 
   const filterFieldMeta = useMemo(
     () => filterFieldMetas.find((f) => f.key === compare.source),
@@ -95,13 +104,16 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   )
 
   const filterOperations = useMemo(() => {
+    if (context.simple) {
+      return compareOperationData([CompareOP.EQ])
+    }
     if (filterFieldMeta?.type) {
       return compareOperationData(
         FieldOpMap[filterFieldMeta.type] || [CompareOP.EQ]
       )
     }
     return []
-  }, [filterFieldMeta])
+  }, [filterFieldMeta, context.simple])
 
   function compareOperationData(
     compareOperation: Toybox.MetaSchema.Types.CompareOP[]

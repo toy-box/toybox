@@ -7,7 +7,6 @@ import useTable, {
 } from '@ahooksjs/use-table'
 import { PaginationProps } from 'antd'
 import { useAntdPlugin } from './useAntdPlugin'
-import { useFilterBuilderPlugin } from './useFilterBuilderPlugin'
 import { IPageResult } from '../types'
 
 export interface IUseMetaTableReturn
@@ -43,9 +42,8 @@ export const useMetaTable = (
 
   const plugins = options?.plugins || []
   const antdPlugin = useAntdPlugin()
-  const filterBuilderPlugin = useFilterBuilderPlugin()
   return useTable(doService, {
     ...options,
-    plugins: [...plugins, antdPlugin, filterBuilderPlugin],
+    plugins: [...plugins, antdPlugin],
   }) as IUseMetaTableReturn
 }

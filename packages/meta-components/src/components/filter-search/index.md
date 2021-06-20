@@ -19,7 +19,6 @@ export default () => {
     return new Promise((resolve) => {
       serviceTest(resolve, key)
     }).then((res) => {
-      console.log(res, 'findOptions')
       return [
         {
           label: '2IX',
@@ -198,14 +197,8 @@ export default () => {
     }
     return { fieldMeta: meta }
   })
-  const value = [
-    {
-      source: 'deptId',
-      op: '$in',
-      target: '1',
-    },
-  ]
-  const [tagValue, setTagValue] = useState(value)
+
+  const [tagValue, setTagValue] = useState()
   function remoteOfTags(key, value) {
     return new Promise((resolve) => {
       serviceTest(resolve)

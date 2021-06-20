@@ -1,13 +1,6 @@
-import React, {
-  FC,
-  useCallback,
-  useState,
-  useEffect,
-  useMemo,
-  useContext,
-} from 'react'
+import React, { FC, useCallback, useState, useEffect, useMemo } from 'react'
 import { Button, Space } from 'antd'
-import LocaleContext from 'antd/lib/locale-provider/context'
+import { useLocale } from '@toy-box/toybox-shared'
 import localeMap from '../locale'
 import { FilterBuilder } from '../../filter-builder'
 import { FieldService } from '../../filter-builder/interface'
@@ -19,7 +12,7 @@ export interface IFilterDesignerProps {
   value?: FilterType
   title: string
   filterFieldService?: FieldService
-  onChange: (compares: FilterType) => void
+  onChange?: (value: FilterType) => void
   onCancel?: () => void
 }
 
@@ -31,15 +24,10 @@ export const FilterDesigner: FC<IFilterDesignerProps> = ({
   title,
   filterFieldService,
 }) => {
+  const locale = useLocale()
+  const localeData = useMemo(() => localeMap[locale], [locale])
   const [compares, setCompares] =
     useState<Partial<Toybox.MetaSchema.Types.ICompareOperation>[]>(value)
-
-  const antLocale = useContext(LocaleContext)
-  const locale = useMemo(
-    () => (antLocale && antLocale.locale ? antLocale.locale : 'zh_CN'),
-    [antLocale]
-  )
-  const localeData = useMemo(() => localeMap[locale || 'zh_CN'], [locale])
 
   const handleSave = useCallback(
     () =>
@@ -51,10 +39,6 @@ export const FilterDesigner: FC<IFilterDesignerProps> = ({
       ),
     [compares, onChange]
   )
-
-  useEffect(() => {
-    if (compares !== value) setCompares(value || [])
-  }, [value])
 
   return (
     <div className="tbox-filter-designer">
