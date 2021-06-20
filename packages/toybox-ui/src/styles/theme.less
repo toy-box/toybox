@@ -1,3 +1,34 @@
 @import '~antd/lib/style/themes/index.less';
 
 @prefix: tbox;
+
+.popover-no-padding {
+  .@{ant-prefix}-popover-inner-content {
+    padding: 0;
+  }
+}
+.popover-no-arrow {
+  &.@{ant-prefix}-popover-placement-top,
+  &.@{ant-prefix}-popover-placement-topLeft,
+  &.@{ant-prefix}-popover-placement-topRight {
+    padding-bottom: 0;
+  }
+  &.@{ant-prefix}-popover-placement-bottom,
+  &.@{ant-prefix}-popover-placement-bottomLeft,
+  &.@{ant-prefix}-popover-placement-bottomRight {
+    padding-top: 0;
+  }
+  &.@{ant-prefix}-popover-placement-left,
+  &.@{ant-prefix}-popover-placement-leftBottom,
+  &.@{ant-prefix}-popover-placement-leftTop {
+    padding-right: 0;
+  }
+  &.@{ant-prefix}-popover-placement-right,
+  &.@{ant-prefix}-popover-placement-rightBottom,
+  &.@{ant-prefix}-popover-placement-rightTop {
+    padding-left: 0;
+  }
+  .@{ant-prefix}-popover-arrow {
+    display: none;
+  }
+}

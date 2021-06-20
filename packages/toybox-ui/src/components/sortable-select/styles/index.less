@@ -9,7 +9,7 @@
   }
 }
 
-.@{prefix}sortable-select--item {
+.@{prefix}-sortable-select--item {
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
@@ -29,7 +29,7 @@
     transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
     cursor: grab;
     &:hover {
-      color: fade(@black, 85%);
+      color: fade(@black, 45%);
     }
   }
   .select-item__label {
@@ -52,7 +52,7 @@
     }
   }
   &:hover {
-    background: fade(@black, 25%);
+    background: #fafafa;
   }
   &.disabled {
     &:hover {

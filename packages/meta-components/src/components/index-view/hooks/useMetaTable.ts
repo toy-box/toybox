@@ -1,9 +1,32 @@
-import useAntdTable, { Obj, IResponse, Options } from '@ahooksjs/antd-table'
+import useTable, {
+  methods,
+  Obj,
+  IResponse,
+  Options,
+  IReturnValue,
+} from '@ahooksjs/use-table'
+import { PaginationProps } from 'antd'
+import { useAntdPlugin } from './useAntdPlugin'
+import { useFilterBuilderPlugin } from './useFilterBuilderPlugin'
 import { IPageResult } from '../types'
+
+export interface IUseMetaTableReturn
+  extends Omit<IReturnValue, 'paginationProps'> {
+  paginationProps?: PaginationProps
+}
+
+export interface IOptions extends Options {
+  pagination?: {
+    defaultCurrent?: number
+    defaultPageSize?: number
+    hideOnSinglePage?: boolean
+    pageSizeOptions?: number[]
+  }
+}
 
 export const useMetaTable = (
   service: (params: Obj) => Promise<IPageResult>,
-  options?: Options | undefined
+  options?: IOptions | undefined
 ) => {
   const doService = async (params: Obj) => {
     const result = await service(params)
@@ -18,5 +41,11 @@ export const useMetaTable = (
     }
   }
 
-  return useAntdTable(doService, options)
+  const plugins = options?.plugins || []
+  const antdPlugin = useAntdPlugin()
+  const filterBuilderPlugin = useFilterBuilderPlugin()
+  return useTable(doService, {
+    ...options,
+    plugins: [...plugins, antdPlugin, filterBuilderPlugin],
+  }) as IUseMetaTableReturn
 }

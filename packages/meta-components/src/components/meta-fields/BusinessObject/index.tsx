@@ -9,12 +9,11 @@ export interface FieldBusinessObjectProps extends BaseFieldProps {
 
 // TODO: edit 模式需要考虑
 const BusinessObject: ForwardRefRenderFunction<any, FieldBusinessObjectProps> =
-  (
-    { value, titleKey = 'id', onClick, component: Component = 'span' },
-    ref: Ref<any>
-  ) => {
+  ({ value, field, onClick, component: Component = 'span' }, ref: Ref<any>) => {
     return (
-      <Component onClick={onClick}>{value ? value[titleKey] : null}</Component>
+      <Component onClick={onClick}>
+        {value ? value[field.titleKey || field.idKey || 'id'] : null}
+      </Component>
     )
   }
 

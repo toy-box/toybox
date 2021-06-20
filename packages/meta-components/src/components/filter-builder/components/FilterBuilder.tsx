@@ -1,4 +1,10 @@
-import React, { FC, useCallback, useContext, useMemo } from 'react'
+import React, {
+  CSSProperties,
+  FC,
+  useCallback,
+  useContext,
+  useMemo,
+} from 'react'
 import { Button } from 'antd'
 import update from 'immutability-helper'
 import { AddCircleLine } from '@airclass/icons'
@@ -9,6 +15,7 @@ import { FieldService, IUncheckCompare } from '../interface'
 import { FilterBuilderContext } from '../context'
 
 import '../styles/index.less'
+import classNames from 'classnames'
 
 export interface IFilterBuilderProps {
   filterFieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
@@ -16,6 +23,8 @@ export interface IFilterBuilderProps {
   filterFieldService?: FieldService
   onChange: (compares: IUncheckCompare[]) => void
   addText?: string
+  className?: string
+  style?: CSSProperties
 }
 
 export const FilterBuilder = ({
@@ -24,6 +33,8 @@ export const FilterBuilder = ({
   filterFieldService,
   onChange,
   addText,
+  className,
+  style,
 }: IFilterBuilderProps) => {
   const locale = useLocale()
   const localeData = useMemo(() => localeMap[locale], [locale])
@@ -34,7 +45,7 @@ export const FilterBuilder = ({
 
   return (
     <FilterBuilderContext.Provider value={{ value, onChange }}>
-      <div>
+      <div className={classNames(className)} style={style}>
         {value.map((filterItem, idx) => (
           <CompareOperation
             key={idx}

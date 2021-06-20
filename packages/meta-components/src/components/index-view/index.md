@@ -34,8 +34,9 @@ const objectMeta = {
     user: {
       key: 'user',
       name: '用户',
-      type: 'businessObject',
+      type: 'object',
       titleKey: 'name',
+      idKey: 'id',
       properties: {
         id: {
           key: 'id',
@@ -79,6 +80,50 @@ const data = [
     name: '实收',
     billCycle: '2020-03-03',
     amount: 1500,
+    user: {
+      id: 'xxx3',
+      name: '熊丽2',
+    },
+  },
+  {
+    id: '1237',
+    name: '实收',
+    billCycle: '2020-03-03',
+    amount: 1500,
+    user: {
+      id: 'xxx4',
+      name: '鲁特',
+    },
+  },
+  {
+    id: '1238',
+    name: '实收',
+    billCycle: '2020-04-03',
+    amount: 2300,
+    user: {
+      id: 'xxx5',
+      name: '魔偶',
+    },
+  },
+  {
+    id: '1239',
+    name: '实收',
+    billCycle: '2020-04-03',
+    amount: 2400,
+    user: {
+      id: 'xxx6',
+      name: '魔偶1',
+    },
+  },
+  {
+    id: '1240',
+    name: '应收',
+    billCycle: '2020-04-03',
+    amount: 2400,
+    user: {
+      id: 'xxx6',
+      name: '魔偶3',
+    },
   },
 ]
 
@@ -95,17 +140,25 @@ const visibleColumns = [
     key: 'amount',
     visiable: true,
   },
+  {
+    key: 'user',
+    visiable: true,
+  },
 ]
 
 export default () => {
-  const loadData = () => {
+  const loadData = ({ current, pageSize }) => {
     const result = {
       list: data,
-      total: 3,
+      total: 50,
+      current,
+      pageSize,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
       total: number
+      current: number
+      pageSize: number
     }>(function (resolve) {
       setTimeout(function () {
         resolve(result)

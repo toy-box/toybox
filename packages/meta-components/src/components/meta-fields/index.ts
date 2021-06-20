@@ -9,3 +9,6 @@ export * from './Percent'
 export * from './Boolean'
 export * from './BusinessObject'
 export * from './TreeSelect'
+
+// interface
+export * from './interface'

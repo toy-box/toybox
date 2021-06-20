@@ -19,11 +19,11 @@ type Component<P> =
 
 export type CustomizeComponent = Component<any>
 
-export declare type FieldMode = 'read' | 'edit' | 'update'
+export declare type FieldModeType = 'read' | 'edit' | 'update'
 
 export interface BaseFieldProps {
   field: Toybox.MetaSchema.Types.IFieldMeta
-  mode?: FieldMode
+  mode?: FieldModeType
   disabled?: boolean
   value?: any
   onClick?: () => void

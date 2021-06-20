@@ -4,12 +4,13 @@ import React, {
   useState,
   useCallback,
   CSSProperties,
+  useImperativeHandle,
 } from 'react'
 import classNames from 'classnames'
 import { Dropdown, Menu } from 'antd'
 import { ListUnordered, TableLine, ArrowDownSLine } from '@airclass/icons'
 import { MetaValueType } from '@toy-box/meta-schema'
-import { Button } from '@toy-box/toybox-ui'
+import { Button, PaginationBar } from '@toy-box/toybox-ui'
 import { MetaTable } from '../meta-table'
 import { LoadDataType, IndexModeType } from './types'
 import {
@@ -18,8 +19,9 @@ import {
   IMetaTableProps,
 } from '../meta-table/interface'
 import { IndexViewContext } from './context'
-import { ColumnsSetValueType } from './components/TableToolbar'
+import { ColumnsSetValueType, TableStatusBar } from './components'
 export * from './hooks'
+export * from './components'
 
 import { useMetaTable } from './hooks/useMetaTable'
 
@@ -89,6 +91,15 @@ export const IndexView = React.forwardRef(
     const [selectedRows, setSelectedRows] = useState<RowData[]>([])
     const [selectionType, setSelectionType] = useState(defaultSelectionType)
     const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        selectedRowKeys,
+        selectedRows,
+      }),
+      [selectedRowKeys, selectedRows]
+    )
 
     const selected = useMemo(() => selectedRows.length > 0, [selectedRows])
     // 可配置的字段key
@@ -212,7 +223,9 @@ export const IndexView = React.forwardRef(
       [columns, setColumns, visibleColumnSet, visibleKeys, setVisibleKeys]
     )
 
-    const { tableProps, paginationProps } = useMetaTable(loadData)
+    const { tableProps, paginationProps } = useMetaTable(loadData, {
+      pagination: { defaultCurrent: 1, defaultPageSize: 4 },
+    })
 
     const IndexContent = useCallback(() => {
       switch (currentMode) {
@@ -230,13 +243,16 @@ export const IndexView = React.forwardRef(
         case 'table':
         default:
           return (
-            <MetaTable
-              rowKey={objectMeta.idKey}
-              columnMetas={columnMetas}
-              rowSelection={rowSelection}
-              columnComponents={components}
-              {...tableProps}
-            />
+            <>
+              <MetaTable
+                rowKey={objectMeta.idKey}
+                columnMetas={columnMetas}
+                rowSelection={rowSelection}
+                columnComponents={components}
+                {...tableProps}
+              />
+              <PaginationBar {...paginationProps} />
+            </>
           )
       }
     }, [
@@ -246,17 +262,16 @@ export const IndexView = React.forwardRef(
       rowSelection,
       components,
       tableProps,
+      paginationProps,
     ])
 
     return (
       <IndexViewContext.Provider value={content}>
         <div className={classNames('tbox-index-view', className)} style={style}>
-          {children}
+          {children ? children : <TableStatusBar />}
           <IndexContent />
         </div>
       </IndexViewContext.Provider>
     )
   }
 )
-
-// export default React.forwardRef(IndexView)

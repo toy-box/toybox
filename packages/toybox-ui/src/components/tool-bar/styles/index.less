@@ -1,0 +1,21 @@
+@import '../../../styles/theme.less';
+
+.@{prefix}-toolbar {
+  display: flex;
+  width: 100%;
+  height: 32px;
+  margin: 8px 0;
+  justify-content: space-between;
+  align-items: center;
+  &__left,
+  &__right {
+    flex-grow: 1;
+  }
+  &__right {
+    text-align: right;
+  }
+  &__center {
+    margin: 0 8px;
+    text-align: center;
+  }
+}

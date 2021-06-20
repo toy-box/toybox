@@ -1,1 +1,2 @@
-export * from './TableToolbar'
+export * from './ViewSetter'
+export * from './TableStatusBar'
