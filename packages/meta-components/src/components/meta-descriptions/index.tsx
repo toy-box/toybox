@@ -14,7 +14,7 @@ import {
   FieldBusinessObject,
 } from '../meta-fields'
 
-export const defaultFieldMap: FieldMap = {
+const defaultFieldMap: FieldMap = {
   string: FieldString,
   text: FieldText,
   integer: FieldNumber,
@@ -37,7 +37,7 @@ export type MetaDescriptonsProps = DescriptionsProps & {
   fieldMap?: FieldMap
 }
 
-const MetaDescriptons: FC<MetaDescriptonsProps> = ({
+export const MetaDescriptons: FC<MetaDescriptonsProps> = ({
   fieldItemMetas,
   fieldMap,
   mode,
@@ -63,5 +63,3 @@ const MetaDescriptons: FC<MetaDescriptonsProps> = ({
 
   return <Descriptions {...otherProps}>{fields}</Descriptions>
 }
-
-export default MetaDescriptons
