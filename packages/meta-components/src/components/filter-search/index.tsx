@@ -7,7 +7,7 @@ import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
 import { FilterValueInput } from '../filter-builder/components/FilterValueInput'
 import { FilterDesigner } from './components'
 import localeMap from './locale'
-import { FieldService } from '../filter-builder/interface'
+import { IFieldService } from '../filter-builder/interface'
 
 export interface LabelValue {
   value: any
@@ -31,7 +31,7 @@ export interface IFilterSearchProps {
   simpleFilterKeys?: string[]
   nameQueryKey?: string
   value?: FilterType
-  filterFieldService?: FieldService
+  filterFieldService?: IFieldService
   title?: string
   onChange?: (filter?: FilterType) => void
   onCancel?: () => void

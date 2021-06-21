@@ -12,7 +12,7 @@ import { useLocale } from '@toy-box/toybox-shared'
 import { CompareOP } from '@toy-box/meta-schema'
 import { CompareOperation } from './CompareOperation'
 import localeMap from '../locale'
-import { FieldService, IUncheckCompare } from '../interface'
+import { IFieldService, IUncheckCompare } from '../interface'
 import { FilterBuilderContext } from '../context'
 
 import '../styles/index.less'
@@ -21,7 +21,7 @@ import classNames from 'classnames'
 export interface IFilterBuilderProps {
   fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
   value?: IUncheckCompare[]
-  filterFieldService?: FieldService
+  filterFieldService?: IFieldService
   onChange: (compares: IUncheckCompare[]) => void
   addText?: string
   className?: string

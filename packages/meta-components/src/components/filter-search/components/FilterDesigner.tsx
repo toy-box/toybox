@@ -3,7 +3,7 @@ import { Button, Space } from 'antd'
 import { useLocale } from '@toy-box/toybox-shared'
 import localeMap from '../locale'
 import { FilterBuilder } from '../../filter-builder'
-import { FieldService } from '../../filter-builder/interface'
+import { IFieldService } from '../../filter-builder/interface'
 import { FilterType } from '..'
 
 import '../styles/filterDesigner.less'
@@ -11,7 +11,7 @@ export interface IFilterDesignerProps {
   fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
   value?: FilterType
   title: string
-  filterFieldService?: FieldService
+  filterFieldService?: IFieldService
   onChange?: (value: FilterType) => void
   onCancel?: () => void
   logicFilter?: boolean

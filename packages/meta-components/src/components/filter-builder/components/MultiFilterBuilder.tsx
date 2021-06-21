@@ -5,7 +5,7 @@ import update from 'immutability-helper'
 import { AddCircleFill } from '@airclass/icons'
 import { FilterBuilder } from './FilterBuilder'
 import localeMap from '../locale'
-import { FieldService } from '../interface'
+import { IFieldService } from '../interface'
 
 import '../styles/multi.less'
 
@@ -13,7 +13,7 @@ export interface IMultiFilterBuilderProps {
   segmentlogic?: Toybox.MetaSchema.Types.LogicOP
   fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
   value?: Toybox.MetaSchema.Types.ILogicFilter[]
-  filterFieldService?: FieldService
+  filterFieldService?: IFieldService
   onChange: (value: Toybox.MetaSchema.Types.ILogicFilter[]) => void
   addText?: string
   addSegmentText?: string

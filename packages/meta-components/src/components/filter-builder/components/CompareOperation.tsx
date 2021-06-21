@@ -6,7 +6,7 @@ import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
 import get from 'lodash.get'
 import { FilterValueInput } from './FilterValueInput'
 import { FilterBuilderContext } from '../context'
-import { FieldService } from '../interface'
+import { IFieldService } from '../interface'
 
 const inputStyle = { width: '320px' }
 
@@ -14,7 +14,7 @@ export interface CompareOperationProps {
   index: number
   fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
   compare: Partial<Toybox.MetaSchema.Types.ICompareOperation>
-  filterFieldService?: FieldService
+  filterFieldService?: IFieldService
   localeData: any
 }
 

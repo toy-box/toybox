@@ -1,6 +1,6 @@
 import { SimpleTreeNode } from '../meta-fields/interface'
 
-export interface FieldService {
+export interface IFieldService {
   findOptions: (
     key: string,
     name: string

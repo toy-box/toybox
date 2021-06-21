@@ -23,7 +23,7 @@ import {
   FieldNumber,
   FieldBoolean,
 } from '../../meta-fields'
-import { FieldService } from '../interface'
+import { IFieldService } from '../interface'
 
 export declare type FilterValueInputType =
   | 'string'
@@ -44,7 +44,7 @@ export interface FilterValueInputProps {
   onSubmit?: () => void
   style?: CSSProperties
   mode?: 'read' | 'edit' | 'update'
-  fieldMetaService?: FieldService
+  fieldMetaService?: IFieldService
   locale?: string
 }
 
