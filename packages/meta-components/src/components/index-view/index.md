@@ -150,7 +150,7 @@ export default () => {
   const loadData = ({ current, pageSize }) => {
     const result = {
       list: data,
-      total: 50,
+      total: 20,
       current,
       pageSize,
     }

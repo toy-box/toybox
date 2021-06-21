@@ -5,6 +5,8 @@ import {
   SortableSelect,
   ISortableSelectProps,
 } from '@toy-box/toybox-ui'
+import { Menu, Dropdown } from 'antd'
+import { ListUnordered, TableLine, ArrowDownSLine } from '@airclass/icons'
 import { IndexModeType } from '../types'
 import { useIndexView } from '../hooks'
 
@@ -20,8 +22,33 @@ export interface IViewSetterProps {
   viewModes?: IndexModeType[]
 }
 
-export const ViewSetter: FC<IViewSetterProps> = ({ viewModes }) => {
+export const ViewSetter: FC<IViewSetterProps> = () => {
   const indexView = useIndexView()
+  // 显示模式切换菜单
+  const modeMenu = useMemo(() => {
+    const currentIcon =
+      indexView.currentMode === 'list' ? <ListUnordered /> : <TableLine />
+    const menuItems = (indexView.viewModes || []).map((itemMode, idx) => {
+      return (
+        <Menu.Item
+          key={idx}
+          onClick={() => indexView.setCurrentMode(itemMode)}
+          icon={itemMode === 'list' ? <ListUnordered /> : <TableLine />}
+        >
+          {itemMode === 'list' ? '列表' : '表格'}
+        </Menu.Item>
+      )
+    })
+    const menu = <Menu>{menuItems}</Menu>
+    return (
+      <Dropdown overlay={menu}>
+        <Button type="text" icon={currentIcon}>
+          <ArrowDownSLine />
+        </Button>
+      </Dropdown>
+    )
+  }, [indexView.currentMode, indexView.viewModes])
+
   return (
     <SortableSelect
       title={<h4 style={{ margin: '6px 0' }}>配置表格字段</h4>}

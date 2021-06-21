@@ -1,3 +1,5 @@
+import { useIndexView } from './useIndexView'
+
 export interface IFilterSearchOption {
   filterSearchValue?:
     | Toybox.MetaSchema.Types.ILogicFilter
@@ -5,4 +7,9 @@ export interface IFilterSearchOption {
   simple?: boolean
 }
 
-export const useFilterSearchPlugin = () => {}
+export const useFilterSearchPlugin = () => {
+  const context = useIndexView()
+  return {
+    props: (props) => props,
+  }
+}

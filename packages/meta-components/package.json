@@ -33,6 +33,7 @@
     "@toy-box/meta-schema": "1.0.0",
     "@toy-box/toybox-shared": "1.0.0",
     "@toy-box/toybox-ui": "1.0.0",
+    "ahooks": "^2.10.6",
     "hoist-non-react-statics": "^3.3.1",
     "immutability-helper": "^3.1.1",
     "lodash.debounce": "^4.0.8",

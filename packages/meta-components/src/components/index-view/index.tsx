@@ -1,16 +1,15 @@
 import React, {
-  useMemo,
-  Ref,
-  useState,
-  useCallback,
   CSSProperties,
+  Ref,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
   useImperativeHandle,
 } from 'react'
 import classNames from 'classnames'
-import { Dropdown, Menu } from 'antd'
-import { ListUnordered, TableLine, ArrowDownSLine } from '@airclass/icons'
 import { MetaValueType } from '@toy-box/meta-schema'
-import { Button, PaginationBar } from '@toy-box/toybox-ui'
+import { PaginationBar } from '@toy-box/toybox-ui'
 import { MetaTable } from '../meta-table'
 import { FilterSearch } from '../filter-search'
 import { LoadDataType, IndexModeType } from './types'
@@ -24,7 +23,7 @@ import { ColumnsSetValueType, TableStatusBar } from './components'
 export * from './hooks'
 export * from './components'
 
-import { useMetaTable } from './hooks/useMetaTable'
+import { useTable } from './hooks'
 
 const LIST_RENDER = 'listRender'
 
@@ -66,6 +65,10 @@ export interface IIndexViewProps {
    */
   loadData: LoadDataType
   filterFieldKeys?: string[]
+  /**
+   * @description 条件查询简单模式
+   */
+  simple?: boolean
 }
 
 export const IndexView = React.forwardRef(
@@ -83,6 +86,7 @@ export const IndexView = React.forwardRef(
       defaultSelectionType,
       loadData,
       filterFieldKeys,
+      simple,
       urlQuery,
       children,
     }: IIndexViewProps & { children: React.ReactNode },
@@ -191,47 +195,53 @@ export const IndexView = React.forwardRef(
       return columnComponents
     }, [columnComponents, currentMode])
 
-    // 显示模式切换菜单
-    const modeMenu = useMemo(() => {
-      const currentIcon =
-        currentMode === 'list' ? <ListUnordered /> : <TableLine />
-      const menuItems = viewModes.map((itemMode, idx) => {
-        return (
-          <Menu.Item
-            key={idx}
-            onClick={() => setCurrentMode(itemMode)}
-            icon={itemMode === 'list' ? <ListUnordered /> : <TableLine />}
-          >
-            {itemMode === 'list' ? '列表' : '表格'}
-          </Menu.Item>
-        )
-      })
-      const menu = <Menu>{menuItems}</Menu>
-      return (
-        <Dropdown overlay={menu}>
-          <Button type="text" icon={currentIcon}>
-            <ArrowDownSLine />
-          </Button>
-        </Dropdown>
-      )
-    }, [currentMode, viewModes])
-
-    const content = useMemo(
+    const indexViewContent = useMemo(
       () => ({
+        objectMeta,
         visibleColumnSet,
         columns,
         setColumns,
         visibleKeys,
         setVisibleKeys,
+        currentMode,
+        setCurrentMode,
+        viewModes,
       }),
-      [columns, setColumns, visibleColumnSet, visibleKeys, setVisibleKeys]
+      [
+        objectMeta,
+        columns,
+        setColumns,
+        visibleColumnSet,
+        visibleKeys,
+        setVisibleKeys,
+        currentMode,
+        setCurrentMode,
+        viewModes,
+      ]
     )
 
-    const { tableProps, paginationProps } = useMetaTable(loadData, {
-      pagination: { defaultCurrent: 1, defaultPageSize: 4 },
+    // const { tableProps, paginationProps } = useMetaTable(loadData, {
+    //   pagination: { defaultCurrent: 1, defaultPageSize: 4 },
+    // })
+
+    const paramsActions = useMemo(() => {
+      return {
+        getParams: () => params,
+        resetParams: () => setParams(undefined),
+      }
+    }, [])
+
+    const { tableProps, search } = useTable(loadData, {
+      simple,
+      paramsActions,
     })
 
+    useEffect(() => {
+      search.submit()
+    }, [search.submit])
+
     const IndexContent = useCallback(() => {
+      const { pagination, ...otherProps } = tableProps
       switch (currentMode) {
         case 'list':
           return (
@@ -240,8 +250,8 @@ export const IndexView = React.forwardRef(
               columnMetas={columnMetas}
               rowSelection={rowSelection}
               columnComponents={components}
-              pagination={paginationProps}
-              {...tableProps}
+              pagination={false}
+              {...otherProps}
             />
           )
         case 'table':
@@ -253,9 +263,10 @@ export const IndexView = React.forwardRef(
                 columnMetas={columnMetas}
                 rowSelection={rowSelection}
                 columnComponents={components}
-                {...tableProps}
+                pagination={false}
+                {...otherProps}
               />
-              <PaginationBar {...paginationProps} />
+              <PaginationBar {...pagination} />
             </>
           )
       }
@@ -266,7 +277,6 @@ export const IndexView = React.forwardRef(
       rowSelection,
       components,
       tableProps,
-      paginationProps,
     ])
 
     const filterFieldMetas = useMemo(() => {
@@ -284,7 +294,7 @@ export const IndexView = React.forwardRef(
     }, [objectMeta, filterFieldKeys])
 
     return (
-      <IndexViewContext.Provider value={content}>
+      <IndexViewContext.Provider value={indexViewContent}>
         <div className={classNames('tbox-index-view', className)} style={style}>
           {children ? (
             children
