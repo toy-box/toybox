@@ -11,8 +11,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import get from 'lodash.get'
 import { useLocale } from '@toy-box/toybox-shared'
 import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
-import { DatePicker } from './DatePicker'
-import { DateFilter } from './DateFilter'
+import { DateUnitRange, DatePicker } from '@toy-box/toybox-ui'
 import localeMap from '../locale'
 import {
   FieldSelect,
@@ -218,7 +217,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             : 'YYYY/MM/DD HH:mm:ss'
         if (operation === CompareOP.UNIT_DATE_RANGE) {
           return (
-            <DateFilter
+            <DateUnitRange
               style={style}
               value={value}
               onChange={(value, text) => handleValue(value, text ? [text] : [])}

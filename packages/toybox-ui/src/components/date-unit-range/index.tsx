@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, useContext, useMemo } from 'react'
+import React, { CSSProperties, FC, useMemo } from 'react'
 import { Select } from 'antd'
 import { useLocale } from '@toy-box/toybox-shared'
 import locales from './locales'
@@ -6,7 +6,7 @@ import { optionGroups } from './config'
 
 const { Option, OptGroup } = Select
 
-export interface DateFilterProps<T> {
+export interface IDateUnitRangeProps<T> {
   value?: T
   onChange?: (value: T, text?: string) => void
   style?: CSSProperties
@@ -20,8 +20,8 @@ function getText(labelValue: string, localeName = 'zh_CN') {
   return text || labelValue
 }
 
-export const DateFilter: FC<
-  DateFilterProps<Toybox.MetaSchema.Types.DateFilterValueType>
+export const DateUnitRange: FC<
+  IDateUnitRangeProps<Toybox.MetaSchema.Types.DateFilterValueType>
 > = ({ value, onChange, style, className, placeholder, locale = 'zh_CN' }) => {
   const innerLocale = useLocale()
   const localeName = useMemo(() => locale || innerLocale, [locale, innerLocale])
