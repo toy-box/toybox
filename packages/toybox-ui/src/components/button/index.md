@@ -70,8 +70,8 @@ export default () => (
 )
 ```
 
-<API></API>
+<!-- <API></API>
 
 ## IconButton
 
-<API src="./components/IconButton.tsx"></API>
+<API src="./components/IconButton.tsx"></API> -->

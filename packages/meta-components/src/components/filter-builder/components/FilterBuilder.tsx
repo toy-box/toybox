@@ -19,7 +19,7 @@ import '../styles/index.less'
 import classNames from 'classnames'
 
 export interface IFilterBuilderProps {
-  filterFieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
+  fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
   value?: IUncheckCompare[]
   filterFieldService?: FieldService
   onChange: (compares: IUncheckCompare[]) => void
@@ -34,7 +34,7 @@ export interface IFilterBuilderProps {
 
 export const FilterBuilder = ({
   value = [],
-  filterFieldMetas,
+  fieldMetas,
   filterFieldService,
   onChange,
   addText,
@@ -59,7 +59,7 @@ export const FilterBuilder = ({
           <CompareOperation
             key={idx}
             index={idx}
-            filterFieldMetas={filterFieldMetas}
+            fieldMetas={fieldMetas}
             compare={filterItem}
             localeData={localeData}
             filterFieldService={filterFieldService}

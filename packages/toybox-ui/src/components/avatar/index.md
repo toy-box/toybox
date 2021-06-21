@@ -1,10 +1,10 @@
 ## Avatar 头像
 
-### 基本用法
+#### 基本用法
 
 ```tsx
 import React from 'react'
-import { Space, Tooltip, Avatar as AntAvatar } from 'antd'
+import { Space, Tooltip } from 'antd'
 import { Avatar } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 
@@ -72,11 +72,3 @@ export default () => {
   )
 }
 ```
-
-<API></API>
-
-> Avatar
-
-<API src="./components/AvatarGroup.tsx"></API>
-
-> Avatar.Group

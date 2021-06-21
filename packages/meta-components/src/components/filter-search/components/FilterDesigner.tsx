@@ -8,7 +8,7 @@ import { FilterType } from '..'
 
 import '../styles/filterDesigner.less'
 export interface IFilterDesignerProps {
-  filterFieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
+  fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
   value?: FilterType
   title: string
   filterFieldService?: FieldService
@@ -19,7 +19,7 @@ export interface IFilterDesignerProps {
 
 export const FilterDesigner: FC<IFilterDesignerProps> = ({
   value = [],
-  filterFieldMetas,
+  fieldMetas,
   onChange,
   onCancel,
   title,
@@ -47,7 +47,7 @@ export const FilterDesigner: FC<IFilterDesignerProps> = ({
       <h3>{title}</h3>
       <div className="tbox-filter-designer__builder-wrapper">
         <FilterBuilder
-          filterFieldMetas={filterFieldMetas}
+          fieldMetas={fieldMetas}
           value={compares}
           filterFieldService={filterFieldService}
           onChange={setCompares}

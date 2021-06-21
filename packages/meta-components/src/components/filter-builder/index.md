@@ -18,7 +18,6 @@ export default () => {
     return new Promise((resolve) => {
       serviceTest(resolve, key)
     }).then((res) => {
-      console.log(res, 'findOptions')
       return [
         {
           label: 'SIX',
@@ -66,7 +65,6 @@ export default () => {
     return new Promise((resolve) => {
       serviceTest(resolve, key)
     }).then((res) => {
-      console.log(parentId, 'parentId')
       if (parentId === '2')
         return [{ id: '3', pId: '2', value: '3', title: 'Expand to load3' }]
       if (parentId)
@@ -202,7 +200,6 @@ export default () => {
     return new Promise((resolve) => {
       serviceTest(resolve, key)
     }).then((res) => {
-      console.log(res, 'findOptions')
       return [
         {
           label: 'SIX',
@@ -250,7 +247,6 @@ export default () => {
     return new Promise((resolve) => {
       serviceTest(resolve, key)
     }).then((res) => {
-      console.log(parentId, 'parentId')
       if (parentId === '2')
         return [{ id: '3', pId: '2', value: '3', title: 'Expand to load3' }]
       if (parentId)

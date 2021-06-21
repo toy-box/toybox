@@ -41,7 +41,7 @@ export interface FilterValueInputProps {
   value?: any
   multiple?: boolean
   onChange: (value: any, text?: string[]) => void
-  onSubmit?: (value: any, text?: string[]) => void
+  onSubmit?: () => void
   style?: CSSProperties
   mode?: 'read' | 'edit' | 'update'
   fieldMetaService?: FieldService
@@ -71,6 +71,17 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
   const handleValue = useCallback(
     (value?: any, text?: string[]) => {
       onChange(value === undefined ? null : value, text)
+      if (
+        [
+          MetaValueType.SINGLE_OPTION,
+          MetaValueType.MULTI_OPTION,
+          MetaValueType.DATE,
+          MetaValueType.DATETIME,
+          MetaValueType.OBJECT_ID,
+        ].includes(fieldMeta.type as MetaValueType)
+      ) {
+        onSubmit && onSubmit()
+      }
     },
     [onChange]
   )
@@ -255,7 +266,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
                 localeData.lang,
                 'filed.placeholderOp.paramSelect'
               )}${fieldMeta.name}`}
-              onChange={handleValue}
+              onChange={(value, dateString) => handleValue(value, [dateString])}
             />
           </div>
         )
@@ -274,6 +285,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             onChange={(value, options) =>
               handleSelectOptions(value, options as OptionItem)
             }
+            // onClear={() => onSubmit && onSubmit()}
           />
         )
       case MetaValueType.OBJECT:
@@ -290,6 +302,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             onChange={(value, options) =>
               handleSelectOptions(value, options as OptionItem)
             }
+            // onClear={() => onSubmit && onSubmit()}
           />
         )
       case MetaValueType.OBJECT_ID:
@@ -324,6 +337,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             onChange={(value, options) =>
               handleSelectOptions(value, options as OptionItem)
             }
+            // onClear={() => onSubmit && onSubmit()}
           />
         )
       case MetaValueType.BOOLEAN:
@@ -346,7 +360,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             }`}
             value={value}
             onChange={handleValue}
-            onPressEnter={onSubmit}
+            onPressEnter={() => onSubmit && onSubmit()}
           />
         )
     }

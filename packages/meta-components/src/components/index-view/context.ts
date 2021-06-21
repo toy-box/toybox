@@ -5,7 +5,7 @@ import { IndexModeType, ISearchActions } from './types'
 export interface IIndexViewContextProps {
   params?: any
   setParams?: (params: any) => void
-  filterFieldKeys?: string[]
+  filterFields?: Toybox.MetaSchema.Types.IFieldMeta[]
   objectMeta: Toybox.MetaSchema.Types.IMetaObject
   currentMode: IndexModeType
   setCurrentMode: (mode: IndexModeType) => void

@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react'
 import { MoreFill } from '@airclass/icons'
-import Avatar from '..'
+import { Avatar } from '..'
 
 import '../styles'
 

@@ -5,7 +5,7 @@
 ```tsx
 import React, { useState } from 'react'
 import { Button, Space } from 'antd'
-import { SortableSelect } from '@toy-box/toybox-lib'
+import { SortableSelect } from '@toy-box/toybox-ui'
 
 const opts = [
   {

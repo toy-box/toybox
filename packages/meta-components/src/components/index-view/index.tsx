@@ -187,6 +187,20 @@ export const IndexView = React.forwardRef(
       paramsActions,
     })
 
+    const filterFields = useMemo(() => {
+      const { properties } = objectMeta
+      if (properties) {
+        return Object.keys(properties)
+          .filter((key) => {
+            return filterFieldKeys
+              ? filterFieldKeys.includes(key)
+              : key != objectMeta.idKey
+          })
+          .map((key) => properties[key])
+      }
+      return []
+    }, [objectMeta, filterFieldKeys])
+
     const indexViewContext = useMemo(
       () => ({
         objectMeta,
@@ -205,6 +219,7 @@ export const IndexView = React.forwardRef(
         selectionType,
         setSelectionType,
         searchActions,
+        filterFields,
       }),
       [
         objectMeta,
@@ -223,6 +238,7 @@ export const IndexView = React.forwardRef(
         selectionType,
         setSelectionType,
         searchActions,
+        filterFields,
       ]
     )
 

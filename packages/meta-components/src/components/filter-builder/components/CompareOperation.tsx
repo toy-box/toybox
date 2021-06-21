@@ -12,7 +12,7 @@ const inputStyle = { width: '320px' }
 
 export interface CompareOperationProps {
   index: number
-  filterFieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
+  fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
   compare: Partial<Toybox.MetaSchema.Types.ICompareOperation>
   filterFieldService?: FieldService
   localeData: any
@@ -77,7 +77,7 @@ const FieldOpMap: Record<string, Array<Toybox.MetaSchema.Types.CompareOP>> = {
 
 export const CompareOperation: FC<CompareOperationProps> = ({
   index,
-  filterFieldMetas,
+  fieldMetas,
   compare,
   localeData,
   filterFieldService,
@@ -89,7 +89,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   )
 
   const fieldOptions = useMemo(() => {
-    return filterFieldMetas.map((field) => ({
+    return fieldMetas.map((field) => ({
       label: field.name,
       value: field.key,
       disabled:
@@ -97,11 +97,11 @@ export const CompareOperation: FC<CompareOperationProps> = ({
         field.key !== compare.source &&
         selected.includes(field.key),
     }))
-  }, [filterFieldMetas, compare.source, context.logicFilter, selected])
+  }, [fieldMetas, compare.source, context.logicFilter, selected])
 
   const filterFieldMeta = useMemo(
-    () => filterFieldMetas.find((f) => f.key === compare.source),
-    [filterFieldMetas, compare.source]
+    () => fieldMetas.find((f) => f.key === compare.source),
+    [fieldMetas, compare.source]
   )
 
   const filterOperations = useMemo(() => {
@@ -137,8 +137,8 @@ export const CompareOperation: FC<CompareOperationProps> = ({
 
   const onKeyChange = useCallback(
     (source: string) => {
-      const fieldMeta = filterFieldMetas.find((meta) => meta.key === source)
-      console.log('fieldMeta', fieldMeta, source, filterFieldMetas)
+      const fieldMeta = fieldMetas.find((meta) => meta.key === source)
+      console.log('fieldMeta', fieldMeta, source, fieldMetas)
       const op =
         fieldMeta && FieldOpMap[fieldMeta.type].some((op) => op === compare.op)
           ? compare.op

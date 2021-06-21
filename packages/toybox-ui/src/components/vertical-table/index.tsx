@@ -140,7 +140,6 @@ export function VerticalTable<RecordType = DefaultRecordType>({
     currentTarget: HTMLElement
     scrollLeft?: number
   }) => {
-    console.log('scrollLeft', scrollLeft)
     const isRTL = direction === 'rtl'
     const mergedScrollLeft =
       typeof scrollLeft === 'number' ? scrollLeft : currentTarget.scrollLeft

@@ -4,7 +4,6 @@ import { Filter3Line } from '@airclass/icons'
 import update from 'immutability-helper'
 import { useLocale } from '@toy-box/toybox-shared'
 import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
-import debounce from 'lodash.debounce'
 import { FilterValueInput } from '../filter-builder/components/FilterValueInput'
 import { FilterDesigner } from './components'
 import localeMap from './locale'
@@ -28,7 +27,7 @@ export interface FilterLabel {
 }
 
 export interface IFilterSearchProps {
-  filterFieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
+  fieldMetas?: Toybox.MetaSchema.Types.IFieldMeta[]
   simpleFilterKeys?: string[]
   nameQueryKey?: string
   value?: FilterType
@@ -37,11 +36,11 @@ export interface IFilterSearchProps {
   onChange?: (filter?: FilterType) => void
   onCancel?: () => void
   logicFilter?: boolean
-  onSubmit?: (FilterType) => void
+  onSubmit?: () => void
 }
 
 export const FilterSearch: FC<IFilterSearchProps> = ({
-  filterFieldMetas,
+  fieldMetas = [],
   simpleFilterKeys = [],
   filterFieldService,
   value,
@@ -62,7 +61,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
         (item) => item.op && item.target != null
       )
       onChange && onChange(validFilter)
-      onSubmit && onSubmit(validFilter)
+      onSubmit && onSubmit()
     },
     [onChange, setFilterEditVisible]
   )
@@ -146,7 +145,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
           MetaValueType.INTEGER,
         ].includes(fieldMeta.type as MetaValueType)
       ) {
-        onSubmit && onSubmit(newValue)
+        onSubmit && onSubmit()
       }
     },
     [value, onChange]
@@ -160,7 +159,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
   const filterContainer = useMemo(() => {
     return (
       <FilterDesigner
-        filterFieldMetas={filterFieldMetas}
+        fieldMetas={fieldMetas}
         value={value}
         title={title || localeData.lang.filter['defaultTitle']}
         filterFieldService={filterFieldService}
@@ -169,7 +168,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
         logicFilter={logicFilter}
       />
     )
-  }, [filterFieldMetas, value, filterFieldService])
+  }, [fieldMetas, value, filterFieldService])
 
   return (
     <div className="filter-model">
@@ -188,7 +187,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
           </Tooltip>
         </Popover>
         {simpleFilterKeys.map((key, idx) => {
-          const fieldMeta = filterFieldMetas.find((field) => field.key === key)
+          const fieldMeta = fieldMetas.find((field) => field.key === key)
           return fieldMeta ? (
             <FilterValueInput
               key={idx}

@@ -1,5 +1,5 @@
 import React, {
-  ReactNode,
+  FC,
   useCallback,
   useMemo,
   useRef,
@@ -8,24 +8,11 @@ import React, {
 } from 'react'
 import { Input } from 'antd'
 import classNames from 'classnames'
-import { IconSearch, IconSearchProps } from './components'
+import { IconSearch } from './components'
+import { SearchProps, IconSearchProps } from './types'
 import './styles'
 
-export { IconSearchProps } from './components'
-
-export interface SearchProps {
-  type?: 'normal' | 'nav-search'
-  addonAfter?: ReactNode
-  autoFocus?: boolean
-  defaultValue?: string
-  value?: string | number
-  onChange?: (value: string | number) => void
-  onSearch?: (value: string | number) => void
-  onClear?: () => void
-  placeholder?: string
-  allowClear?: boolean
-  disabled?: boolean
-}
+export * from './types'
 
 const SEARCH_ICON_NAME = 'ri-search-2-line'
 

@@ -8,7 +8,11 @@ export default defineConfig({
   outputPath: 'docs-dist',
   mode: 'site',
   resolve: {
-    includes: ['docs', 'packages/meta-components/src'],
+    includes: [
+      'docs',
+      'packages/meta-components/src',
+      'packages/toybox-ui/src',
+    ],
   },
   // more config: https://d.umijs.org/config
 })

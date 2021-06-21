@@ -1,4 +1,4 @@
-## Search 搜索框
+<!-- ## Search 搜索框
 
 #### 基本使用
 
@@ -42,4 +42,4 @@ export default () => (
 )
 ```
 
-<API src="./components/Search.tsx"></API>
+<API src="./components/Search.tsx"></API> -->

@@ -9,19 +9,11 @@ import React, {
 } from 'react'
 import { Search2Line } from '@airclass/icons'
 import { Input } from 'antd'
-import { Button } from '../../button'
 import classNames from 'classnames'
-import { SearchProps } from './Search'
+import { Button } from '../../button'
+import { IconSearchProps } from '../types'
 
 import '../styles'
-
-export interface IconSearchProps extends SearchProps {
-  searchClassName?: string
-  direction?: 'ltr' | 'rtl'
-  triggerTooltipProps?: string
-  style?: CSSProperties
-  className?: string
-}
 
 export const IconSearch: FC<IconSearchProps> = ({
   addonAfter,

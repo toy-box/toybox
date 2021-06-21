@@ -48,13 +48,13 @@ function AvatarWithName({
       className={classNames('tbox-avatar-withname', className)}
       style={style}
     >
-      <Avatar name={name} img={img} size="xs" colorSets={colorSets} />
+      <AvatarPro name={name} img={img} size="xs" colorSets={colorSets} />
       <span className="tbox-avatar-name">{name}</span>
     </div>
   )
 }
 
-function Avatar({
+function AvatarPro({
   name,
   img,
   className,
@@ -123,7 +123,7 @@ function Avatar({
   )
 }
 
-Avatar.AvatarWithName = AvatarWithName
-Avatar.AvatarGroup = AvatarGroup
+AvatarPro.AvatarWithName = AvatarWithName
+AvatarPro.AvatarGroup = AvatarGroup
 
-export default Avatar
+export const Avatar = AvatarPro

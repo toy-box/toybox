@@ -9,7 +9,7 @@ import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 import { DatePickerProps } from 'antd/lib/date-picker'
 import { PickerBaseProps } from 'antd/lib/date-picker/generatePicker'
 import { MetaValueType } from '@toy-box/meta-schema'
-import { DatePicker } from './components'
+import { DatePicker } from '@toy-box/toybox-ui'
 import { BaseFieldProps } from '../interface'
 
 dayjs.extend(LocalizedFormat)
@@ -44,6 +44,7 @@ const DateFC: ForwardRefRenderFunction<any, FieldDateProps> = (
     onClick,
     onOpenChange,
     dateMode,
+    ...otherProps
   },
   ref: Ref<any>
 ) => {
@@ -102,6 +103,7 @@ const DateFC: ForwardRefRenderFunction<any, FieldDateProps> = (
       mode={dateMode}
       showTime={showTime ? { format: 'HH:mm:ss' } : false}
       onOpenChange={onOpenChange}
+      {...otherProps}
     />
   )
 }
