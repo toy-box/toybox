@@ -41,6 +41,7 @@ export interface FilterValueInputProps {
   value?: any
   multiple?: boolean
   onChange: (value: any, text?: string[]) => void
+  onSubmit?: (value: any, text?: string[]) => void
   style?: CSSProperties
   mode?: 'read' | 'edit' | 'update'
   fieldMetaService?: FieldService
@@ -54,6 +55,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
   operation,
   value,
   onChange,
+  onSubmit,
   multiple,
   style,
   mode = 'edit',
@@ -164,6 +166,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             value={value}
             allowClear
             onChange={handleValue}
+            onPressEnter={onSubmit}
           />
         )
       case MetaValueType.NUMBER:
@@ -177,7 +180,8 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             }`}
             style={style}
             value={value}
-            onChange={(value) => handleValue(value)}
+            onChange={handleValue}
+            onPressEnter={onSubmit}
           />
         )
       case MetaValueType.PERCENT:
@@ -191,7 +195,8 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             }`}
             style={style}
             value={value}
-            onChange={(value) => handleValue(value)}
+            onChange={handleValue}
+            onPressEnter={onSubmit}
           />
         )
       case MetaValueType.DATE:
@@ -250,7 +255,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
                 localeData.lang,
                 'filed.placeholderOp.paramSelect'
               )}${fieldMeta.name}`}
-              onChange={(value) => handleValue(value)}
+              onChange={handleValue}
             />
           </div>
         )
@@ -340,7 +345,8 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
               fieldMeta.name
             }`}
             value={value}
-            onChange={(value) => handleValue(value, [value])}
+            onChange={handleValue}
+            onPressEnter={onSubmit}
           />
         )
     }

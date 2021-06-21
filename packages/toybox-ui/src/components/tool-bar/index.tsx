@@ -3,25 +3,14 @@ import classNames from 'classnames'
 import './styles'
 
 export interface ToolBarProps {
-  left?: ReactNode
-  center?: ReactNode
-  right?: ReactNode
   className?: string
   style?: CSSProperties
 }
 
-export const ToolBar: FC<ToolBarProps> = ({
-  left,
-  center,
-  right,
-  className,
-  style,
-}) => {
+export const ToolBar: FC<ToolBarProps> = ({ className, style, children }) => {
   return (
     <div className={classNames('tbox-toolbar', className)} style={style}>
-      <div className="tbox-toolbar__left">{left}</div>
-      <div className="tbox-toolbar__center">{center}</div>
-      <div className="tbox-toolbar__right">{right}</div>
+      {children}
     </div>
   )
 }

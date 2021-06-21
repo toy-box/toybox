@@ -1,4 +1,4 @@
-@import '../../styles/theme.less';
+@import '../../../styles/theme.less';
 
 @mask-color: #bfbfbf;
 @mask-active-color: #8c8c8c;
@@ -7,7 +7,7 @@
 .@{prefix}-icon-search {
   position: relative;
   transition: all 0.3s ease-out !important;
-  &-icon-search-icon {
+  &-icon {
     position: absolute;
     left: 0;
     top: 50%;
@@ -26,7 +26,11 @@
       .@{prefix}-search-input {
         border: none;
         width: 32px;
-        .ant-input-prefix {
+        .@{ant-prefix}-input {
+          width: 0;
+        }
+        .@{ant-prefix}-input-prefix,
+        .@{ant-prefix}-input-suffix {
           display: none;
         }
       }

@@ -72,6 +72,7 @@ const FieldOpMap: Record<string, Array<Toybox.MetaSchema.Types.CompareOP>> = {
   [MetaValueType.DATETIME]: dateOps,
   [MetaValueType.SINGLE_OPTION]: optionOps,
   [MetaValueType.OBJECT_ID]: optionOps,
+  [MetaValueType.OBJECT]: optionOps,
 }
 
 export const CompareOperation: FC<CompareOperationProps> = ({
@@ -92,11 +93,11 @@ export const CompareOperation: FC<CompareOperationProps> = ({
       label: field.name,
       value: field.key,
       disabled:
-        context.simple &&
+        context.logicFilter &&
         field.key !== compare.source &&
         selected.includes(field.key),
     }))
-  }, [filterFieldMetas, compare.source, context.simple, selected])
+  }, [filterFieldMetas, compare.source, context.logicFilter, selected])
 
   const filterFieldMeta = useMemo(
     () => filterFieldMetas.find((f) => f.key === compare.source),
@@ -104,7 +105,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   )
 
   const filterOperations = useMemo(() => {
-    if (context.simple) {
+    if (context.logicFilter) {
       return compareOperationData([CompareOP.EQ])
     }
     if (filterFieldMeta?.type) {
@@ -113,7 +114,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
       )
     }
     return []
-  }, [filterFieldMeta, context.simple])
+  }, [filterFieldMeta, context.logicFilter])
 
   function compareOperationData(
     compareOperation: Toybox.MetaSchema.Types.CompareOP[]
@@ -137,6 +138,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   const onKeyChange = useCallback(
     (source: string) => {
       const fieldMeta = filterFieldMetas.find((meta) => meta.key === source)
+      console.log('fieldMeta', fieldMeta, source, filterFieldMetas)
       const op =
         fieldMeta && FieldOpMap[fieldMeta.type].some((op) => op === compare.op)
           ? compare.op

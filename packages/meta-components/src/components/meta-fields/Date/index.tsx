@@ -53,7 +53,7 @@ const DateFC: ForwardRefRenderFunction<any, FieldDateProps> = (
   )
 
   const defaultValue = useMemo(
-    () => dayjs(field.defaultValue),
+    () => (field.defaultValue ? dayjs(field.defaultValue) : undefined),
     [field.defaultValue]
   )
 

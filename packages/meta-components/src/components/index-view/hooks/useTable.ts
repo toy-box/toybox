@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import useRequest from '@ahooksjs/use-request'
 import { useUpdateEffect, usePersistFn } from 'ahooks'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import {
   CombineService,
   PaginatedParams,
@@ -39,12 +39,14 @@ export interface UseAntdTableFormUtils {
 }
 
 export interface IParamsActions {
-  getParams: (...args: any) => Toybox.MetaSchema.Types.ILogicFilter | undefined
+  getParams: (
+    ...args: any
+  ) => Toybox.MetaSchema.Types.ICompareOperation[] | undefined
   resetParams: () => void
 }
 
 export interface Result<Item> extends PaginatedResult<Item> {
-  search: {
+  searchActions: {
     submit: () => void
     reset: () => void
   }
@@ -53,13 +55,13 @@ export interface Result<Item> extends PaginatedResult<Item> {
 export interface BaseOptions<U>
   extends Omit<BasePaginatedOptions<U>, 'paginated'> {
   paramsActions?: IParamsActions
-  simple?: boolean
+  logicFilter?: boolean
 }
 
 export interface OptionsWithFormat<R, Item, U>
   extends Omit<PaginatedOptionsWithFormat<R, Item, U>, 'paginated'> {
   paramsActions?: IParamsActions
-  simple?: boolean
+  logicFilter?: boolean
 }
 
 function useAntdTable<R = any, Item = any, U extends Item = any>(
@@ -75,28 +77,29 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
   options: BaseOptions<U> | OptionsWithFormat<R, Item, U>
 ): any {
   const {
-    simple,
+    logicFilter,
     paramsActions,
     refreshDeps = [],
     manual,
     defaultParams,
     ...restOptions
   } = options
+
   const result = useRequest(service, {
     ...restOptions,
-    paginated: true as true,
-    manual: true,
+    paginated: true,
+    manual,
   })
 
   const { params, run } = result
 
   // 获取当前展示的 form 字段值
   const getParams = useCallback(() => {
-    if (simple) {
-      const logicFilter = paramsActions?.getParams()
+    if (logicFilter) {
+      const compares = paramsActions?.getParams()
       const params: Record<string, any> = {}
-      if (logicFilter) {
-        logicFilter.compares.forEach((compare) => {
+      if (compares) {
+        compares.forEach((compare) => {
           if (compare.source && compare.op === CompareOP.EQ && compare.target) {
             params[compare.source] = compare.target
           }
@@ -104,30 +107,32 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
       }
       return params
     }
-    return paramsActions?.getParams()
-  }, [paramsActions])
+    return {
+      logic: LogicOP.AND,
+      compares: paramsActions?.getParams(),
+    }
+  }, [paramsActions, logicFilter])
 
   // 首次加载，手动提交。为了拿到 form 的 initial values
-  // useEffect(() => {
-  //   // 如果有缓存，则使用缓存，重新请求
-  //   if (params.length > 0) {
-  //     run(...params)
-  //     return
-  //   }
+  useEffect(() => {
+    // 如果有缓存，则使用缓存，重新请求
+    if (params.length > 0) {
+      run(...params)
+      return
+    }
 
-  //   // 如果没有缓存，触发 submit
-  //   if (!manual) {
-  //     _submit(defaultParams)
-  //   }
-  // }, [])
+    // 如果没有缓存，触发 submit
+    if (!manual) {
+      _submit(defaultParams)
+    }
+  }, [])
 
   const _submit = useCallback(
     (initParams?: any) => {
       setTimeout(() => {
-        const activeFilterData = getParams()
         // has defaultParams
         if (initParams) {
-          run(initParams[0], activeFilterData)
+          run(initParams[0], getParams())
           return
         }
         run(
@@ -136,7 +141,7 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
             ...((params[0] as PaginatedParams[0] | undefined) || {}), // 防止 manual 情况下，第一次触发 submit，此时没有 params[0]
             current: 1,
           },
-          activeFilterData
+          getParams()
         )
       })
     },
@@ -168,7 +173,7 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
 
   return {
     ...result,
-    search: {
+    searchActions: {
       submit,
       reset,
     },

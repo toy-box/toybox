@@ -2,7 +2,6 @@ import React, {
   CSSProperties,
   Ref,
   useCallback,
-  useEffect,
   useMemo,
   useState,
   useImperativeHandle,
@@ -11,7 +10,7 @@ import classNames from 'classnames'
 import { MetaValueType } from '@toy-box/meta-schema'
 import { PaginationBar } from '@toy-box/toybox-ui'
 import { MetaTable } from '../meta-table'
-import { FilterSearch } from '../filter-search'
+import { FilterPanel } from './components'
 import { LoadDataType, IndexModeType } from './types'
 import {
   IColumnVisible,
@@ -54,11 +53,6 @@ export interface IIndexViewProps {
    * @default false
    */
   urlQuery?: boolean
-  /**
-   * @description 是否启动多选模式
-   * @default false
-   */
-  selectionToggle?: boolean
   defaultSelectionType?: 'checkbox'
   /**
    * @description 数据获取方法
@@ -68,7 +62,7 @@ export interface IIndexViewProps {
   /**
    * @description 条件查询简单模式
    */
-  simple?: boolean
+  logicFilter?: boolean
 }
 
 export const IndexView = React.forwardRef(
@@ -82,11 +76,10 @@ export const IndexView = React.forwardRef(
       className,
       style,
       columnComponents = {},
-      selectionToggle,
       defaultSelectionType,
       loadData,
       filterFieldKeys,
-      simple,
+      logicFilter,
       urlQuery,
       children,
     }: IIndexViewProps & { children: React.ReactNode },
@@ -94,22 +87,12 @@ export const IndexView = React.forwardRef(
   ) => {
     const [params, setParams] = useState<any>()
     const [selectedRowKeys, setSelectedRowKeys] = useState<RawValue[]>([])
-    // const [query, setQuery] = useQuery()
-
     const [selectedRows, setSelectedRows] = useState<RowData[]>([])
     const [selectionType, setSelectionType] = useState(defaultSelectionType)
     const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
 
-    useImperativeHandle(
-      ref,
-      () => ({
-        selectedRowKeys,
-        selectedRows,
-      }),
-      [selectedRowKeys, selectedRows]
-    )
+    // const [query, setQuery] = useQuery()
 
-    const selected = useMemo(() => selectedRows.length > 0, [selectedRows])
     // 可配置的字段key
     const metaColumnKeys = useMemo(
       () => visibleColumns.map((col) => col.key),
@@ -136,16 +119,6 @@ export const IndexView = React.forwardRef(
 
     const [columns, setColumns] = useState<ColumnsSetValueType>(defaultColumns)
     const [visibleKeys, setVisibleKeys] = useState(defaultColumnKeys)
-
-    const toggleSelection = useCallback(() => {
-      if (selectionType == null) {
-        setSelectionType('checkbox')
-      } else {
-        setSelectedRows([])
-        setSelectedRowKeys([])
-        setSelectionType(undefined)
-      }
-    }, [selectionType])
 
     const rowSelection = useMemo(
       () =>
@@ -195,9 +168,30 @@ export const IndexView = React.forwardRef(
       return columnComponents
     }, [columnComponents, currentMode])
 
-    const indexViewContent = useMemo(
+    const paramsActions = useMemo(() => {
+      return {
+        getParams: () => params,
+        resetParams: () => setParams(undefined),
+      }
+    }, [params, setParams])
+
+    const service = useCallback(
+      (params, filterParams) => {
+        return loadData(params, filterParams)
+      },
+      [loadData]
+    )
+
+    const { pagination, tableProps, searchActions } = useTable(service, {
+      logicFilter,
+      paramsActions,
+    })
+
+    const indexViewContext = useMemo(
       () => ({
         objectMeta,
+        params,
+        setParams,
         visibleColumnSet,
         columns,
         setColumns,
@@ -206,9 +200,16 @@ export const IndexView = React.forwardRef(
         currentMode,
         setCurrentMode,
         viewModes,
+        filterFieldKeys,
+        selectedRowKeys,
+        selectionType,
+        setSelectionType,
+        searchActions,
       }),
       [
         objectMeta,
+        params,
+        setParams,
         columns,
         setColumns,
         visibleColumnSet,
@@ -217,6 +218,11 @@ export const IndexView = React.forwardRef(
         currentMode,
         setCurrentMode,
         viewModes,
+        filterFieldKeys,
+        selectedRowKeys,
+        selectionType,
+        setSelectionType,
+        searchActions,
       ]
     )
 
@@ -224,24 +230,21 @@ export const IndexView = React.forwardRef(
     //   pagination: { defaultCurrent: 1, defaultPageSize: 4 },
     // })
 
-    const paramsActions = useMemo(() => {
-      return {
-        getParams: () => params,
-        resetParams: () => setParams(undefined),
-      }
-    }, [])
+    // useEffect(() => {
+    //   console.log('params', params)
+    //   searchActions.submit()
+    // }, [params])
 
-    const { tableProps, search } = useTable(loadData, {
-      simple,
-      paramsActions,
-    })
-
-    useEffect(() => {
-      search.submit()
-    }, [search.submit])
+    useImperativeHandle(
+      ref,
+      () => ({
+        selectedRowKeys,
+        selectedRows,
+      }),
+      [selectedRowKeys, selectedRows]
+    )
 
     const IndexContent = useCallback(() => {
-      const { pagination, ...otherProps } = tableProps
       switch (currentMode) {
         case 'list':
           return (
@@ -250,8 +253,8 @@ export const IndexView = React.forwardRef(
               columnMetas={columnMetas}
               rowSelection={rowSelection}
               columnComponents={components}
+              {...tableProps}
               pagination={false}
-              {...otherProps}
             />
           )
         case 'table':
@@ -263,8 +266,8 @@ export const IndexView = React.forwardRef(
                 columnMetas={columnMetas}
                 rowSelection={rowSelection}
                 columnComponents={components}
+                {...tableProps}
                 pagination={false}
-                {...otherProps}
               />
               <PaginationBar {...pagination} />
             </>
@@ -279,32 +282,14 @@ export const IndexView = React.forwardRef(
       tableProps,
     ])
 
-    const filterFieldMetas = useMemo(() => {
-      const { properties } = objectMeta
-      if (properties) {
-        return Object.keys(properties)
-          .filter((key) => {
-            return filterFieldKeys
-              ? filterFieldKeys.includes(key)
-              : key != objectMeta.idKey
-          })
-          .map((key) => properties[key])
-      }
-      return []
-    }, [objectMeta, filterFieldKeys])
-
     return (
-      <IndexViewContext.Provider value={indexViewContent}>
+      <IndexViewContext.Provider value={indexViewContext}>
         <div className={classNames('tbox-index-view', className)} style={style}>
           {children ? (
             children
           ) : (
             <>
-              <FilterSearch
-                value={params}
-                onChange={setParams}
-                filterFieldMetas={filterFieldMetas}
-              />
+              <FilterPanel />
               <TableStatusBar />
             </>
           )}

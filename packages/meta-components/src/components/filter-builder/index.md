@@ -362,7 +362,7 @@ export default () => {
         onChange={(filterItem: Partial<ICompareOperation>[]) =>
           handleFilter(filterItem)
         }
-        simple
+        logicFitler
       />
     </div>
   )

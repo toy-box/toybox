@@ -1,9 +1,10 @@
 import React, { FC, useState, useMemo, useCallback } from 'react'
-import { Form, Tooltip, Popover, Button } from 'antd'
+import { Space, Tooltip, Popover, Button } from 'antd'
 import { Filter3Line } from '@airclass/icons'
 import update from 'immutability-helper'
 import { useLocale } from '@toy-box/toybox-shared'
 import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
+import debounce from 'lodash.debounce'
 import { FilterValueInput } from '../filter-builder/components/FilterValueInput'
 import { FilterDesigner } from './components'
 import localeMap from './locale'
@@ -29,11 +30,14 @@ export interface FilterLabel {
 export interface IFilterSearchProps {
   filterFieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
   simpleFilterKeys?: string[]
+  nameQueryKey?: string
   value?: FilterType
   filterFieldService?: FieldService
   title?: string
   onChange?: (filter?: FilterType) => void
   onCancel?: () => void
+  logicFilter?: boolean
+  onSubmit?: (FilterType) => void
 }
 
 export const FilterSearch: FC<IFilterSearchProps> = ({
@@ -42,8 +46,10 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
   filterFieldService,
   value,
   title,
+  logicFilter,
   onChange,
   onCancel,
+  onSubmit,
 }) => {
   const [filterEditVisible, setFilterEditVisible] = useState(false)
   const locale = useLocale()
@@ -56,6 +62,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
         (item) => item.op && item.target != null
       )
       onChange && onChange(validFilter)
+      onSubmit && onSubmit(validFilter)
     },
     [onChange, setFilterEditVisible]
   )
@@ -78,18 +85,18 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
     [value]
   )
 
-  const onValueChange = (
+  const onSimpleValueChange = (
     val: any,
-    filterField: Toybox.MetaSchema.Types.IFieldMeta
+    fieldMeta: Toybox.MetaSchema.Types.IFieldMeta
   ) => {
-    switch (filterField.type) {
+    switch (fieldMeta.type) {
       case MetaValueType.STRING:
       case MetaValueType.SINGLE_OPTION:
       case MetaValueType.OBJECT_ID:
-        handleValueChange(val, filterField, CompareOP.IN)
+        handleValueChange(val, fieldMeta, CompareOP.IN)
         break
       default:
-        handleValueChange(val, filterField, CompareOP.EQ)
+        handleValueChange(val, fieldMeta, CompareOP.EQ)
         break
     }
   }
@@ -117,24 +124,29 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
       const refFilters = (value || []).filter(
         (field) => field.source === fieldMeta.key
       ).length
+      let newValue = value
       if (refFilters === 0) {
-        return onChange && onChange(update(value, { $push: [fieldItem] }))
-      }
-      if (refFilters === 1) {
+        newValue = update(value || [], { $push: [fieldItem] })
+      } else if (refFilters === 1) {
         const idx = (value || []).findIndex(
           (field) => field.source === fieldMeta.key
         )
-        return (
-          onChange && onChange(update(value, { [idx]: { $set: fieldItem } }))
-        )
-      }
-      if (refFilters > 1) {
+        newValue = update(value || [], { [idx]: { $set: fieldItem } })
+      } else if (refFilters > 1) {
         const unSelectValues = (value || []).filter(
           (field) => field.source !== fieldMeta.key
         )
-        return (
-          onChange && onChange(update(unSelectValues, { $push: [fieldItem] }))
-        )
+        newValue = update(unSelectValues, { $push: [fieldItem] })
+      }
+      onChange && onChange(newValue)
+      if (
+        [
+          MetaValueType.STRING,
+          MetaValueType.NUMBER,
+          MetaValueType.INTEGER,
+        ].includes(fieldMeta.type as MetaValueType)
+      ) {
+        onSubmit && onSubmit(newValue)
       }
     },
     [value, onChange]
@@ -154,44 +166,43 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
         filterFieldService={filterFieldService}
         onChange={handleChange}
         onCancel={cencel}
+        logicFilter={logicFilter}
       />
     )
   }, [filterFieldMetas, value, filterFieldService])
 
   return (
     <div className="filter-model">
-      <Form layout="inline">
-        <Form.Item>
-          <Popover
-            overlayClassName="no-padding"
-            placement="bottom"
-            content={filterContainer}
-            trigger="click"
-            visible={filterEditVisible}
-            onVisibleChange={setFilterEditVisible}
-            destroyTooltipOnHide={true}
-          >
-            <Tooltip placement="top" title={localeData.lang.filter['tip']}>
-              <Button icon={<Filter3Line />} />
-            </Tooltip>
-          </Popover>
-        </Form.Item>
+      <Space>
+        <Popover
+          overlayClassName="no-padding"
+          placement="bottom"
+          content={filterContainer}
+          trigger="click"
+          visible={filterEditVisible}
+          onVisibleChange={setFilterEditVisible}
+          destroyTooltipOnHide={true}
+        >
+          <Tooltip placement="top" title={localeData.lang.filter['tip']}>
+            <Button icon={<Filter3Line />} />
+          </Tooltip>
+        </Popover>
         {simpleFilterKeys.map((key, idx) => {
           const fieldMeta = filterFieldMetas.find((field) => field.key === key)
           return fieldMeta ? (
-            <Form.Item key={idx}>
-              <FilterValueInput
-                value={filterValue(fieldMeta)}
-                fieldMetaService={filterFieldService}
-                multiple={false}
-                fieldMeta={fieldMeta}
-                onChange={(value) => onValueChange(value, fieldMeta)}
-                style={{ width: '160px' }}
-              />
-            </Form.Item>
+            <FilterValueInput
+              key={idx}
+              value={filterValue(fieldMeta)}
+              fieldMetaService={filterFieldService}
+              multiple={false}
+              fieldMeta={fieldMeta}
+              onChange={(value) => onSimpleValueChange(value, fieldMeta)}
+              onSubmit={onSubmit}
+              style={{ width: '160px' }}
+            />
           ) : undefined
         })}
-      </Form>
+      </Space>
     </div>
   )
 }

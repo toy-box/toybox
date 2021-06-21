@@ -5,7 +5,7 @@ export interface IFilterBuilderContextProps {
   onChange: (
     value: Partial<Toybox.MetaSchema.Types.ICompareOperation>[]
   ) => void
-  simple?: boolean
+  logicFilter?: boolean
 }
 
 export const FilterBuilderContext = createContext<IFilterBuilderContextProps>({

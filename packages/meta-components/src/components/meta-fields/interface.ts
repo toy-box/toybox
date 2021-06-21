@@ -27,7 +27,8 @@ export interface BaseFieldProps {
   disabled?: boolean
   value?: any
   onClick?: () => void
-  onChange?: (...args: any) => void
+  onChange?: (value: any, test?: any) => void
+  onPressEnter?: (value: any, test?: any) => void
 }
 
 export interface SimpleTreeNode {

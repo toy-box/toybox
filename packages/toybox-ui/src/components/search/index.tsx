@@ -8,9 +8,10 @@ import React, {
 } from 'react'
 import { Input } from 'antd'
 import classNames from 'classnames'
-import { IconSearch } from './IconSearch'
+import { IconSearch, IconSearchProps } from './components'
+import './styles'
 
-import '../style.less'
+export { IconSearchProps } from './components'
 
 export interface SearchProps {
   type?: 'normal' | 'nav-search'
@@ -28,7 +29,7 @@ export interface SearchProps {
 
 const SEARCH_ICON_NAME = 'ri-search-2-line'
 
-const Search = ({
+export const Search: FC<SearchProps> & { IconSearch: FC<IconSearchProps> } = ({
   type = 'normal',
   addonAfter,
   autoFocus = false,
@@ -40,7 +41,7 @@ const Search = ({
   placeholder,
   allowClear = true,
   disabled = false,
-}: SearchProps) => {
+}) => {
   const [focus, setFocus] = useState(autoFocus)
   const inputRef = useRef<Input>(null)
 
@@ -129,5 +130,3 @@ const Search = ({
 }
 
 Search.IconSearch = IconSearch
-
-export default Search

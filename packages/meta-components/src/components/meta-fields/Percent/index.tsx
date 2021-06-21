@@ -1,4 +1,4 @@
-import { InputNumber } from 'antd'
+import { InputNumber, InputNumberProps } from 'antd'
 import React, {
   useRef,
   useMemo,
@@ -16,16 +16,27 @@ import {
   getRealTextWithPrecision,
 } from './util'
 
-export interface FieldPercentProps extends BaseFieldProps {
-  value?: number
-  placeholder?: string
-  onChange?: (value?: number) => void
-  showColor?: boolean
-  showSymbol?: boolean
-  suffix?: string
-  precision?: number
-  style?: CSSProperties
-}
+// export interface FieldPercentProps extends BaseFieldProps {
+//   value?: number
+//   placeholder?: string
+//   onChange?: (value?: number) => void
+//   showColor?: boolean
+//   showSymbol?: boolean
+//   suffix?: string
+//   precision?: number
+//   style?: CSSProperties
+// }
+
+export type FieldPercentProps = Omit<
+  BaseFieldProps,
+  'value' | 'onChange' | 'onClick' | 'onPressEnter'
+> &
+  Omit<InputNumberProps, 'defaultValue' | 'onPressEnter' | 'min' | 'max'> & {
+    suffix?: string
+    showColor?: boolean
+    showSymbol?: boolean
+    onPressEnter?: (value?: number | string) => void
+  }
 
 const FieldPercentFC: ForwardRefRenderFunction<any, FieldPercentProps> = (
   {
@@ -36,11 +47,13 @@ const FieldPercentFC: ForwardRefRenderFunction<any, FieldPercentProps> = (
     disabled,
     onChange,
     onClick,
-    showColor = false,
     showSymbol,
+    showColor,
     suffix = '%',
     precision = 2,
     style,
+    onPressEnter,
+    ...otherProps
   }: FieldPercentProps,
   ref: Ref<any>
 ) => {
@@ -48,7 +61,7 @@ const FieldPercentFC: ForwardRefRenderFunction<any, FieldPercentProps> = (
   const innerValue = useMemo(
     () =>
       value != null
-        ? Math.round(value * Math.pow(10, precision + 2)) /
+        ? Math.round(Number(value) * Math.pow(10, precision + 2)) /
           Math.pow(10, precision)
         : undefined,
     [value]
@@ -60,7 +73,7 @@ const FieldPercentFC: ForwardRefRenderFunction<any, FieldPercentProps> = (
         value != null
           ? Math.round(Number(value) * Math.pow(10, precision)) /
               Math.pow(10, precision + 2)
-          : value
+          : Number(value)
       ),
     [onChange]
   ) as (value: number) => void
@@ -89,7 +102,7 @@ const FieldPercentFC: ForwardRefRenderFunction<any, FieldPercentProps> = (
   )
 
   if (mode === 'read') {
-    const style = showColor ? { color: getColorByRealValue(value) } : {}
+    const style = showColor ? { color: getColorByRealValue(Number(value)) } : {}
     if (value == null) {
       return (
         <span style={style} onClick={onClick}>
@@ -99,8 +112,10 @@ const FieldPercentFC: ForwardRefRenderFunction<any, FieldPercentProps> = (
     }
     return (
       <span style={style} onClick={onClick}>
-        {showSymbol && <Fragment>{getSymbolByRealValue(value)} </Fragment>}
-        {getRealTextWithPrecision(Math.abs(value), precision)}
+        {showSymbol && (
+          <Fragment>{getSymbolByRealValue(Number(value))} </Fragment>
+        )}
+        {getRealTextWithPrecision(Math.abs(Number(value)), precision)}
         {suffix}
       </span>
     )
@@ -117,6 +132,8 @@ const FieldPercentFC: ForwardRefRenderFunction<any, FieldPercentProps> = (
       parser={hanldeParser}
       style={{ ...style, width: '100%' }}
       precision={precision}
+      onPressEnter={() => onPressEnter && onPressEnter(value)}
+      {...otherProps}
     />
   )
 }

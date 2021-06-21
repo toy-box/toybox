@@ -14,6 +14,7 @@ export interface IFilterDesignerProps {
   filterFieldService?: FieldService
   onChange?: (value: FilterType) => void
   onCancel?: () => void
+  logicFilter?: boolean
 }
 
 export const FilterDesigner: FC<IFilterDesignerProps> = ({
@@ -23,6 +24,7 @@ export const FilterDesigner: FC<IFilterDesignerProps> = ({
   onCancel,
   title,
   filterFieldService,
+  logicFilter,
 }) => {
   const locale = useLocale()
   const localeData = useMemo(() => localeMap[locale], [locale])
@@ -49,6 +51,7 @@ export const FilterDesigner: FC<IFilterDesignerProps> = ({
           value={compares}
           filterFieldService={filterFieldService}
           onChange={setCompares}
+          logicFilter={logicFilter}
         />
       </div>
       <div className="tbox-filter-designer__bottom">

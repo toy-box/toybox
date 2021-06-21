@@ -10,12 +10,14 @@ import { BaseFieldProps } from '../interface'
 
 export type FieldNumberProps = Omit<
   BaseFieldProps,
-  'value' | 'onChange' | 'onClick'
+  'value' | 'onChange' | 'onPressEnter' | 'onClick'
 > &
-  Omit<InputNumberProps, 'defaultValue' | 'min' | 'max'>
+  Omit<InputNumberProps, 'defaultValue' | 'onPressEnter' | 'min' | 'max'> & {
+    onPressEnter?: (value?: number | string) => void
+  }
 
 const FieldNumberFC: ForwardRefRenderFunction<any, FieldNumberProps> = (
-  { mode, value, style, onChange, onClick, field, ...otherProps },
+  { mode, value, style, onChange, onClick, onPressEnter, field, ...otherProps },
   ref: Ref<any>
 ) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -42,6 +44,9 @@ const FieldNumberFC: ForwardRefRenderFunction<any, FieldNumberProps> = (
       precision={field.precision}
       min={field.minimum}
       max={field.maximum}
+      onPressEnter={() =>
+        onPressEnter && onPressEnter(value ? value : Number(value))
+      }
       {...otherProps}
     />
   )

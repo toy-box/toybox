@@ -14,4 +14,12 @@ export interface IPageable {
 
 export type IndexModeType = 'table' | 'list' | 'card'
 
-export type LoadDataType = (pageable: IPageable) => Promise<IPageResult>
+export type LoadDataType = (
+  pageable: IPageable,
+  filterParams: any
+) => Promise<IPageResult>
+
+export interface ISearchActions {
+  submit: () => void
+  reset: () => void
+}
