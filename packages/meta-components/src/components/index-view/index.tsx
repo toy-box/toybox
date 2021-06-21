@@ -53,7 +53,7 @@ export interface IIndexViewProps {
    * @default false
    */
   urlQuery?: boolean
-  defaultSelectionType?: 'checkbox'
+  defaultSelectionType?: string
   /**
    * @description 数据获取方法
    */
@@ -86,7 +86,7 @@ export const IndexView = React.forwardRef(
     ref: Ref<any>
   ) => {
     const [params, setParams] = useState<any>()
-    const [selectedRowKeys, setSelectedRowKeys] = useState<RawValue[]>([])
+    const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
     const [selectedRows, setSelectedRows] = useState<RowData[]>([])
     const [selectionType, setSelectionType] = useState(defaultSelectionType)
     const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
@@ -126,7 +126,7 @@ export const IndexView = React.forwardRef(
           ? {
               selectedRowKeys,
               selectionType,
-              onChange: (keys: (string | number)[], rows: RowData[]) => {
+              onChange: (keys: string[], rows: RowData[]) => {
                 setSelectedRowKeys(keys), setSelectedRows(rows)
               },
             }
@@ -220,6 +220,7 @@ export const IndexView = React.forwardRef(
         setSelectionType,
         searchActions,
         filterFields,
+        logicFilter,
       }),
       [
         objectMeta,
@@ -239,6 +240,7 @@ export const IndexView = React.forwardRef(
         setSelectionType,
         searchActions,
         filterFields,
+        logicFilter,
       ]
     )
 

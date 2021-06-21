@@ -17,14 +17,15 @@ dayjs.extend(LocalizedFormat)
 type ISODateString = string
 
 export declare type FieldBasePickerProps = Omit<
-  PickerBaseProps<ISODateString>,
-  'mode' | 'picker' | 'format'
+  PickerBaseProps<Dayjs>,
+  'mode' | 'picker' | 'format' | 'defaultValue' | 'value' | 'onChange'
 > &
   Omit<BaseFieldProps, 'value' | 'onChange'>
 
 export declare type FieldDateProps = FieldBasePickerProps & {
-  picker?: DatePickerProps['picker']
   dateMode?: PickerBaseProps<ISODateString>['mode']
+  value?: ISODateString
+  onChange?: (value?: ISODateString, dateString?: string) => void
 }
 
 const DateFormat = 'YYYY/MM/DD'
@@ -37,7 +38,6 @@ const DateFC: ForwardRefRenderFunction<any, FieldDateProps> = (
     placeholder,
     mode,
     field,
-    picker,
     open,
     bordered,
     onChange,
@@ -54,7 +54,8 @@ const DateFC: ForwardRefRenderFunction<any, FieldDateProps> = (
   )
 
   const defaultValue = useMemo(
-    () => (field.defaultValue ? dayjs(field.defaultValue) : undefined),
+    () =>
+      field.defaultValue ? dayjs(field.defaultValue as string) : undefined,
     [field.defaultValue]
   )
 
@@ -69,7 +70,7 @@ const DateFC: ForwardRefRenderFunction<any, FieldDateProps> = (
   const innerOnChange = useCallback(
     (date: Dayjs | null, dateString: string = '') => {
       onChange &&
-        onChange(date ? dayjs(dateString).toISOString() : null, dateString)
+        onChange(date ? dayjs(dateString).toISOString() : undefined, dateString)
     },
     [innerFormat, onChange]
   )
@@ -92,12 +93,11 @@ const DateFC: ForwardRefRenderFunction<any, FieldDateProps> = (
     <DatePicker
       ref={ref}
       value={innerValue}
-      defaultValue={defaultValue}
       bordered={bordered}
       placeholder={placeholder}
+      defaultValue={defaultValue}
       disabled={disabled}
       onChange={innerOnChange}
-      picker={picker}
       open={open}
       style={{ width: '100%' }}
       mode={dateMode}

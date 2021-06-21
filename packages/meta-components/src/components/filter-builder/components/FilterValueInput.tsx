@@ -266,7 +266,9 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
                 localeData.lang,
                 'filed.placeholderOp.paramSelect'
               )}${fieldMeta.name}`}
-              onChange={(value, dateString) => handleValue(value, [dateString])}
+              onChange={(value, dateString) =>
+                handleValue(value, dateString ? [dateString] : undefined)
+              }
             />
           </div>
         )

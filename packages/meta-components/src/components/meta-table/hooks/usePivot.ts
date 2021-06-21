@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { MetaValueType } from '@toy-box/meta-schema'
-import { ColumnMetaType, RowData } from '../../interface'
+import { ColumnMetaType, RowData } from '../interface'
 
 declare type PosIndex = number[]
 

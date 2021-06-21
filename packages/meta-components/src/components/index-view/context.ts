@@ -18,8 +18,10 @@ export interface IIndexViewContextProps {
   selectedRowKeys?: string[]
   selectionType?: string
   setSelectionType?: (type?: string) => void
-  logicFilter: boolean
+  logicFilter?: boolean
   searchActions: ISearchActions
 }
 
-export const IndexViewContext = createContext<IIndexViewContextProps>(null)
+export const IndexViewContext = createContext<IIndexViewContextProps>(
+  {} as IIndexViewContextProps
+)

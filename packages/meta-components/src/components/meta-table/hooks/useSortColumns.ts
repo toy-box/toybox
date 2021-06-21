@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { MetaValueType } from '@toy-box/meta-schema'
-import { ColumnMetaType } from '../../interface'
+import { ColumnMetaType } from '../interface'
 
 export const useSortColumns = (columnMetas: ColumnMetaType[]) => {
   return columnMetas.map((columnMeta) => ({

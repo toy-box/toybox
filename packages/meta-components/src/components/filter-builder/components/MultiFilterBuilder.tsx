@@ -11,7 +11,7 @@ import '../styles/multi.less'
 
 export interface IMultiFilterBuilderProps {
   segmentlogic?: Toybox.MetaSchema.Types.LogicOP
-  filterFieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
+  fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
   value?: Toybox.MetaSchema.Types.ILogicFilter[]
   filterFieldService?: FieldService
   onChange: (value: Toybox.MetaSchema.Types.ILogicFilter[]) => void
@@ -21,7 +21,7 @@ export interface IMultiFilterBuilderProps {
 
 export const MultiFilterBuilder: FC<IMultiFilterBuilderProps> = ({
   segmentlogic = Toybox.MetaSchema.Types.LogicOP.AND,
-  filterFieldMetas,
+  fieldMetas,
   value = [],
   filterFieldService,
   onChange,
@@ -61,7 +61,7 @@ export const MultiFilterBuilder: FC<IMultiFilterBuilderProps> = ({
       <div className="tbox-multi-filter-segment">
         <FilterBuilder
           value={logicFilter.compares}
-          filterFieldMetas={filterFieldMetas}
+          fieldMetas={fieldMetas}
           filterFieldService={filterFieldService}
           onChange={(compares) => handleFilterChange(compares, index)}
           addText={addText}

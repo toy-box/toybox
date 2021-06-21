@@ -14,7 +14,7 @@ export declare type FieldStringProps = Omit<
 > &
   Omit<InputProps, 'onChange' | 'onPressEnter' | 'defaultValue'> & {
     onChange?: (value: string) => void
-    onPressEnter?: (value: string) => void
+    onPressEnter?: () => void
   }
 
 const FieldStringFC: ForwardRefRenderFunction<any, FieldStringProps> = (
@@ -49,7 +49,7 @@ const FieldStringFC: ForwardRefRenderFunction<any, FieldStringProps> = (
       ref={inputRef}
       value={value}
       onChange={(e) => onChange && onChange(e.target.value)}
-      onPressEnter={(e) => onPressEnter && onPressEnter(value)}
+      onPressEnter={(e) => onPressEnter && onPressEnter()}
       defaultValue={field.defaultValue}
       placeholder={placeholder}
       disabled={disabled}
