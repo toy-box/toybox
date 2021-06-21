@@ -1,10 +1,13 @@
 import { Input, InputProps } from 'antd'
 import React, {
-  useRef,
-  useImperativeHandle,
   Ref,
   ForwardRefRenderFunction,
+  useRef,
+  useMemo,
+  useImperativeHandle,
 } from 'react'
+import { DatePicker } from '@toy-box/toybox-ui'
+import dayjs from 'dayjs'
 
 import { BaseFieldProps } from '../interface'
 
@@ -13,7 +16,7 @@ export declare type FieldStringProps = Omit<
   'value' | 'onChange' | 'onPressEnter'
 > &
   Omit<InputProps, 'onChange' | 'onPressEnter' | 'defaultValue'> & {
-    onChange?: (value: string) => void
+    onChange?: (value?: string) => void
     onPressEnter?: () => void
   }
 
@@ -43,6 +46,26 @@ const FieldStringFC: ForwardRefRenderFunction<any, FieldStringProps> = (
   if (mode === 'read') {
     const dom = value || '-'
     return <span onClick={onClick}>{dom}</span>
+  }
+  if (field.format === 'date') {
+    return (
+      <DatePicker
+        ref={inputRef}
+        picker="date"
+        value={value ? dayjs(value as string) : undefined}
+        onChange={(date) =>
+          onChange && onChange(date ? date.format('YYYY-MM-DD') : undefined)
+        }
+        defaultValue={
+          field.defaultValue ? dayjs(field.defaultValue as string) : undefined
+        }
+        placeholder={placeholder}
+        disabled={disabled}
+        style={otherProps.style}
+        size={otherProps.size}
+        className={otherProps.className}
+      />
+    )
   }
   return (
     <Input
