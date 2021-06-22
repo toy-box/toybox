@@ -1,1 +1,1 @@
-export * from './index.less'
+import './index.less'

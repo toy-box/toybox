@@ -10,13 +10,13 @@ import { Empty } from 'antd'
 import { useSize, useScroll, useThrottleFn } from 'ahooks'
 import { Notification } from './Notification'
 import { LoadingWrapper } from '../../loading-wrapper'
-import { NotificationMessage } from './interface'
+import { INotificationMessage } from './interface'
 
 export interface InboxContentProps {
-  onPick: (message: NotificationMessage) => void
+  onPick: (message: INotificationMessage) => void
   loading?: boolean
   hasMore: boolean
-  messages?: NotificationMessage[]
+  messages?: INotificationMessage[]
   selectedId?: string | number
   icons?: Record<string, ReactNode>
   loadMore: (offset: number, limit: number) => Promise<any>
