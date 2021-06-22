@@ -11,7 +11,7 @@ import { AddCircleLine } from '@airclass/icons'
 import { useLocale } from '@toy-box/toybox-shared'
 import { CompareOP } from '@toy-box/meta-schema'
 import { CompareOperation } from './CompareOperation'
-import localeMap from '../locale'
+import { localeMap } from '../locale'
 import { IFieldService, IUncheckCompare } from '../interface'
 import { FilterBuilderContext } from '../context'
 

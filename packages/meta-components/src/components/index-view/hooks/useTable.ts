@@ -39,9 +39,7 @@ export interface UseAntdTableFormUtils {
 }
 
 export interface IParamsActions {
-  getParams: (
-    ...args: any
-  ) => Toybox.MetaSchema.Types.ICompareOperation[] | undefined
+  getParams: (...args: any) => any | undefined
   resetParams: () => void
 }
 
@@ -96,21 +94,21 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
   // 获取当前展示的 form 字段值
   const getParams = useCallback(() => {
     if (logicFilter) {
-      const compares = paramsActions?.getParams()
-      const params: Record<string, any> = {}
-      if (compares) {
-        compares.forEach((compare) => {
-          if (compare.source && compare.op === CompareOP.EQ && compare.target) {
-            params[compare.source] = compare.target
-          }
-        })
+      return {
+        logic: LogicOP.AND,
+        compares: paramsActions?.getParams().current,
       }
-      return params
     }
-    return {
-      logic: LogicOP.AND,
-      compares: paramsActions?.getParams(),
+    const compares = paramsActions?.getParams().current
+    const params: Record<string, any> = {}
+    if (compares) {
+      compares.forEach((compare) => {
+        if (compare.source && compare.op === CompareOP.EQ && compare.target) {
+          params[compare.source] = compare.target
+        }
+      })
     }
+    return params
   }, [paramsActions, logicFilter])
 
   // 首次加载，手动提交。为了拿到 form 的 initial values
@@ -130,22 +128,23 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
   const _submit = useCallback(
     (initParams?: any) => {
       setTimeout(() => {
-        // has defaultParams
+        const activeParams = getParams()
         if (initParams) {
-          run(initParams[0], getParams())
+          run(initParams[0], activeParams)
           return
         }
+
         run(
           {
             pageSize: options.defaultPageSize || 10,
             ...((params[0] as PaginatedParams[0] | undefined) || {}), // 防止 manual 情况下，第一次触发 submit，此时没有 params[0]
             current: 1,
           },
-          getParams()
+          activeParams
         )
       })
     },
-    [getParams, run, params]
+    [paramsActions, getParams, run, params]
   )
 
   const reset = useCallback(() => {

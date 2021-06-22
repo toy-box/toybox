@@ -25,10 +25,3 @@ export const isReactElement = (obj: any): boolean =>
 export const isHTMLElement = (target: any): target is EventTarget => {
   return Object.prototype.toString.call(target).indexOf('HTML') > -1
 }
-
-export type Subscriber<S> = (payload: S) => void
-
-export interface Subscription<S> {
-  notify?: (payload: S) => void | boolean
-  filter?: (payload: S) => any
-}

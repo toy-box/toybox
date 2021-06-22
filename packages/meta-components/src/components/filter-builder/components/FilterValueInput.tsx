@@ -13,7 +13,7 @@ import { useLocale } from '@toy-box/toybox-shared'
 import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
 import { DatePicker } from '@toy-box/toybox-ui'
 import { DateUnitRange } from '../../date-unit-range'
-import localeMap from '../locale'
+import { localeMap } from '../locale'
 import {
   FieldSelect,
   FieldTreeSelect,
@@ -78,7 +78,13 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
           MetaValueType.DATE,
           MetaValueType.DATETIME,
           MetaValueType.OBJECT_ID,
+          MetaValueType.BOOLEAN,
         ].includes(fieldMeta.type as MetaValueType)
+      ) {
+        onSubmit && onSubmit()
+      } else if (
+        fieldMeta.type === MetaValueType.STRING &&
+        fieldMeta.format === 'date'
       ) {
         onSubmit && onSubmit()
       }

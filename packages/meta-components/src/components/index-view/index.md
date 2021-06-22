@@ -1,3 +1,5 @@
+## IndexView
+
 #### 基本用法
 
 ```tsx
@@ -585,7 +587,8 @@ export default () => {
     {
       key: 'key-2',
       type: 'string',
-      name: '名称',
+      name: '日期',
+      format: 'date',
     },
   ]
 
@@ -596,9 +599,10 @@ export default () => {
       objectMeta={objectMeta}
       loadData={loadData}
       defaultSelectionType="checkbox"
+      pagination={{ simple: true }}
       logicFilter
     >
-      <FilterPanel fieldMetas={fiterFieldMetas} simpleFilterKeys={['key-1']} />
+      <FilterPanel fieldMetas={fiterFieldMetas} simpleFilterKeys={['key-2']} />
       <TableStatusBar />
     </IndexView>
   )
@@ -759,7 +763,7 @@ const visibleColumns = [
 
 export default () => {
   const loadData = ({ current, pageSize }, filterParams) => {
-    console.log('loadData', filterParams)
+    console.log('loadData', current, pageSize, filterParams)
     const result = {
       list: data,
       total: 20,
@@ -802,7 +806,13 @@ export default () => {
     {
       key: 'key-2',
       type: 'string',
-      name: '名称',
+      name: '日期字符串',
+      format: 'date',
+    },
+    {
+      key: 'key-3',
+      type: 'date',
+      name: '日期',
     },
   ]
 
@@ -814,7 +824,10 @@ export default () => {
       loadData={loadData}
       defaultSelectionType="checkbox"
     >
-      <FilterPanel fieldMetas={fiterFieldMetas} simpleFilterKeys={['key-1']} />
+      <FilterPanel
+        fieldMetas={fiterFieldMetas}
+        simpleFilterKeys={['key-2', 'key-3', 'key-1']}
+      />
       <TableStatusBar />
     </IndexView>
   )

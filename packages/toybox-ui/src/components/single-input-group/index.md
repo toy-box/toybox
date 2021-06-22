@@ -27,7 +27,7 @@ export default () => {
 
 ```tsx
 import React, { useState } from 'react'
-import { SingleInputGroup } from '@toy-box/toybox-lib'
+import { SingleInputGroup } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 
 export default () => {
@@ -46,5 +46,3 @@ export default () => {
   )
 }
 ```
-
-<API></API>

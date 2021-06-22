@@ -14,7 +14,6 @@ export const FilterPanel: FC<IFilterPanelProps> = ({
   ...props
 }) => {
   const indexView = useIndexView()
-
   return (
     <FilterSearch
       value={indexView.params}

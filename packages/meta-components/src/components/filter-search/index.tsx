@@ -3,18 +3,18 @@ import { Space, Tooltip, Popover, Button } from 'antd'
 import { Filter3Line } from '@airclass/icons'
 import update from 'immutability-helper'
 import { useLocale } from '@toy-box/toybox-shared'
-import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
+import { CompareOP } from '@toy-box/meta-schema'
 import { FilterValueInput } from '../filter-builder/components/FilterValueInput'
 import { FilterDesigner } from './components'
 import localeMap from './locale'
 import { IFieldService } from '../filter-builder/interface'
 
-export interface LabelValue {
+export interface ILabelValue {
   value: any
   label: string
 }
 
-export declare type LabelValueType = LabelValue | LabelValue[]
+export declare type LabelValueType = ILabelValue | ILabelValue[]
 
 export declare type FilterType = Toybox.MetaSchema.Types.ICompareOperation[]
 
@@ -36,7 +36,7 @@ export interface IFilterSearchProps {
   onChange?: (filter?: FilterType) => void
   onCancel?: () => void
   logicFilter?: boolean
-  onSubmit?: () => void
+  onSubmit?: (value?: any) => void
 }
 
 export const FilterSearch: FC<IFilterSearchProps> = ({
@@ -54,6 +54,10 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
   const locale = useLocale()
   const localeData = useMemo(() => localeMap[locale], [locale])
 
+  const handleSubmit = useCallback(() => {
+    onSubmit && onSubmit()
+  }, [onSubmit])
+
   const handleChange = useCallback(
     (filter: FilterType) => {
       setFilterEditVisible(false)
@@ -61,9 +65,9 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
         (item) => item.op && item.target != null
       )
       onChange && onChange(validFilter)
-      onSubmit && onSubmit()
+      handleSubmit()
     },
-    [onChange, setFilterEditVisible]
+    [onChange, handleSubmit, setFilterEditVisible]
   )
 
   const filterValue = useCallback(
@@ -88,16 +92,17 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
     val: any,
     fieldMeta: Toybox.MetaSchema.Types.IFieldMeta
   ) => {
-    switch (fieldMeta.type) {
-      case MetaValueType.STRING:
-      case MetaValueType.SINGLE_OPTION:
-      case MetaValueType.OBJECT_ID:
-        handleValueChange(val, fieldMeta, CompareOP.IN)
-        break
-      default:
-        handleValueChange(val, fieldMeta, CompareOP.EQ)
-        break
-    }
+    handleValueChange(val, fieldMeta, CompareOP.EQ)
+    // switch (fieldMeta.type) {
+    //   case MetaValueType.STRING:
+    //   case MetaValueType.SINGLE_OPTION:
+    //   case MetaValueType.OBJECT_ID:
+    //     handleValueChange(val, fieldMeta, CompareOP.EQ)
+    //     break
+    //   default:
+    //     handleValueChange(val, fieldMeta, CompareOP.EQ)
+    //     break
+    // }
   }
 
   const handleValueChange = useCallback(
@@ -138,22 +143,13 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
         newValue = update(unSelectValues, { $push: [fieldItem] })
       }
       onChange && onChange(newValue)
-      if (
-        [
-          MetaValueType.STRING,
-          MetaValueType.NUMBER,
-          MetaValueType.INTEGER,
-        ].includes(fieldMeta.type as MetaValueType)
-      ) {
-        onSubmit && onSubmit()
-      }
     },
     [value, onChange]
   )
 
   const cencel = useCallback(() => {
     setFilterEditVisible(false)
-  }, [])
+  }, [setFilterEditVisible])
 
   // 子组件
   const filterContainer = useMemo(() => {
@@ -180,7 +176,6 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
           trigger="click"
           visible={filterEditVisible}
           onVisibleChange={setFilterEditVisible}
-          destroyTooltipOnHide={true}
         >
           <Tooltip placement="top" title={localeData.lang.filter['tip']}>
             <Button icon={<Filter3Line />} />
@@ -196,7 +191,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
               multiple={false}
               fieldMeta={fieldMeta}
               onChange={(value) => onSimpleValueChange(value, fieldMeta)}
-              onSubmit={onSubmit}
+              onSubmit={handleSubmit}
               style={{ width: '160px' }}
             />
           ) : undefined

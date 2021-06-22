@@ -3,8 +3,9 @@ import { Button } from 'antd'
 import LocaleContext from 'antd/lib/locale-provider/context'
 import update from 'immutability-helper'
 import { AddCircleFill } from '@airclass/icons'
+import { useLocale } from '@toy-box/toybox-shared'
 import { FilterBuilder } from './FilterBuilder'
-import localeMap from '../locale'
+import { localeMap } from '../locale'
 import { IFieldService } from '../interface'
 
 import '../styles/multi.less'
@@ -28,11 +29,7 @@ export const MultiFilterBuilder: FC<IMultiFilterBuilderProps> = ({
   addText,
   addSegmentText,
 }) => {
-  const antLocale = useContext(LocaleContext)
-  const locale = useMemo(
-    () => (antLocale && antLocale.locale ? antLocale.locale : 'zh_CN'),
-    [antLocale]
-  )
+  const locale = useLocale()
   const localeData = useMemo(() => localeMap[locale || 'zh_CN'], [locale])
 
   const handleFilterChange = useCallback(

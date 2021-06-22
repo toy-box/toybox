@@ -17,7 +17,7 @@ export const PaginationBar: FC<IPaginationBarProps> = ({
     <ToolBar className={className} style={style}>
       <Space>
         <span className="tbox-pagination-bar__info">
-          {otherProps.total} 条记录
+          共 {otherProps.total} 条记录
         </span>
       </Space>
       <Pagination {...otherProps} />
