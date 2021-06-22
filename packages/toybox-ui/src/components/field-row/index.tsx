@@ -3,19 +3,19 @@ import classNames from 'classnames'
 
 import './styles'
 
-export interface IRowProps {
+export interface IFieldRowProps {
   className?: string
   style?: CSSProperties
   allowWrap?: boolean
 }
 
-export const Row: FC<IRowProps> = ({
+export const FieldRow: FC<IFieldRowProps> = ({
   className,
   allowWrap,
   style,
   children,
 }) => {
-  const prefixCls = 'tbox-row'
+  const prefixCls = 'tbox-field-row'
   return (
     <div
       className={classNames(prefixCls, className, { allowWrap })}
