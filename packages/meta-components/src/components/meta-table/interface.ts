@@ -1,6 +1,7 @@
 import { TableProps, TablePaginationConfig } from 'antd/lib/table'
 import { ButtonProps } from 'antd/lib/button'
 import { JSXElementConstructor, ReactNode } from 'react'
+import { IButtonClusterProps } from '@toy-box/toybox-ui'
 
 export type sorterFun = (prev: any, current: any) => number
 
@@ -75,7 +76,7 @@ export interface IMetaTableProps<T = RowData>
   /**
    * @description 操作字段组件配置
    */
-  operateItems?: OperateItemType[]
+  operate: IButtonClusterProps
   /**
    * @description 操作字段表头
    */

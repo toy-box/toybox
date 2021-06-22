@@ -11,6 +11,7 @@ import update from 'immutability-helper'
 import { ColumnsType, ColumnType } from 'antd/lib/table'
 import { RenderExpandIconProps } from 'rc-table/lib/interface'
 import { ArrowRightSLine } from '@airclass/icons'
+import { ButtonCluster } from '@toy-box/toybox-ui'
 import {
   IColumnProps,
   ColumnMetaType,
@@ -23,7 +24,7 @@ import {
   ResizableTitle,
   ResizeCallbackData,
   operateFactory,
-  OperateDropdown,
+  OperateColumn,
 } from './components'
 import { usePivot, useSortColumns } from './hooks'
 
@@ -45,7 +46,7 @@ export const MetaTable: FC<IMetaTableProps> = ({
   dataSource,
   columnComponents = {},
   pagination,
-  operateItems,
+  operate,
   operateHeader,
   resizableTitle,
   showHeader,
@@ -184,13 +185,13 @@ export const MetaTable: FC<IMetaTableProps> = ({
 
   const columns = useMemo(() => {
     const columns = makeColumns(innerColumnMetas)
-    if (operateItems != null && operateItems.length > 0) {
+    if (operate) {
       columns.push({
         key: 'meta-table-operate',
         title: operateHeader,
         dataIndex: 'meta-table-operate',
         align: 'right',
-        render: operateFactory(operateItems, OperateDropdown),
+        render: operateFactory(operate, OperateColumn),
         width: 100,
       })
     }

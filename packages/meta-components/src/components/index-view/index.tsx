@@ -10,9 +10,9 @@ import React, {
 import classNames from 'classnames'
 import { PaginationProps } from 'antd'
 import { MetaValueType } from '@toy-box/meta-schema'
-import { PaginationBar } from '@toy-box/toybox-ui'
+import { PaginationBar, IButtonClusterProps } from '@toy-box/toybox-ui'
 import { MetaTable } from '../meta-table'
-import { FilterPanel } from './components'
+import { FilterPanel, ColumnsSetValueType, TableStatusBar } from './components'
 import { LoadDataType, IndexModeType } from './types'
 import {
   IColumnVisible,
@@ -20,7 +20,6 @@ import {
   IMetaTableProps,
 } from '../meta-table/interface'
 import { IndexViewContext } from './context'
-import { ColumnsSetValueType, TableStatusBar } from './components'
 export * from './hooks'
 export * from './components'
 
@@ -60,6 +59,7 @@ export interface IIndexViewProps<IParams = any> {
    */
   setQsParams?: (params?: IParams) => void
   defaultSelectionType?: string
+  tableOperate?: IButtonClusterProps
   /**
    * @description 数据获取方法
    */
@@ -93,7 +93,7 @@ export const IndexView: FC<IIndexViewProps & { children: React.ReactNode }> = ({
   const paramsRef = useRef(null)
   const [params, setParams] = useState<any>()
   useEffect(() => {
-    setParams && setParams(params)
+    setQsParams && setQsParams(params)
     paramsRef.current = params
     return () => undefined
   }, [params])
