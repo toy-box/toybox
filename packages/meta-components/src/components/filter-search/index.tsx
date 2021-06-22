@@ -29,7 +29,6 @@ export interface FilterLabel {
 export interface IFilterSearchProps {
   fieldMetas?: Toybox.MetaSchema.Types.IFieldMeta[]
   simpleFilterKeys?: string[]
-  nameQueryKey?: string
   value?: FilterType
   filterFieldService?: IFieldService
   title?: string

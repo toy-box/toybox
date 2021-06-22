@@ -11,7 +11,6 @@ import update from 'immutability-helper'
 import { ColumnsType, ColumnType } from 'antd/lib/table'
 import { RenderExpandIconProps } from 'rc-table/lib/interface'
 import { ArrowRightSLine } from '@airclass/icons'
-import { ButtonCluster } from '@toy-box/toybox-ui'
 import {
   IColumnProps,
   ColumnMetaType,

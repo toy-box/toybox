@@ -3,11 +3,12 @@ import { ButtonCluster, IButtonClusterProps } from '@toy-box/toybox-ui'
 import { isFn } from '@toy-box/toybox-shared'
 import { RowData } from '../interface'
 
+declare type CallbackType = (text: any, record: RowData, index: number) => void
 export interface IOperateColumnProps {
   text: any
   record: RowData
   index: number
-  operate: IButtonClusterProps
+  operate: IButtonClusterProps<CallbackType>
 }
 
 export const operateFactory = (

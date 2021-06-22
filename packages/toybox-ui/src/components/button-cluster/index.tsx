@@ -5,14 +5,15 @@ import { isFn } from '@toy-box/toybox-shared'
 import { Button } from '../button'
 import { DropdownMenu, IMenuItem } from '../dropdown-menu'
 
-export interface IButtonClusterProps {
-  items: IButtonItem[]
+export interface IButtonClusterProps<CallbackType = DefaultCallback> {
+  items: IButtonItem<CallbackType>[]
   max?: number
 }
 
 type isDisabledType = (...args: any) => boolean
 
-export interface IButtonItem {
+type DefaultCallback = (...args: any) => void
+export interface IButtonItem<CallbackType> {
   text: string
   icon?: ReactNode
   color?: string
@@ -21,7 +22,7 @@ export interface IButtonItem {
   size?: ButtonSize
   disabled?: boolean | isDisabledType
   tooltip?: boolean
-  callback: (...args: any) => void
+  callback?: DefaultCallback
 }
 
 export const ButtonCluster: FC<IButtonClusterProps> = ({ items, max = 3 }) => {

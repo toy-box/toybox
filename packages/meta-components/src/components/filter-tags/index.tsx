@@ -1,7 +1,8 @@
-import React, { FC, useMemo, useCallback } from 'react'
+import React, { FC, useMemo, useCallback, CSSProperties } from 'react'
 import dayjs from 'dayjs'
+import classNames from 'classnames'
 import get from 'lodash.get'
-import { useLocale } from '@toy-box/toybox-shared'
+import { useLocale, isArr } from '@toy-box/toybox-shared'
 import { MetaValueType, CompareOP } from '@toy-box/meta-schema'
 import { FilterTag } from '../filter-tag'
 import dateFilterLocales from '../date-unit-range/locales'
@@ -20,12 +21,16 @@ export interface IFilterTagsProps {
   filterFieldTags: IFilterMetaTag[]
   value?: Toybox.MetaSchema.Types.ICompareOperation[]
   remove?: (index: number) => void
+  style?: CSSProperties
+  className?: string
 }
 
 export const FilterTags: FC<IFilterTagsProps> = ({
   filterFieldTags,
   value,
   remove,
+  style,
+  className,
 }) => {
   const locale = useLocale()
 
@@ -87,7 +92,8 @@ export const FilterTags: FC<IFilterTagsProps> = ({
                 title: fieldMeta.name,
                 key: compare.source,
                 op: compare.op,
-                value: [
+                value: compare.target,
+                labelValues: [
                   dayjs((compare.target as string[])[0]).format(
                     formatter(fieldMeta.type, fieldMeta.format)
                   ),
@@ -101,16 +107,22 @@ export const FilterTags: FC<IFilterTagsProps> = ({
                 title: fieldMeta.name,
                 key: compare.source,
                 op: compare.op,
-                value: get(dateFilterLocales[locale].lang, `${compare.target}`),
+                value: compare.target,
+                labelValues: [
+                  get(dateFilterLocales[locale].lang, `${compare.target}`),
+                ],
               })
             } else {
               tags.push({
                 title: fieldMeta.name,
                 key: compare.source,
                 op: compare.op,
-                value: dayjs(compare.target as string).format(
-                  formatter(fieldMeta.type, fieldMeta.format)
-                ),
+                value: compare.target,
+                labelValues: [
+                  dayjs(compare.target as string).format(
+                    formatter(fieldMeta.type, fieldMeta.format)
+                  ),
+                ],
               })
             }
           } else {
@@ -119,12 +131,9 @@ export const FilterTags: FC<IFilterTagsProps> = ({
               key: compare.source,
               op: compare.op,
               value: compare.target,
-              labelValue: [
-                {
-                  label: compare.target,
-                  value: compare.target,
-                },
-              ],
+              labelValues: isArr(compare.target)
+                ? compare.target
+                : [compare.target],
             })
           }
         })
@@ -134,7 +143,7 @@ export const FilterTags: FC<IFilterTagsProps> = ({
   }, [filterFieldTags, value])
 
   return (
-    <div className="filter-tags">
+    <div className={classNames('filter-tags', className)} style={style}>
       {filterTags.map((tag, idx) => (
         <FilterTag
           key={idx}

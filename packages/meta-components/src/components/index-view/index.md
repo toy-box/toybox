@@ -4,7 +4,7 @@
 
 ```tsx
 import React, { useMemo } from 'react'
-import { IndexView } from '@toy-box/meta-components'
+import { IndexView, FilterDisplay } from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
 
 const objectMeta = {
@@ -185,11 +185,13 @@ export default () => {
 
 ```tsx
 import React, { useMemo } from 'react'
+import { message } from 'antd'
 import {
   IndexView,
   FilterPanel,
   TableStatusBar,
   OperatePanel,
+  FilterDisplay,
 } from '@toy-box/meta-components'
 import { ToolBar } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
@@ -360,14 +362,16 @@ export default () => {
     {
       text: '按钮1',
       type: 'primary',
-      callback: () => console.log('按钮1'),
+      callback: () => message.success('按钮1被点了'),
     },
     {
       text: '打印选择行',
       type: 'danger',
       disabled: (interView) => (interView.selectedRowKeys || []).length === 0,
       callback: (interView) =>
-        console.log('selectedRowKeys', interView.selectedRowKeys),
+        message.success(
+          `${(interView.selectedRowKeys || []).length} 条记录被选中了`
+        ),
     },
   ]
 
@@ -384,6 +388,7 @@ export default () => {
         <FilterPanel />
         <OperatePanel items={items} />
       </ToolBar>
+      <FilterDisplay />
       <TableStatusBar />
     </IndexView>
   )
@@ -398,6 +403,7 @@ import {
   IndexView,
   FilterPanel,
   TableStatusBar,
+  FilterDisplay,
 } from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
 
@@ -603,6 +609,7 @@ export default () => {
       logicFilter
     >
       <FilterPanel fieldMetas={fiterFieldMetas} simpleFilterKeys={['key-2']} />
+      <FilterDisplay fieldMetas={fiterFieldMetas} />
       <TableStatusBar />
     </IndexView>
   )
@@ -617,6 +624,7 @@ import {
   IndexView,
   FilterPanel,
   TableStatusBar,
+  FilterDisplay,
 } from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
 
@@ -828,6 +836,7 @@ export default () => {
         fieldMetas={fiterFieldMetas}
         simpleFilterKeys={['key-2', 'key-3', 'key-1']}
       />
+      <FilterDisplay fieldMetas={fiterFieldMetas} />
       <TableStatusBar />
     </IndexView>
   )

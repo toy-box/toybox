@@ -76,7 +76,7 @@ export interface IMetaTableProps<T = RowData>
   /**
    * @description 操作字段组件配置
    */
-  operate: IButtonClusterProps
+  operate?: IButtonClusterProps
   /**
    * @description 操作字段表头
    */
