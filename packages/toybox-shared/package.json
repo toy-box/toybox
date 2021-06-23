@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/toybox-shared",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "license": "MIT",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -23,5 +23,6 @@
     "react": ">=16.8.0 || >=17.0.0",
     "react-dom": ">=16.8.0",
     "react-is": ">=16.8.0 || >=17.0.0"
-  }
+  },
+  "gitHead": "593b3ac88b0190d33998faecaae0848f16571333"
 }

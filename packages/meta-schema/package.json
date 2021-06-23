@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/meta-schema",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "license": "MIT",
   "description": "",
   "main": "lib/index.js",
@@ -16,5 +16,6 @@
   "author": "wishgood@gmail.com",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "593b3ac88b0190d33998faecaae0848f16571333"
 }
