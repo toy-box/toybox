@@ -1,12 +1,28 @@
 import React, { FC } from 'react'
 import { ColumnMetaType, IColumnProps } from '../interface'
 
+export declare type MetaColumnRender = (
+  props: Omit<IColumnProps, 'columnMeta'>
+) => JSX.Element
+export declare type FlatMetaColumnRender = (text, record, index) => JSX.Element
+
+export function metaRender(
+  columnMeta: ColumnMetaType,
+  renders: Record<string, FC<IColumnProps>>,
+  defaultRender: FC<IColumnProps>
+): MetaColumnRender
+export function metaRender(
+  columnMeta: ColumnMetaType,
+  renders: Record<string, FC<IColumnProps>>,
+  defaultRender: FC<IColumnProps>,
+  boolean: true
+): FlatMetaColumnRender
 export function metaRender(
   columnMeta: ColumnMetaType,
   renders: Record<string, FC<IColumnProps>>,
   defaultRender: FC<IColumnProps>,
   flat?: boolean
-) {
+): FlatMetaColumnRender | MetaColumnRender {
   const columnFactory = (
     columnMeta: ColumnMetaType,
     ColumnRender: FC<IColumnProps>
