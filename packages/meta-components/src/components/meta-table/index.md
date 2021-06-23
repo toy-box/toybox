@@ -444,7 +444,7 @@ export default () => {
 }
 ```
 
-### 交叉表
+<!-- ### 交叉表
 
 ```tsx
 import React, { useMemo, useState } from 'react'
@@ -830,7 +830,7 @@ export default () => {
   return (
     <MetaTable
       dataSource={data}
-      pivotOption={{ dimensions }}
+      // pivotOption={{ dimensions }}
       columnMetas={columnMetas}
       pagination={pagination}
       onChange={(pagination) => setPagination}
@@ -838,4 +838,4 @@ export default () => {
     />
   )
 }
-```
+``` -->
