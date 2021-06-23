@@ -7,10 +7,10 @@ export enum LogicOP {
 
 export type LogicOpType = '$and' | '$or' | '$not' | '$nor'
 
-export interface ICompareOperation {
+export interface ICompareOperation<DataType = any> {
   source: string
   op: CompareOP
-  target: number | string | number[] | string[] | Date | Date[]
+  target: DataType
 }
 
 export interface ILogicFilter {
