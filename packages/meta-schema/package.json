@@ -1,6 +1,7 @@
 {
   "name": "@toy-box/meta-schema",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "license": "MIT",
   "description": "",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -13,7 +14,6 @@
     "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es"
   },
   "author": "wishgood@gmail.com",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   }

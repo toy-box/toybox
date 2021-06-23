@@ -1,6 +1,7 @@
 {
   "name": "@toy-box/meta-components",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "license": "MIT",
   "description": "",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -13,7 +14,6 @@
     "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es"
   },
   "author": "wishgood@gmail.com",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
@@ -30,9 +30,9 @@
   "dependencies": {
     "@ahooksjs/antd-table": "^0.2.3",
     "@airclass/icons": "^4.3.4",
-    "@toy-box/meta-schema": "1.0.0",
-    "@toy-box/toybox-shared": "1.0.0",
-    "@toy-box/toybox-ui": "1.0.0",
+    "@toy-box/meta-schema": "1.0.1",
+    "@toy-box/toybox-shared": "1.0.1",
+    "@toy-box/toybox-ui": "1.0.1",
     "ahooks": "^2.10.6",
     "hoist-non-react-statics": "^3.3.1",
     "immutability-helper": "^3.1.1",

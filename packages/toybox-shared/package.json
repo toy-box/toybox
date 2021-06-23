@@ -1,6 +1,7 @@
 {
   "name": "@toy-box/toybox-shared",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "license": "MIT",
   "main": "lib/index.js",
   "module": "es/index.js",
   "types": "lib/index.d.ts",
@@ -12,7 +13,6 @@
     "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es"
   },
   "author": "",
-  "license": "ISC",
   "publishConfig": {
     "access": "public"
   },

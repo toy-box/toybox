@@ -1,18 +1,21 @@
 {
   "packages": ["packages/*"],
+  "npmClient": "npm",
   "command": {
     "bootstrap": {
+      "ignore": "component-*",
       "npmClientArgs": ["--no-package-lock"]
     },
-    "version": {
-      "message": "%s"
-    },
     "publish": {
-      "registry": "https://registry.npmjs.org",
-      "allowBranch": "master",
-      "ignoreChanges": ["*.md"]
+      "ignoreChanges": ["*.md"],
+      "message": "chore(release): publish"
+    },
+    "version": {
+      "forcePublish": true,
+      "exact": true,
+      "message": "chore(versions): 😊 publish %s"
     }
   },
   "useWorkspaces": true,
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
