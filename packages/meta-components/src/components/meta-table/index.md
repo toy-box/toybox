@@ -444,7 +444,7 @@ export default () => {
 }
 ```
 
-<!-- ### 交叉表
+### 交叉表
 
 ```tsx
 import React, { useMemo, useState } from 'react'
@@ -483,7 +483,7 @@ const objectMeta = {
       name: '部门',
       primary: null,
       description: null,
-      type: 'document',
+      type: 'object',
       options: null,
       refObjectId: '5f9630d977b9ec42e4d0dca5',
       unique: null,
@@ -822,15 +822,15 @@ export default () => {
     showSizeChanger: true,
   })
   const columnMetas = useMemo(() => {
-    return Object.keys(objectMeta.properties).map((key) =>
-      Object.assign(objectMeta.properties[key])
+    return Object.keys(objectMeta.properties).map(
+      (key) => objectMeta.properties[key]
     )
   }, [objectMeta])
 
   return (
     <MetaTable
       dataSource={data}
-      // pivotOption={{ dimensions }}
+      pivotOption={{ dimensions }}
       columnMetas={columnMetas}
       pagination={pagination}
       onChange={(pagination) => setPagination}
@@ -838,4 +838,4 @@ export default () => {
     />
   )
 }
-``` -->
+```
