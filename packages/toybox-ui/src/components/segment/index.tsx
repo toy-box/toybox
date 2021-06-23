@@ -18,6 +18,7 @@ export interface ISegmentProps {
   className?: string
   style?: CSSProperties
   collapsible?: boolean
+  empty?: ReactNode
 }
 
 export const Segment: FC<ISegmentProps> = ({
@@ -25,6 +26,7 @@ export const Segment: FC<ISegmentProps> = ({
   className,
   style,
   collapsible,
+  empty,
   children,
 }) => {
   const [collapse, setCollapse] = useState(false)
@@ -65,7 +67,7 @@ export const Segment: FC<ISegmentProps> = ({
             className={classNames(`${prefixCls}-content`, className)}
             style={style}
           >
-            {children}
+            {children || empty}
           </div>
         )}
       </CSSMotion>

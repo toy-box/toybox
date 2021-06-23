@@ -33,7 +33,8 @@ export const MetaVerticalTable: FC<MetaVerticalTableProps<DefaultRecordType>> =
             render: metaRender(
               columnMeta,
               mergeRenders,
-              DefaultColumnRenderMap['string']
+              DefaultColumnRenderMap['string'],
+              true
             ),
           }
         })

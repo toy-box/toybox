@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { Tag, TagProps, Tooltip } from 'antd'
+import classNames from 'classnames'
 import dayjs from 'dayjs'
 import get from 'lodash.get'
 import { isArr } from '@toy-box/toybox-shared'
@@ -11,7 +12,7 @@ import {
 import { useLocale } from '@toy-box/toybox-shared'
 import localeMap from './locale'
 import dateUnitRangeLocaleMap from '../date-unit-range/locales'
-import { LabeledValueType } from '../meta-fields'
+import './styles'
 
 export declare type BasicValueType = string | number | Date
 
@@ -38,7 +39,6 @@ const optionText = (
   fieldMeta: Toybox.MetaSchema.Types.IFieldMeta,
   value: string | string[]
 ) => {
-  console.log('optionText', value)
   if (value == null) {
     return ['']
   }
@@ -198,7 +198,7 @@ export const FilterTag: FC<IFilterTagProps> = ({
   return ellipsis ? (
     <Tooltip title={text} placement="topLeft">
       <Tag
-        className={className}
+        className={classNames('tbox-filter-tag', className)}
         closable={remove != null}
         onClose={handleRemove}
         {...tagProps}
@@ -208,7 +208,7 @@ export const FilterTag: FC<IFilterTagProps> = ({
     </Tooltip>
   ) : (
     <Tag
-      className={className}
+      className={classNames('tbox-filter-tag', className)}
       closable={remove != null}
       onClose={handleRemove}
       {...tagProps}

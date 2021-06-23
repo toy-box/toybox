@@ -1,6 +1,6 @@
 ## MetaVerticalTable 元数据垂直表格
 
-### 基本用法
+#### 基本用法
 
 ```tsx
 import React, { useMemo } from 'react'

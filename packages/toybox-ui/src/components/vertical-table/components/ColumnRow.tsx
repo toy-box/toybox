@@ -16,7 +16,7 @@ function ColumnRow<RecordType extends DefaultRecordType>({
   records,
 }: ColumnRowProps<RecordType>) {
   const tableContext = useContext(TableContext)
-
+  console.log('column', column.render)
   return (
     <tr>
       {tableContext?.showHeader ? (

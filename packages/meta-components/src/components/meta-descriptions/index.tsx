@@ -1,7 +1,6 @@
 import React, { FC, useMemo } from 'react'
 import { Descriptions } from 'antd'
 import { DescriptionsProps } from 'antd/lib/descriptions'
-import { IFieldMeta } from '@toy-box/meta-schema'
 import { FieldItem, FieldMap } from './components/FieldItem'
 import {
   FieldModeType,
@@ -26,22 +25,24 @@ const defaultFieldMap: FieldMap = {
   object: FieldBusinessObject,
 }
 
-export type ItemMeta = IFieldMeta & {
+export type ItemMeta = Toybox.MetaSchema.Types.IFieldMeta & {
   mode?: FieldModeType
 }
 
 export type MetaDescriptonsProps = DescriptionsProps & {
-  fieldItemMetas: ItemMeta[]
+  fieldMetas: ItemMeta[]
   mode: FieldModeType
   data: Record<string, any>
   fieldMap?: FieldMap
+  onFieldChange?: (key: string, value: any) => void
 }
 
 export const MetaDescriptons: FC<MetaDescriptonsProps> = ({
-  fieldItemMetas,
+  fieldMetas,
   fieldMap,
   mode,
   data,
+  onFieldChange,
   ...otherProps
 }) => {
   const mergeFieldMap = useMemo(
@@ -49,17 +50,18 @@ export const MetaDescriptons: FC<MetaDescriptonsProps> = ({
     [fieldMap]
   )
   const fields = useMemo(() => {
-    return fieldItemMetas.map((field, idx) => (
+    return fieldMetas.map((field, idx) => (
       <Descriptions.Item key={idx} label={field.name}>
         <FieldItem
           mode={mode}
           field={field}
           value={data[field.key]}
           fieldMap={mergeFieldMap}
+          onChange={(value) => onFieldChange && onFieldChange(field.key, value)}
         />
       </Descriptions.Item>
     ))
-  }, [data, fieldItemMetas, mode, mergeFieldMap])
+  }, [data, fieldMetas, mode, mergeFieldMap])
 
   return <Descriptions {...otherProps}>{fields}</Descriptions>
 }

@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { FilterTag, IFilterTagProps } from '../filter-tag'
 import { IFieldService } from '../filter-builder'
 
-export interface IFilterTagsProps {
+export interface IFilterTagGroupProps {
   fieldMetas?: Toybox.MetaSchema.Types.IFieldMeta[]
   dataSource?: Toybox.MetaSchema.Types.ICompareOperation[]
   remove?: (index: number) => void
@@ -16,7 +16,7 @@ export interface IFilterTagsProps {
   fieldService?: IFieldService
 }
 
-export const FilterTags: FC<IFilterTagsProps> = ({
+export const FilterTagGroup: FC<IFilterTagGroupProps> = ({
   fieldMetas = [],
   dataSource = [],
   remove,
@@ -26,7 +26,10 @@ export const FilterTags: FC<IFilterTagsProps> = ({
   fieldService,
 }) => {
   return (
-    <div className={classNames('tbox-filter-tags', className)} style={style}>
+    <div
+      className={classNames('tbox-filter-tag-group', className)}
+      style={style}
+    >
       {dataSource.map((compare, idx) => {
         const fieldMeta = fieldMetas.find(
           (fieldMeta) => fieldMeta.key === compare.source

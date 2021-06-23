@@ -63,6 +63,53 @@ const objectMeta = {
   titleKey: 'name',
 }
 
+const fieldMetas = [
+  {
+    key: 'id',
+    name: 'ID',
+    description: 'ID',
+    type: 'string',
+  },
+  {
+    key: 'open',
+    name: '开放状态',
+    type: 'boolean',
+  },
+  {
+    key: 'name',
+    name: '名称',
+    type: 'string',
+  },
+  {
+    key: 'billCycle',
+    name: '账期',
+    type: 'date',
+  },
+  {
+    key: 'amount',
+    name: '金额',
+    type: 'number',
+  },
+  {
+    key: 'user',
+    name: '用户',
+    type: 'businessObject',
+    titleKey: 'name',
+    properties: {
+      id: {
+        key: 'id',
+        name: 'ID',
+        type: 'string',
+      },
+      name: {
+        key: 'name',
+        name: '用户名',
+        type: 'string',
+      },
+    },
+  },
+]
+
 const data = {
   id: '1234',
   name: '销售',
@@ -75,8 +122,7 @@ const data = {
 }
 
 export default () => {
-  const fieldMetas = useBusinessObjectMeta(objectMeta)
-  return <MetaDescriptons fieldItemMetas={fieldMetas} data={data} mode="read" />
+  return <MetaDescriptons fieldMetas={fieldMetas} data={data} mode="read" />
 }
 ```
 
