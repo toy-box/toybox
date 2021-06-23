@@ -1,6 +1,7 @@
 import React, { FC, CSSProperties } from 'react'
 import classNames from 'classnames'
 import { FilterTag, IFilterTagProps } from '../filter-tag'
+import { IFieldService } from '../filter-builder'
 
 export interface IFilterTagsProps {
   fieldMetas?: Toybox.MetaSchema.Types.IFieldMeta[]
@@ -12,6 +13,7 @@ export interface IFilterTagsProps {
     IFilterTagProps,
     'compare' | 'fieldMeta' | 'remote' | 'remove'
   >
+  fieldService?: IFieldService
 }
 
 export const FilterTags: FC<IFilterTagsProps> = ({
@@ -21,6 +23,7 @@ export const FilterTags: FC<IFilterTagsProps> = ({
   style,
   className,
   tagOption,
+  fieldService,
 }) => {
   return (
     <div className={classNames('tbox-filter-tags', className)} style={style}>
@@ -28,15 +31,23 @@ export const FilterTags: FC<IFilterTagsProps> = ({
         const fieldMeta = fieldMetas.find(
           (fieldMeta) => fieldMeta.key === compare.source
         )
-        return fieldMeta ? (
-          <FilterTag
-            key={idx}
-            compare={compare}
-            fieldMeta={fieldMeta}
-            remove={remove ? () => remove(idx) : undefined}
-            {...tagOption}
-          />
-        ) : null
+        if (fieldMeta) {
+          const remote = fieldService
+            ? (value: string[]) =>
+                fieldService.findOfValues(fieldMeta.key, value)
+            : undefined
+          return (
+            <FilterTag
+              key={idx}
+              compare={compare}
+              fieldMeta={fieldMeta}
+              remove={remove ? () => remove(idx) : undefined}
+              remote={remote}
+              {...tagOption}
+            />
+          )
+        }
+        return null
       })}
     </div>
   )

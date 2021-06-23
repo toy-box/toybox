@@ -11,12 +11,15 @@ import {
 import { useLocale } from '@toy-box/toybox-shared'
 import localeMap from './locale'
 import dateUnitRangeLocaleMap from '../date-unit-range/locales'
+import { LabeledValueType } from '../meta-fields'
 
 export declare type BasicValueType = string | number | Date
 
 export declare type RangeValueType = [number | Date, number | Date]
 
-declare type RemoteFetchType = (value: BasicValueType[]) => Promise<string[]>
+declare type RemoteFetchType = (
+  value: BasicValueType[]
+) => Promise<Toybox.MetaSchema.Types.IFieldOption[]>
 
 const formatter = (filedMeta: Toybox.MetaSchema.Types.IFieldMeta) => {
   if (filedMeta.format) {
@@ -51,7 +54,9 @@ const setRemoteText = async (
   value: string | string[],
   callback: (value: string[]) => void
 ) => {
-  const textValues = await remote(isArr(value) ? value : [value])
+  const textValues = (await remote(isArr(value) ? value : [value])).map(
+    (opt) => opt.label
+  )
   callback(textValues)
 }
 
@@ -78,9 +83,6 @@ export const FilterTag: FC<IFilterTagProps> = ({
   const unitRangeLocale = useMemo(
     () => dateUnitRangeLocaleMap[locale],
     [locale]
-  )
-  const [labelValues, setLabelValues] = useState<(string | number | boolean)[]>(
-    []
   )
   const [textValues, setTextValues] = useState<string[]>([])
 

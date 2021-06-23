@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react'
+import React, { FC } from 'react'
 import { useIndexView } from '../hooks'
 import { FilterTags } from '../../filter-tags'
 import { IFilterSearchProps } from '../../filter-search'
@@ -13,12 +13,12 @@ export const FilterDisplay: FC<IFilterDisplayProps> = ({
   filterFieldService,
 }) => {
   const indexView = useIndexView()
-
   return (
     <FilterTags
       style={{ margin: '8px 0' }}
       fieldMetas={fieldMetas || indexView.filterFields}
       dataSource={indexView.params}
+      fieldService={filterFieldService}
     />
   )
 }
