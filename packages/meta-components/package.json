@@ -49,5 +49,5 @@
     "@types/lodash.intersection": "^4.4.6",
     "@types/react-resizable": "^1.7.2"
   },
-  "gitHead": "e016ea3b9563d50109eac119271b9559ee047168"
+  "gitHead": "1636bd7fb366c7faa64649d17e291564e9dc2e99"
 }
