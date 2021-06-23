@@ -16,7 +16,9 @@ export const OperatePanel: FC<IOperatePanel> = ({ items = [] }) => {
         disabled: isFn(item.disabled)
           ? item.disabled.bind(this, indexView)
           : item.disabled,
-        callback: item.callback.bind(this, indexView),
+        callback: item.callback
+          ? item.callback.bind(this, indexView)
+          : item.callback,
       })),
     [indexView]
   )
