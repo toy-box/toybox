@@ -7,12 +7,10 @@
       "npmClientArgs": ["--no-package-lock"]
     },
     "publish": {
-      "ignoreChanges": ["*.md"],
-      "message": "chore(release): publish"
+      "ignoreChanges": ["*.md"]
     },
     "version": {
       "forcePublish": true,
-      "exact": true,
       "message": "chore(versions): 😊 publish %s"
     }
   },
