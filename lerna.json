@@ -8,9 +8,6 @@
     },
     "publish": {
       "ignoreChanges": ["*.md"]
-    },
-    "version": {
-      "forcePublish": true
     }
   },
   "useWorkspaces": true,
