@@ -25,7 +25,7 @@ export interface LabeledValue extends AntLabeledValue {
 export declare type LabeledValueType = LabeledValue | LabeledValue[]
 export declare type DefaultValueType = RawValueType | RawValueType[]
 
-export interface IFieldTreeSelectProps<ValueType = DefaultValueType>
+export interface FieldTreeSelectProps<ValueType = DefaultValueType>
   extends Omit<BaseFieldProps, 'value' | 'onChange' | 'onClick'>,
     Omit<
       TreeSelectProps<ValueType>,
@@ -58,7 +58,7 @@ export const FieldTreeSelect = React.forwardRef(
       multiple,
       defaultValue,
       ...otherProps
-    }: IFieldTreeSelectProps,
+    }: FieldTreeSelectProps,
     ref: Ref<any>
   ) => {
     const inputRef = useRef<any>()
