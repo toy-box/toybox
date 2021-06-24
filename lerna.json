@@ -10,8 +10,7 @@
       "ignoreChanges": ["*.md"]
     },
     "version": {
-      "forcePublish": true,
-      "message": "chore(versions): 😊 publish %s"
+      "forcePublish": true
     }
   },
   "useWorkspaces": true,

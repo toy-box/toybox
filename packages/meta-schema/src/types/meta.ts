@@ -15,7 +15,7 @@ export enum MetaValueType {
   RATE = 'rate',
 }
 
-export interface IMetaObject extends IFieldMeta {
+export interface IObjectMeta extends IFieldMeta {
   idKey?: string
   titleKey: string
 }
@@ -60,4 +60,8 @@ export interface IFieldMeta {
   index?: number
   defaultValue?: any
   parentKey?: string
+}
+
+export interface IMetaResult {
+  businessObjectMeta: IObjectMeta
 }
