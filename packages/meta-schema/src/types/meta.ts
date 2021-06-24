@@ -62,6 +62,16 @@ export interface IFieldMeta {
   parentKey?: string
 }
 
-export interface IMetaResult {
+export interface IMetaListResult {
   businessObjectMeta: IObjectMeta
+  content: Record<string, any>[]
 }
+
+export interface IMetaPageableResult extends IMetaListResult {
+  number: number // 从0开始计数
+  size: number
+  totalElements: number
+  totalPage: number
+}
+
+export type IMetaObjectResult = Record<string, any>

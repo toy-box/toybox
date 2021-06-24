@@ -188,18 +188,11 @@ export const IndexView: FC<IIndexViewProps & { children: React.ReactNode }> = ({
     return columnComponents
   }, [columnComponents, currentMode])
 
-  const service = useCallback(
-    (params, filterParams) => {
-      return loadData(params, filterParams)
-    },
-    [loadData]
-  )
-
   const {
     pagination: innerPagination,
     tableProps,
     searchActions,
-  } = useTable(service, {
+  } = useTable(loadData, {
     logicFilter,
     paramsActions,
   })
