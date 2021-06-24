@@ -6,7 +6,7 @@ export interface IIndexViewContextProps {
   params?: any
   setParams?: (params: any) => void
   filterFields?: Toybox.MetaSchema.Types.IFieldMeta[]
-  objectMeta: Toybox.MetaSchema.Types.IMetaObject
+  objectMeta: Toybox.MetaSchema.Types.IObjectMeta
   currentMode: IndexModeType
   setCurrentMode: (mode: IndexModeType) => void
   viewModes?: IndexModeType[]

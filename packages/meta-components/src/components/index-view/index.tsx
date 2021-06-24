@@ -31,7 +31,7 @@ export interface IIndexViewProps<IParams = any> {
   /**
    * @description 数据元数据
    */
-  objectMeta: Toybox.MetaSchema.Types.IMetaObject
+  objectMeta: Toybox.MetaSchema.Types.IObjectMeta
   visibleColumns: IColumnVisible[]
   visibleColumnSet?: boolean
   style?: CSSProperties
