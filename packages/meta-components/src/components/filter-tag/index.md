@@ -94,7 +94,8 @@ export default () => {
   const remote = (value: (string | number)[]) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(value.map((v) => `Lable:${v}`))
+        console.log('remote resolve')
+        resolve(value.map((v) => ({ label: `label-${v}`, value: v })))
       }, 300)
     })
   }
@@ -153,7 +154,7 @@ export default () => {
       />
       <FilterTag
         key="8"
-        style={{ width: '100px' }}
+        style={{ width: '120px' }}
         compare={compareObject}
         fieldMeta={fieldMetaObject}
         remote={remote}
