@@ -15,6 +15,8 @@ export enum MetaValueType {
   RATE = 'rate',
 }
 
+export declare type DefaultRowData = Record<string, any>
+
 export interface IObjectMeta extends IFieldMeta {
   idKey?: string
   titleKey: string
@@ -62,16 +64,17 @@ export interface IFieldMeta {
   parentKey?: string
 }
 
-export interface IMetaListResult {
+export interface IMetaListResult<RowData = DefaultRowData> {
   businessObjectMeta: IObjectMeta
-  content: Record<string, any>[]
+  content: RowData[]
 }
 
-export interface IMetaPageableResult extends IMetaListResult {
+export interface IMetaPageableResult<RowData = DefaultRowData>
+  extends IMetaListResult<RowData> {
   number: number // 从0开始计数
   size: number
   totalElements: number
   totalPage: number
 }
 
-export type IMetaObjectResult = Record<string, any>
+export type IMetaObjectResult = DefaultRowData
