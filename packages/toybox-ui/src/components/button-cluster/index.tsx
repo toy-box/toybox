@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useMemo } from 'react'
-import { Space } from 'antd'
+import { Space, Button as AntButton } from 'antd'
 import { ButtonType, ButtonSize } from 'antd/lib/button'
 import { isFn } from '@toy-box/toybox-shared'
 import { Button } from '../button'
@@ -8,6 +8,7 @@ import { DropdownMenu, IMenuItem } from '../dropdown-menu'
 export interface IButtonClusterProps<CallbackType = DefaultCallbackType> {
   items: IButtonItem<CallbackType>[]
   max?: number
+  group?: boolean
 }
 
 type isDisabledType = (...args: any) => boolean
@@ -25,7 +26,11 @@ export interface IButtonItem<CallbackType = DefaultCallbackType> {
   callback?: CallbackType
 }
 
-export const ButtonCluster: FC<IButtonClusterProps> = ({ items, max = 3 }) => {
+export const ButtonCluster: FC<IButtonClusterProps> = ({
+  items,
+  max = 3,
+  group,
+}) => {
   const overSize = useMemo(() => items.length > max, [])
 
   const visiableItems = useMemo(
@@ -57,23 +62,32 @@ export const ButtonCluster: FC<IButtonClusterProps> = ({ items, max = 3 }) => {
     [dropDownItems]
   )
 
-  return (
-    <Space>
-      {visiableItems.map((item, idx) => (
-        <Button
-          key={idx}
-          type={item.type}
-          onClick={item.callback}
-          icon={item.icon}
-          size={item.size}
-          disabled={isFn(item.disabled) ? item.disabled() : item.disabled}
-          danger={item.danger}
-          tooltip={item.tooltip}
-        >
-          {item.text}
-        </Button>
-      ))}
-      {dropDownRender}
-    </Space>
+  const content = useMemo(
+    () => (
+      <>
+        {visiableItems.map((item, idx) => (
+          <Button
+            key={idx}
+            type={item.type}
+            onClick={item.callback}
+            icon={item.icon}
+            size={item.size}
+            disabled={isFn(item.disabled) ? item.disabled() : item.disabled}
+            danger={item.danger}
+            tooltip={item.tooltip}
+          >
+            {item.text}
+          </Button>
+        ))}
+        {dropDownRender}
+      </>
+    ),
+    [visiableItems, dropDownRender]
+  )
+
+  return group ? (
+    <AntButton.Group>{content}</AntButton.Group>
+  ) : (
+    <Space>{content}</Space>
   )
 }
