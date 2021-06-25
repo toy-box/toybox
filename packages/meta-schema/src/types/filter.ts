@@ -10,6 +10,7 @@ export type LogicOpType = '$and' | '$or' | '$not' | '$nor'
 export interface ICompareOperation<DataType = any> {
   source: string
   op: CompareOP
+  type?: string
   target: DataType
 }
 

@@ -15,4 +15,9 @@ export interface IFieldService {
   ) => Promise<SimpleTreeNode[]>
 }
 
+export interface IspecialOption {
+  value: string
+  label: string
+}
+
 export type IUncheckCompare = Partial<Toybox.MetaSchema.Types.ICompareOperation>

@@ -46,6 +46,7 @@ export interface FilterValueInputProps {
   mode?: 'read' | 'edit' | 'update'
   fieldMetaService?: IFieldService
   locale?: string
+  type?: string
 }
 
 declare type OptionItem = Toybox.MetaSchema.Types.IFieldOption
@@ -61,6 +62,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
   mode = 'edit',
   fieldMetaService,
   locale = 'zh_CN',
+  type,
 }) => {
   const innerLocale = useLocale()
   const localeData = useMemo(

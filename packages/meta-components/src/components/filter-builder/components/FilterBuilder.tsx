@@ -12,7 +12,7 @@ import { useLocale } from '@toy-box/toybox-shared'
 import { CompareOP } from '@toy-box/meta-schema'
 import { CompareOperation } from './CompareOperation'
 import { localeMap } from '../locale'
-import { IFieldService, IUncheckCompare } from '../interface'
+import { IFieldService, IUncheckCompare, IspecialOption } from '../interface'
 import { FilterBuilderContext } from '../context'
 
 import '../styles/index.less'
@@ -30,6 +30,8 @@ export interface IFilterBuilderProps {
    * @description 简单模式，各种字段类型只有等于比较操作
    */
   logicFilter?: boolean
+  specialMode?: boolean
+  specialOptions?: IspecialOption[]
 }
 
 export const FilterBuilder = ({
@@ -41,6 +43,8 @@ export const FilterBuilder = ({
   className,
   style,
   logicFilter,
+  specialMode,
+  specialOptions,
 }: IFilterBuilderProps) => {
   const locale = useLocale()
   const localeData = useMemo(() => localeMap[locale], [locale])
@@ -53,7 +57,9 @@ export const FilterBuilder = ({
   }
 
   return (
-    <FilterBuilderContext.Provider value={{ value, onChange, logicFilter }}>
+    <FilterBuilderContext.Provider
+      value={{ value, onChange, logicFilter, specialMode, specialOptions }}
+    >
       <div className={classNames(className)} style={style}>
         {value.map((filterItem, idx) => (
           <CompareOperation

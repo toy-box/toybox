@@ -77,7 +77,7 @@ const FieldOpMap: Record<string, Array<Toybox.MetaSchema.Types.CompareOP>> = {
 
 export const CompareOperation: FC<CompareOperationProps> = ({
   index,
-  fieldMetas,
+  fieldMetas = [],
   compare,
   localeData,
   filterFieldService,
@@ -143,11 +143,18 @@ export const CompareOperation: FC<CompareOperationProps> = ({
         fieldMeta && FieldOpMap[fieldMeta.type].some((op) => op === compare.op)
           ? compare.op
           : undefined
-      const newCompare = update(compare, {
+      const type = context?.specialOptions?.some(
+        (op) => op.value === compare.type
+      )
+        ? compare.type
+        : undefined
+      const obj = {
         source: { $set: source },
         op: { $set: op },
         target: { $set: undefined },
-      })
+      }
+      if (context.specialMode) obj['type'] = { $set: type }
+      const newCompare = update(compare, obj)
       context.onChange(update(context.value, { [index]: { $set: newCompare } }))
     },
     [context, compare, filterFieldMeta, index]
@@ -195,6 +202,17 @@ export const CompareOperation: FC<CompareOperationProps> = ({
     [compare, context, index]
   )
 
+  const onTypeChange = useCallback(
+    (value: any) => {
+      const newCompare = update(compare, {
+        type: { $set: value },
+        target: { $set: undefined },
+      })
+      context.onChange(update(context.value, { [index]: { $set: newCompare } }))
+    },
+    [compare, context, index]
+  )
+
   const handleRemove = useCallback(
     () => context.onChange(update(context.value, { $splice: [[index, 1]] })),
     [context, index]
@@ -211,6 +229,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
         onChange={onValueChange}
         operation={compare.op}
         style={inputStyle}
+        type={compare.type}
       />
     ) : (
       <Input
@@ -238,6 +257,15 @@ export const CompareOperation: FC<CompareOperationProps> = ({
           onChange={onOperationChange}
           showArrow={false}
         />
+        {context.specialMode && (
+          <Select
+            style={{ width: '108px' }}
+            value={compare.type}
+            options={filterFieldMeta ? context.specialOptions : []}
+            onChange={onTypeChange}
+            showArrow={false}
+          />
+        )}
         {filterValueInput}
         <Button
           type="text"
