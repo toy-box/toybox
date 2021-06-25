@@ -152,19 +152,17 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
     [paramsActions, getParams, run, params]
   )
 
-  const reset = useCallback(() => {
+  const _reset = useCallback(() => {
     if (paramsActions) {
       paramsActions.resetParams()
     }
     _submit()
   }, [paramsActions, _submit])
 
-  const resetPersistFn = usePersistFn(reset)
-
   // refreshDeps 变化，reset。
   useUpdateEffect(() => {
     if (!manual) {
-      resetPersistFn()
+      _reset()
     }
   }, [...refreshDeps])
 
@@ -173,6 +171,13 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
       e.preventDefault()
     }
     _submit()
+  })
+
+  const reset = usePersistFn((e) => {
+    if (e && e.preventDefault) {
+      e.preventDefault()
+    }
+    _reset()
   })
 
   return {
