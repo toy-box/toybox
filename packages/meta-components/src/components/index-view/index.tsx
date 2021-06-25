@@ -1,11 +1,12 @@
 import React, {
   CSSProperties,
-  FC,
+  ForwardRefRenderFunction,
   useCallback,
   useEffect,
   useMemo,
   useState,
   useRef,
+  useImperativeHandle,
 } from 'react'
 import classNames from 'classnames'
 import { PaginationProps } from 'antd'
@@ -72,24 +73,30 @@ export interface IIndexViewProps<IParams = any> {
   pagination?: Omit<PaginationProps, 'onChange'>
 }
 
-export const IndexView: FC<IIndexViewProps & { children: React.ReactNode }> = ({
-  objectMeta,
-  visibleColumns,
-  visibleColumnSet,
-  mode = 'table',
-  viewModes = [],
-  className,
-  style,
-  columnComponents = {},
-  defaultSelectionType,
-  loadData,
-  filterFieldKeys,
-  logicFilter,
-  pagination,
-  qsParams,
-  setQsParams,
-  children,
-}) => {
+export const IndexView: ForwardRefRenderFunction<
+  any,
+  IIndexViewProps & { children: React.ReactNode }
+> = (
+  {
+    objectMeta,
+    visibleColumns,
+    visibleColumnSet,
+    mode = 'table',
+    viewModes = [],
+    className,
+    style,
+    columnComponents = {},
+    defaultSelectionType,
+    loadData,
+    filterFieldKeys,
+    logicFilter,
+    pagination,
+    qsParams,
+    setQsParams,
+    children,
+  },
+  ref
+) => {
   const paramsRef = useRef(null)
   const [params, setParams] = useState<any>()
   useEffect(() => {
@@ -111,7 +118,33 @@ export const IndexView: FC<IIndexViewProps & { children: React.ReactNode }> = ({
     [paramsRef, setParams]
   )
 
-  // const [query, setQuery] = useQuery()
+  const {
+    pagination: innerPagination,
+    tableProps,
+    searchActions,
+  } = useTable(loadData, {
+    logicFilter,
+    paramsActions,
+  })
+
+  const paginationProps = useMemo(
+    () => ({
+      ...pagination,
+      ...innerPagination,
+    }),
+    [pagination, innerPagination]
+  )
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      reload: searchActions.submit,
+      dataSource: tableProps.dataSource,
+      selectedRowKeys,
+      selectedRows,
+    }),
+    [selectedRowKeys, selectedRows, tableProps]
+  )
 
   // 可配置的字段key
   const metaColumnKeys = useMemo(
@@ -187,23 +220,6 @@ export const IndexView: FC<IIndexViewProps & { children: React.ReactNode }> = ({
   const components = useMemo(() => {
     return columnComponents
   }, [columnComponents, currentMode])
-
-  const {
-    pagination: innerPagination,
-    tableProps,
-    searchActions,
-  } = useTable(loadData, {
-    logicFilter,
-    paramsActions,
-  })
-
-  const paginationProps = useMemo(
-    () => ({
-      ...pagination,
-      ...innerPagination,
-    }),
-    [pagination, innerPagination]
-  )
 
   const filterFields = useMemo(() => {
     const { properties } = objectMeta
@@ -316,3 +332,5 @@ export const IndexView: FC<IIndexViewProps & { children: React.ReactNode }> = ({
     </IndexViewContext.Provider>
   )
 }
+
+IndexView.displayName = 'IndexView'
