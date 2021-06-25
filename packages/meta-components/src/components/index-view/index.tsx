@@ -149,7 +149,7 @@ export const IndexView = React.forwardRef(
         selectedRowKeys,
         selectedRows,
       }),
-      [selectedRowKeys, selectedRows, tableProps]
+      [selectedRowKeys, selectedRows, tableProps, searchActions]
     )
 
     // 可配置的字段key
