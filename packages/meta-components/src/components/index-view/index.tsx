@@ -72,6 +72,14 @@ export interface IIndexViewProps<IParams = any> {
   pagination?: Omit<PaginationProps, 'onChange'>
 }
 
+export interface IndexViewRefProps {
+  reload: () => void
+  reset: () => void
+  dataSource?: RowData[]
+  selectedRowKey?: string[]
+  selectedRows?: RowData[]
+}
+
 export const IndexView = React.forwardRef(
   (
     {
@@ -92,7 +100,7 @@ export const IndexView = React.forwardRef(
       setQsParams,
       children,
     }: IIndexViewProps & { children: React.ReactNode },
-    ref
+    ref: React.MutableRefObject<IndexViewRefProps>
   ) => {
     const paramsRef = useRef(null)
     const [params, setParams] = useState<any>()
@@ -134,12 +142,14 @@ export const IndexView = React.forwardRef(
 
     useImperativeHandle(
       ref,
-      () => ({
-        reload: searchActions.submit,
-        dataSource: tableProps.dataSource,
-        selectedRowKeys,
-        selectedRows,
-      }),
+      () =>
+        ({
+          reload: searchActions.submit,
+          reset: searchActions.reset,
+          dataSource: tableProps.dataSource,
+          selectedRowKeys,
+          selectedRows,
+        } as IndexViewRefProps),
       [selectedRowKeys, selectedRows, tableProps]
     )
 
