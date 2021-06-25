@@ -1,6 +1,5 @@
 import React, {
   CSSProperties,
-  ForwardRefRenderFunction,
   useCallback,
   useEffect,
   useMemo,
@@ -73,228 +72,213 @@ export interface IIndexViewProps<IParams = any> {
   pagination?: Omit<PaginationProps, 'onChange'>
 }
 
-export const IndexView: ForwardRefRenderFunction<
-  any,
-  IIndexViewProps & { children: React.ReactNode }
-> = (
-  {
-    objectMeta,
-    visibleColumns,
-    visibleColumnSet,
-    mode = 'table',
-    viewModes = [],
-    className,
-    style,
-    columnComponents = {},
-    defaultSelectionType,
-    loadData,
-    filterFieldKeys,
-    logicFilter,
-    pagination,
-    qsParams,
-    setQsParams,
-    children,
-  },
-  ref
-) => {
-  const paramsRef = useRef(null)
-  const [params, setParams] = useState<any>()
-  useEffect(() => {
-    setQsParams && setQsParams(params)
-    paramsRef.current = params
-    return () => undefined
-  }, [params])
-  useEffect(() => setParams(qsParams), [qsParams])
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
-  const [selectedRows, setSelectedRows] = useState<RowData[]>([])
-  const [selectionType, setSelectionType] = useState(defaultSelectionType)
-  const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
+export const IndexView = React.forwardRef(
+  (
+    {
+      objectMeta,
+      visibleColumns,
+      visibleColumnSet,
+      mode = 'table',
+      viewModes = [],
+      className,
+      style,
+      columnComponents = {},
+      defaultSelectionType,
+      loadData,
+      filterFieldKeys,
+      logicFilter,
+      pagination,
+      qsParams,
+      setQsParams,
+      children,
+    }: IIndexViewProps & { children: React.ReactNode },
+    ref
+  ) => {
+    const paramsRef = useRef(null)
+    const [params, setParams] = useState<any>()
+    useEffect(() => {
+      setQsParams && setQsParams(params)
+      paramsRef.current = params
+      return () => undefined
+    }, [params])
+    useEffect(() => setParams(qsParams), [qsParams])
+    const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
+    const [selectedRows, setSelectedRows] = useState<RowData[]>([])
+    const [selectionType, setSelectionType] = useState(defaultSelectionType)
+    const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
 
-  const paramsActions = useMemo(
-    () => ({
-      getParams: () => paramsRef,
-      resetParams: () => setParams(undefined),
-    }),
-    [paramsRef, setParams]
-  )
+    const paramsActions = useMemo(
+      () => ({
+        getParams: () => paramsRef,
+        resetParams: () => setParams(undefined),
+      }),
+      [paramsRef, setParams]
+    )
 
-  const {
-    pagination: innerPagination,
-    tableProps,
-    searchActions,
-  } = useTable(loadData, {
-    logicFilter,
-    paramsActions,
-  })
+    const {
+      pagination: innerPagination,
+      tableProps,
+      searchActions,
+    } = useTable(loadData, {
+      logicFilter,
+      paramsActions,
+    })
 
-  const paginationProps = useMemo(
-    () => ({
-      ...pagination,
-      ...innerPagination,
-    }),
-    [pagination, innerPagination]
-  )
+    const paginationProps = useMemo(
+      () => ({
+        ...pagination,
+        ...innerPagination,
+      }),
+      [pagination, innerPagination]
+    )
 
-  useImperativeHandle(
-    ref,
-    () => ({
-      reload: searchActions.submit,
-      dataSource: tableProps.dataSource,
-      selectedRowKeys,
-      selectedRows,
-    }),
-    [selectedRowKeys, selectedRows, tableProps]
-  )
+    useImperativeHandle(
+      ref,
+      () => ({
+        reload: searchActions.submit,
+        dataSource: tableProps.dataSource,
+        selectedRowKeys,
+        selectedRows,
+      }),
+      [selectedRowKeys, selectedRows, tableProps]
+    )
 
-  // 可配置的字段key
-  const metaColumnKeys = useMemo(
-    () => visibleColumns.map((col) => col.key),
-    [visibleColumns]
-  )
+    // 可配置的字段key
+    const metaColumnKeys = useMemo(
+      () => visibleColumns.map((col) => col.key),
+      [visibleColumns]
+    )
 
-  const defaultColumnKeys = useMemo(
-    () => visibleColumns.filter((col) => col.visiable).map((col) => col.key),
-    [visibleColumns]
-  )
+    const defaultColumnKeys = useMemo(
+      () => visibleColumns.filter((col) => col.visiable).map((col) => col.key),
+      [visibleColumns]
+    )
 
-  const defaultColumns = useMemo(() => {
-    const { properties } = objectMeta
-    if (properties) {
-      return Object.keys(properties)
-        .filter((key) => metaColumnKeys.includes(key))
-        .map((key) => ({
-          label: properties[key].name,
-          value: key,
-        }))
-    }
-    return []
-  }, [metaColumnKeys, objectMeta])
-
-  const [columns, setColumns] = useState<ColumnsSetValueType>(defaultColumns)
-  const [visibleKeys, setVisibleKeys] = useState(defaultColumnKeys)
-
-  const rowSelection = useMemo(
-    () =>
-      selectionType != null
-        ? {
-            selectedRowKeys,
-            selectionType,
-            onChange: (keys: string[], rows: RowData[]) => {
-              setSelectedRowKeys(keys), setSelectedRows(rows)
-            },
-          }
-        : undefined,
-    [selectedRowKeys, selectionType, setSelectedRowKeys]
-  )
-
-  const columnMetas = useMemo(() => {
-    if (currentMode === 'list') {
-      return [
-        {
-          key: objectMeta.key,
-          component: LIST_RENDER,
-          name: objectMeta.name,
-          type: MetaValueType.OBJECT,
-        },
-      ]
-    }
-    const { properties } = objectMeta
-    if (properties == null) {
+    const defaultColumns = useMemo(() => {
+      const { properties } = objectMeta
+      if (properties) {
+        return Object.keys(properties)
+          .filter((key) => metaColumnKeys.includes(key))
+          .map((key) => ({
+            label: properties[key].name,
+            value: key,
+          }))
+      }
       return []
-    }
-    return columns
-      .filter((col) => visibleKeys.some((k) => k === col.value))
-      .map((col) => {
-        const fieldMeta = properties[col.value]
-        const column = visibleColumns.find(
-          (c) => c.key === col.value
-        ) as IColumnVisible
-        return {
-          ...column,
-          ...fieldMeta,
-        }
-      })
-      .filter((c) => c != null)
-  }, [currentMode, columns, visibleKeys, objectMeta, visibleColumns])
+    }, [metaColumnKeys, objectMeta])
 
-  const components = useMemo(() => {
-    return columnComponents
-  }, [columnComponents, currentMode])
+    const [columns, setColumns] = useState<ColumnsSetValueType>(defaultColumns)
+    const [visibleKeys, setVisibleKeys] = useState(defaultColumnKeys)
 
-  const filterFields = useMemo(() => {
-    const { properties } = objectMeta
-    if (properties) {
-      return Object.keys(properties)
-        .filter((key) => {
-          return filterFieldKeys
-            ? filterFieldKeys.includes(key)
-            : key != objectMeta.idKey
+    const rowSelection = useMemo(
+      () =>
+        selectionType != null
+          ? {
+              selectedRowKeys,
+              selectionType,
+              onChange: (keys: string[], rows: RowData[]) => {
+                setSelectedRowKeys(keys), setSelectedRows(rows)
+              },
+            }
+          : undefined,
+      [selectedRowKeys, selectionType, setSelectedRowKeys]
+    )
+
+    const columnMetas = useMemo(() => {
+      if (currentMode === 'list') {
+        return [
+          {
+            key: objectMeta.key,
+            component: LIST_RENDER,
+            name: objectMeta.name,
+            type: MetaValueType.OBJECT,
+          },
+        ]
+      }
+      const { properties } = objectMeta
+      if (properties == null) {
+        return []
+      }
+      return columns
+        .filter((col) => visibleKeys.some((k) => k === col.value))
+        .map((col) => {
+          const fieldMeta = properties[col.value]
+          const column = visibleColumns.find(
+            (c) => c.key === col.value
+          ) as IColumnVisible
+          return {
+            ...column,
+            ...fieldMeta,
+          }
         })
-        .map((key) => properties[key])
-    }
-    return []
-  }, [objectMeta, filterFieldKeys])
+        .filter((c) => c != null)
+    }, [currentMode, columns, visibleKeys, objectMeta, visibleColumns])
 
-  const indexViewContext = useMemo(
-    () => ({
-      objectMeta,
-      params,
-      setParams,
-      visibleColumnSet,
-      columns,
-      setColumns,
-      visibleKeys,
-      setVisibleKeys,
-      currentMode,
-      setCurrentMode,
-      viewModes,
-      filterFieldKeys,
-      selectedRowKeys,
-      selectionType,
-      setSelectionType,
-      searchActions,
-      filterFields,
-      logicFilter,
-    }),
-    [
-      objectMeta,
-      params,
-      setParams,
-      columns,
-      setColumns,
-      visibleColumnSet,
-      visibleKeys,
-      setVisibleKeys,
-      currentMode,
-      setCurrentMode,
-      viewModes,
-      filterFieldKeys,
-      selectedRowKeys,
-      selectionType,
-      setSelectionType,
-      searchActions,
-      filterFields,
-      logicFilter,
-    ]
-  )
+    const components = useMemo(() => {
+      return columnComponents
+    }, [columnComponents, currentMode])
 
-  const IndexContent = useCallback(() => {
-    switch (currentMode) {
-      case 'list':
-        return (
-          <MetaTable
-            rowKey={objectMeta.idKey}
-            columnMetas={columnMetas}
-            rowSelection={rowSelection}
-            columnComponents={components}
-            {...tableProps}
-            pagination={false}
-          />
-        )
-      case 'table':
-      default:
-        return (
-          <>
+    const filterFields = useMemo(() => {
+      const { properties } = objectMeta
+      if (properties) {
+        return Object.keys(properties)
+          .filter((key) => {
+            return filterFieldKeys
+              ? filterFieldKeys.includes(key)
+              : key != objectMeta.idKey
+          })
+          .map((key) => properties[key])
+      }
+      return []
+    }, [objectMeta, filterFieldKeys])
+
+    const indexViewContext = useMemo(
+      () => ({
+        objectMeta,
+        params,
+        setParams,
+        visibleColumnSet,
+        columns,
+        setColumns,
+        visibleKeys,
+        setVisibleKeys,
+        currentMode,
+        setCurrentMode,
+        viewModes,
+        filterFieldKeys,
+        selectedRowKeys,
+        selectionType,
+        setSelectionType,
+        searchActions,
+        filterFields,
+        logicFilter,
+      }),
+      [
+        objectMeta,
+        params,
+        setParams,
+        columns,
+        setColumns,
+        visibleColumnSet,
+        visibleKeys,
+        setVisibleKeys,
+        currentMode,
+        setCurrentMode,
+        viewModes,
+        filterFieldKeys,
+        selectedRowKeys,
+        selectionType,
+        setSelectionType,
+        searchActions,
+        filterFields,
+        logicFilter,
+      ]
+    )
+
+    const IndexContent = useCallback(() => {
+      switch (currentMode) {
+        case 'list':
+          return (
             <MetaTable
               rowKey={objectMeta.idKey}
               columnMetas={columnMetas}
@@ -303,34 +287,48 @@ export const IndexView: ForwardRefRenderFunction<
               {...tableProps}
               pagination={false}
             />
-            <PaginationBar {...paginationProps} />
-          </>
-        )
-    }
-  }, [
-    currentMode,
-    objectMeta.idKey,
-    columnMetas,
-    rowSelection,
-    components,
-    tableProps,
-  ])
+          )
+        case 'table':
+        default:
+          return (
+            <>
+              <MetaTable
+                rowKey={objectMeta.idKey}
+                columnMetas={columnMetas}
+                rowSelection={rowSelection}
+                columnComponents={components}
+                {...tableProps}
+                pagination={false}
+              />
+              <PaginationBar {...paginationProps} />
+            </>
+          )
+      }
+    }, [
+      currentMode,
+      objectMeta.idKey,
+      columnMetas,
+      rowSelection,
+      components,
+      tableProps,
+    ])
 
-  return (
-    <IndexViewContext.Provider value={indexViewContext}>
-      <div className={classNames('tbox-index-view', className)} style={style}>
-        {children ? (
-          children
-        ) : (
-          <>
-            <FilterPanel />
-            <TableStatusBar />
-          </>
-        )}
-        <IndexContent />
-      </div>
-    </IndexViewContext.Provider>
-  )
-}
+    return (
+      <IndexViewContext.Provider value={indexViewContext}>
+        <div className={classNames('tbox-index-view', className)} style={style}>
+          {children ? (
+            children
+          ) : (
+            <>
+              <FilterPanel />
+              <TableStatusBar />
+            </>
+          )}
+          <IndexContent />
+        </div>
+      </IndexViewContext.Provider>
+    )
+  }
+)
 
 IndexView.displayName = 'IndexView'
