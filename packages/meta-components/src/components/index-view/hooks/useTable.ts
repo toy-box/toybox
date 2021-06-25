@@ -103,7 +103,12 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
     const params: Record<string, any> = {}
     if (compares) {
       compares.forEach((compare) => {
-        if (compare.source && compare.op === CompareOP.EQ && compare.target) {
+        if (
+          compare.source &&
+          compare.op === CompareOP.EQ &&
+          compare.target &&
+          compare.target !== ''
+        ) {
           params[compare.source] = compare.target
         }
       })
