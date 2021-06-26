@@ -132,6 +132,8 @@ export const IndexView = React.forwardRef(
       paramsActions,
     })
 
+    console.log('searchActions', searchActions)
+
     const paginationProps = useMemo(
       () => ({
         ...pagination,

@@ -6,7 +6,8 @@ import React, {
   useMemo,
   ReactNode,
 } from 'react'
-import { Badge, Button, Dropdown, Menu, Space } from 'antd'
+import { Badge, Dropdown, Menu, Space } from 'antd'
+import { Button } from '../../button'
 import classNames from 'classnames'
 import {
   Filter3Line,
