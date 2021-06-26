@@ -10,7 +10,7 @@ import { Empty } from 'antd'
 import { useSize, useScroll, useThrottleFn } from 'ahooks'
 import { Notification } from './Notification'
 import { LoadingWrapper } from '../../loading-wrapper'
-import { INotificationMessage } from './interface'
+import { INotificationMessage } from '../interface'
 
 export interface InboxContentProps {
   onPick: (message: INotificationMessage) => void

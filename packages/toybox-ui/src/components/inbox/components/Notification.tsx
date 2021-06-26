@@ -4,7 +4,7 @@ import { CloseLine, CheckDoubleLine, InformationLine } from '@airclass/icons'
 import { Badge } from 'antd'
 import { RelativeTime } from '../../relative-time'
 import { Avatar } from '../../avatar'
-import { INotificationMessage } from './interface'
+import { INotificationMessage } from '../interface'
 export interface NotificationProps {
   message: INotificationMessage
   remove: (id: string) => void

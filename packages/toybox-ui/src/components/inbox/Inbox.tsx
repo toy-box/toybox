@@ -7,7 +7,7 @@ import React, {
   ReactNode,
 } from 'react'
 import { Badge, Dropdown, Menu, Space } from 'antd'
-import { Button } from '../../button'
+import { Button } from '../button'
 import classNames from 'classnames'
 import {
   Filter3Line,
@@ -16,12 +16,12 @@ import {
   DeleteBinLine,
   CheckLine,
 } from '@airclass/icons'
-import { InboxContent } from './InboxContent'
-import { DropdownMenu, IMenuItem } from '../../dropdown-menu'
-import { InboxBadge, IInboxBadgeProps } from './InboxBadge'
+import { InboxContent } from './components/InboxContent'
+import { DropdownMenu, IMenuItem } from '../dropdown-menu'
+import { InboxBadge, IInboxBadgeProps } from './components/InboxBadge'
 import { INotificationMessage } from './interface'
 
-import '../styles'
+import './styles'
 
 export interface IMessageType {
   type: string
