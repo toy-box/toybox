@@ -314,25 +314,26 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
           />
         )
       case MetaValueType.OBJECT_ID:
-        if (
-          fieldMeta.parentKey != null &&
-          fieldMeta.parentKey !== '' &&
-          multiple
-        ) {
-          return (
-            <FieldTreeSelect
-              field={fieldMeta}
-              style={style}
-              mode={mode}
-              placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
-              multiple={multiple}
-              value={value}
-              onChange={handleValue}
-              loadData={findDataTrees}
-              loadByValue={searchByValue}
-            />
-          )
-        }
+        // TODO: 需要判断何时用
+        // if (
+        //   fieldMeta.parentKey != null &&
+        //   fieldMeta.parentKey !== '' &&
+        //   multiple
+        // ) {
+        //   return (
+        //     <FieldTreeSelect
+        //       field={fieldMeta}
+        //       style={style}
+        //       mode={mode}
+        //       placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
+        //       multiple={multiple}
+        //       value={value}
+        //       onChange={handleValue}
+        //       loadData={findDataTrees}
+        //       loadByValue={searchByValue}
+        //     />
+        //   )
+        // }
         return (
           <FieldSelect
             placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
