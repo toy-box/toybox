@@ -182,16 +182,20 @@ export const Inbox: FC<IInboxProps> & { InboxBadge: FC<IInboxBadgeProps> } = ({
   const InBoxPanel = () => {
     return (
       <div className="tbox-inbox-panel">
-        <div className="inbox-panel--tabs">
+        <div className="tbox-inbox-panel__tabs">
           <div
-            className={classNames('inbox-panel--tab', { active: !unRead })}
+            className={classNames('tbox-inbox-panel__tabs--tab', {
+              active: !unRead,
+            })}
             onClick={() => setUnread(false)}
           >
             <span>全部</span>
             <Badge count={badge} />
           </div>
           <div
-            className={classNames('inbox-panel--tab', { active: unRead })}
+            className={classNames('tbox-inbox-panel__tabs--tab', {
+              active: unRead,
+            })}
             onClick={() => setUnread(true)}
           >
             <span>未读</span>
