@@ -42,7 +42,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
   fieldMetas = [],
   simpleFilterKeys = [],
   filterFieldService,
-  value,
+  value = [],
   title,
   logicFilter,
   onChange,
@@ -71,6 +71,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
 
   const filterValue = useCallback(
     (filed) => {
+      console.log('value', value)
       const meta = value?.find((val) => val.source === filed.key)
       const metaArr = value?.filter((val) => val.source === filed.key)
       if (metaArr && metaArr.length > 1) return

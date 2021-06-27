@@ -102,14 +102,21 @@ export const IndexView = React.forwardRef(
     }: IIndexViewProps & { children: React.ReactNode },
     ref: React.MutableRefObject<IndexViewRefType>
   ) => {
+    const preParamsRef = useRef(null)
     const paramsRef = useRef(null)
+    const [preParams, setPreParams] = useState<any>()
     const [params, setParams] = useState<any>()
+    useEffect(() => setPreParams(params), [params])
     useEffect(() => {
-      setQsParams && setQsParams(params)
+      preParamsRef.current = preParams
+      return () => undefined
+    }, [preParams])
+    useEffect(() => {
       paramsRef.current = params
       return () => undefined
     }, [params])
-    useEffect(() => setParams(qsParams), [qsParams])
+    // useEffect(() => setParams(qsParams), [qsParams])
+
     const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
     const [selectedRows, setSelectedRows] = useState<RowData[]>([])
     const [selectionType, setSelectionType] = useState(defaultSelectionType)
@@ -118,9 +125,11 @@ export const IndexView = React.forwardRef(
     const paramsActions = useMemo(
       () => ({
         getParams: () => paramsRef,
-        resetParams: () => setParams(undefined),
+        getPreParams: () => preParamsRef,
+        setPreParams,
+        setParams,
       }),
-      [paramsRef, setParams]
+      [preParamsRef, setPreParams]
     )
 
     const {
@@ -131,8 +140,6 @@ export const IndexView = React.forwardRef(
       logicFilter,
       paramsActions,
     })
-
-    console.log('searchActions', searchActions)
 
     const paginationProps = useMemo(
       () => ({
@@ -248,6 +255,8 @@ export const IndexView = React.forwardRef(
         objectMeta,
         params,
         setParams,
+        preParams,
+        setPreParams,
         visibleColumnSet,
         columns,
         setColumns,
@@ -268,6 +277,8 @@ export const IndexView = React.forwardRef(
         objectMeta,
         params,
         setParams,
+        preParams,
+        setPreParams,
         columns,
         setColumns,
         visibleColumnSet,

@@ -771,7 +771,6 @@ const visibleColumns = [
 
 export default () => {
   const loadData = ({ current, pageSize }, filterParams) => {
-    console.log('loadData', current, pageSize, filterParams)
     const result = {
       list: data,
       total: 20,
@@ -822,6 +821,11 @@ export default () => {
       type: 'date',
       name: '日期',
     },
+    {
+      key: 'key-4',
+      type: 'string',
+      name: '名称',
+    },
   ]
 
   return (
@@ -834,7 +838,7 @@ export default () => {
     >
       <FilterPanel
         fieldMetas={fiterFieldMetas}
-        simpleFilterKeys={['key-2', 'key-3', 'key-1']}
+        simpleFilterKeys={['key-2', 'key-4', 'key-1']}
       />
       <FilterDisplay fieldMetas={fiterFieldMetas} />
       <TableStatusBar />
