@@ -1,4 +1,4 @@
-import React, { FC, useCallback, ReactNode } from 'react'
+import React, { FC, ReactNode, useCallback, useMemo } from 'react'
 import { Popover } from 'antd'
 import {
   RenderFunction,
@@ -7,7 +7,7 @@ import {
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { arrayMove } from '@toy-box/toybox-shared'
 import { ISelectItem, ValueType } from './types'
-import { SelectOptionItem } from './components'
+import { SelectOptionItem, FixedItem } from './components'
 import { SortableSelectContext } from './context'
 
 import './styles'
@@ -38,6 +38,15 @@ export const SortableSelect: FC<ISortableSelectProps> = ({
   onSortEnd,
   children,
 }) => {
+  const fixedItems = useMemo(
+    () => dataSource.filter((item) => item.fixed),
+    [dataSource]
+  )
+  const sortItems = useMemo(
+    () => dataSource.filter((item) => !item.fixed),
+    [dataSource]
+  )
+
   const checkValue = useCallback(
     (val: string) => {
       if (multiple) {
@@ -67,15 +76,21 @@ export const SortableSelect: FC<ISortableSelectProps> = ({
     if (result.destination.index === result.source.index) {
       return
     }
-    onSortEnd(
-      arrayMove(dataSource, result.source.index, result.destination.index)
-    )
+    onSortEnd([
+      ...fixedItems,
+      ...arrayMove(sortItems, result.source.index, result.destination.index),
+    ])
   }
 
   const content = () => {
     return (
       <SortableSelectContext.Provider value={{ value, checkValue }}>
         <div className="tbox-sortable-select">
+          <ul className="select-menu fixed">
+            {fixedItems.map((item, index) => (
+              <FixedItem key={index} {...item} />
+            ))}
+          </ul>
           <DragDropContext onDragEnd={handleSortEnd}>
             <Droppable droppableId="list">
               {(provided) => (
@@ -84,7 +99,7 @@ export const SortableSelect: FC<ISortableSelectProps> = ({
                   {...provided.droppableProps}
                   className="select-menu"
                 >
-                  {dataSource.map((item, index) => (
+                  {sortItems.map((item, index) => (
                     <SelectOptionItem
                       index={index}
                       key={`item-${item.value}`}

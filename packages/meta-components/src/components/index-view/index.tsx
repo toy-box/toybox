@@ -102,10 +102,12 @@ export const IndexView = React.forwardRef(
     }: IIndexViewProps & { children: React.ReactNode },
     ref: React.MutableRefObject<IndexViewRefType>
   ) => {
-    const preParamsRef = useRef(null)
-    const paramsRef = useRef(null)
-    const [preParams, setPreParams] = useState<any>()
-    const [params, setParams] = useState<any>()
+    const preParamsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
+    const paramsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
+    const [preParams, setPreParams] =
+      useState<Toybox.MetaSchema.Types.ICompareOperation[]>()
+    const [params, setParams] =
+      useState<Toybox.MetaSchema.Types.ICompareOperation[]>()
     useEffect(() => setPreParams(params), [params])
     useEffect(() => {
       preParamsRef.current = preParams
@@ -177,10 +179,16 @@ export const IndexView = React.forwardRef(
       if (properties) {
         return Object.keys(properties)
           .filter((key) => metaColumnKeys.includes(key))
-          .map((key) => ({
-            label: properties[key].name,
-            value: key,
-          }))
+          .map((key) => {
+            const column = visibleColumns.find(
+              (c) => c.key === key
+            ) as IColumnVisible
+            return {
+              label: properties[key].name,
+              value: key,
+              ...column,
+            }
+          })
       }
       return []
     }, [metaColumnKeys, objectMeta])
@@ -243,7 +251,7 @@ export const IndexView = React.forwardRef(
           .filter((key) => {
             return filterFieldKeys
               ? filterFieldKeys.includes(key)
-              : key != objectMeta.idKey
+              : key != objectMeta.primaryKey
           })
           .map((key) => properties[key])
       }
@@ -302,7 +310,7 @@ export const IndexView = React.forwardRef(
         case 'list':
           return (
             <MetaTable
-              rowKey={objectMeta.idKey}
+              rowKey={objectMeta.primaryKey}
               columnMetas={columnMetas}
               rowSelection={rowSelection}
               columnComponents={components}
@@ -315,7 +323,7 @@ export const IndexView = React.forwardRef(
           return (
             <>
               <MetaTable
-                rowKey={objectMeta.idKey}
+                rowKey={objectMeta.primaryKey}
                 columnMetas={columnMetas}
                 rowSelection={rowSelection}
                 columnComponents={components}
@@ -328,7 +336,7 @@ export const IndexView = React.forwardRef(
       }
     }, [
       currentMode,
-      objectMeta.idKey,
+      objectMeta.primaryKey,
       columnMetas,
       rowSelection,
       components,

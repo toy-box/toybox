@@ -59,7 +59,7 @@ const objectMeta = {
 const data = [
   {
     id: '1234',
-    name: '销售',
+    name: '特殊',
     billCycle: '2020-01-01',
     amount: 2000,
     user: {
@@ -133,6 +133,7 @@ const visibleColumns = [
   {
     key: 'name',
     visiable: true,
+    fixed: true,
   },
   {
     key: 'billCycle',
@@ -322,6 +323,7 @@ const visibleColumns = [
   {
     key: 'name',
     visiable: true,
+    fixed: true,
   },
   {
     key: 'billCycle',
