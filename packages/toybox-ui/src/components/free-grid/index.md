@@ -5,7 +5,7 @@
 ```tsx
 import React, { FC, useCallback, useEffect, useState } from 'react'
 import { Switch } from 'antd'
-import { FreeGrid } from '@toy-box/toybox-lib'
+import { FreeGrid } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 
 const ItemRender: FC<{ x: string; remove: () => void }> = (props) => {
