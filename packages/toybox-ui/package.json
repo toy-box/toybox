@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/toybox-ui",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "license": "MIT",
   "main": "lib/index.js",
   "module": "es/index.js",
