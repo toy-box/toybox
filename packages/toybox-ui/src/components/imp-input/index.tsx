@@ -5,12 +5,12 @@ import { InputProps } from 'antd/lib/input'
 
 import './styles'
 
-export type ImpInputProps = {
+export type IImpInputProps = {
   onSave?: (value: string | number | readonly string[] | undefined) => void
   inputClassName?: string
 } & InputProps
 
-const ImpInput: FC<ImpInputProps> = ({
+export const ImpInput: FC<IImpInputProps> = ({
   value,
   onSave,
   onPressEnter,
@@ -78,5 +78,3 @@ const ImpInput: FC<ImpInputProps> = ({
     </div>
   )
 }
-
-export default ImpInput
