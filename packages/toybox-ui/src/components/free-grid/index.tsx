@@ -4,7 +4,7 @@ import { useDebounceFn, useSize } from 'ahooks'
 import { FreeGridContext } from './context'
 import { FreeGridItem, Background } from './components'
 
-import './style.less'
+import './styles'
 
 export interface ISimpleLayout {
   i?: string

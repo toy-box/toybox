@@ -1,7 +1,7 @@
 import React, { FC, ReactNode, useMemo } from 'react'
 import classNames from 'classnames'
 import { CheckFill } from '@airclass/icons'
-import './style.less'
+import './styles'
 
 export interface ICheckTextProps {
   text: ReactNode
