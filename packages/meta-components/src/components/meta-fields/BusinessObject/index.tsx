@@ -12,7 +12,7 @@ const BusinessObject: ForwardRefRenderFunction<any, FieldBusinessObjectProps> =
   ({ value, field, onClick, component: Component = 'span' }, ref: Ref<any>) => {
     return (
       <Component onClick={onClick}>
-        {value ? value[field.titleKey || field.idKey || 'id'] : null}
+        {value ? value[field.titleKey || field.primaryKey || 'id'] : null}
       </Component>
     )
   }

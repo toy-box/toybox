@@ -8,9 +8,9 @@ const compare = (columnMeta: ColumnMetaType, prev: any, current: any) => {
   if (columnMeta.type === MetaValueType.OBJECT) {
     const prevObj = prev != null ? prev[columnMeta.key] : null
     const currentObj = current != null ? current[columnMeta.key] : null
-    const prevValue = prevObj ? prevObj[columnMeta.idKey || 'id'] : null
+    const prevValue = prevObj ? prevObj[columnMeta.primaryKey || 'id'] : null
     const currentValue = currentObj
-      ? currentObj[columnMeta.idKey || 'id']
+      ? currentObj[columnMeta.primaryKey || 'id']
       : null
     if (prevValue < currentValue) {
       return -1
