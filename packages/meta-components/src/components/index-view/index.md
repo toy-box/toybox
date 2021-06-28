@@ -608,7 +608,6 @@ export default () => {
       loadData={loadData}
       defaultSelectionType="checkbox"
       pagination={{ simple: true }}
-      logicFilter
     >
       <FilterPanel fieldMetas={fiterFieldMetas} simpleFilterKeys={['key-2']} />
       <FilterDisplay fieldMetas={fiterFieldMetas} />
@@ -837,6 +836,7 @@ export default () => {
       objectMeta={objectMeta}
       loadData={loadData}
       defaultSelectionType="checkbox"
+      logicFilter
     >
       <FilterPanel
         fieldMetas={fiterFieldMetas}
