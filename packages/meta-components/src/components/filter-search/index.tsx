@@ -175,6 +175,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
           trigger="click"
           visible={filterEditVisible}
           onVisibleChange={setFilterEditVisible}
+          destroyTooltipOnHide={false}
         >
           <Tooltip placement="top" title={localeData.lang.filter['tip']}>
             <Button icon={<Filter3Line />} />
