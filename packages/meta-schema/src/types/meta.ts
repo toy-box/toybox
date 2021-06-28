@@ -19,6 +19,7 @@ export declare type DefaultRowData = Record<string, any>
 
 export interface IObjectMeta extends IFieldMeta {
   primaryKey: string
+  properties: Record<string, IFieldMeta>
 }
 
 export interface IFieldOption {
