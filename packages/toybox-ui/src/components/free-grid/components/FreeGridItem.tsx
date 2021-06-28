@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useMemo, useCallback, useContext } from 'react'
+import React, { FC, ReactNode, useCallback, useContext } from 'react'
 import classNames from 'classnames'
 import { FreeGridContext } from '../context'
 
