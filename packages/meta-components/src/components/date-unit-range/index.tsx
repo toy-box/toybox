@@ -15,7 +15,7 @@ export interface IDateUnitRangeProps<T> {
   locale?: string
 }
 
-function getText(labelValue: string, localeName = 'zh_CN') {
+export function getText(labelValue: string, localeName = 'zh_CN') {
   const text = locales[localeName].lang[labelValue]
   return text || labelValue
 }
