@@ -170,7 +170,6 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
     <div className="filter-model">
       <Space>
         <Popover
-          overlayClassName="no-padding"
           placement="bottom"
           content={filterContainer}
           trigger="click"
