@@ -192,27 +192,29 @@ export default () => {
       resizableTitle
       dataSource={data}
       columnMetas={columnMetas}
-      operateItems={[
-        {
-          text: 'view',
-          type: 'primary',
-          size: 'small',
-          callback: (record, index) => console.log(recode, index),
-        },
-        {
-          text: 'edit',
-          type: 'dashed',
-          size: 'small',
-          callback: (record, index) => console.log(recode, index),
-        },
-        {
-          text: 'remove',
-          type: 'text',
-          size: 'small',
-          danger: true,
-          callback: (record, index) => console.log(recode, index),
-        },
-      ]}
+      operate={{
+        items: [
+          {
+            text: 'view',
+            type: 'primary',
+            size: 'small',
+            callback: (text, record, index) => console.log(text, record, index),
+          },
+          {
+            text: 'edit',
+            type: 'dashed',
+            size: 'small',
+            callback: (text, record, index) => console.log(text, record, index),
+          },
+          {
+            text: 'remove',
+            type: 'text',
+            size: 'small',
+            danger: true,
+            callback: (text, record, index) => console.log(text, record, index),
+          },
+        ],
+      }}
     />
   )
 }

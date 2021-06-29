@@ -12,7 +12,7 @@ import {
   PaginatedFormatReturn,
   PaginatedResult,
 } from '@ahooksjs/use-request/lib/types'
-import { CompareOP, LogicOP } from '@toy-box/meta-schema'
+import { Pageable } from '..'
 
 export {
   CombineService,
@@ -69,17 +69,20 @@ export interface OptionsWithFormat<R, Item, U>
 function useAntdTable<R = any, Item = any, U extends Item = any>(
   service: CombineService<R, PaginatedParams>,
   options: OptionsWithFormat<R, Item, U>,
-  initParams?: any
+  initParams?: any,
+  initPageable?: Pageable
 ): Result<Item>
 function useAntdTable<R = any, Item = any, U extends Item = any>(
   service: CombineService<PaginatedFormatReturn<Item>, PaginatedParams>,
   options: BaseOptions<U>,
-  initParams?: any
+  initParams?: any,
+  initPageable?: Pageable
 ): Result<Item>
 function useAntdTable<R = any, Item = any, U extends Item = any>(
   service: CombineService<any, any>,
   options: BaseOptions<U> | OptionsWithFormat<R, Item, U>,
-  initParams?: any
+  initParams?: any,
+  initPageable?: Pageable
 ): any {
   const {
     logicFilter,
@@ -93,39 +96,38 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
     ...restOptions,
     paginated: true,
     manual,
-    refreshDeps: [initParams],
+    refreshDeps: [initParams, initPageable],
   })
 
   const { params, run } = result
 
   // 获取当前展示的 form 字段值
-  const fetcParams = useCallback(() => {
-    if (logicFilter) {
-      return {
-        logic: LogicOP.AND,
-        compares: paramsActions?.getPreParams().current,
-      }
-    }
-    const compares = paramsActions?.getPreParams().current
-    const newParams: Record<string, any> = {}
-    if (compares) {
-      compares.forEach((compare) => {
-        if (
-          compare.source &&
-          compare.op === CompareOP.EQ &&
-          compare.target &&
-          compare.target !== ''
-        ) {
-          newParams[compare.source] = compare.target
-        }
-      })
-    }
-    return newParams
-  }, [paramsActions, logicFilter])
+  // const fetcParams = useCallback(() => {
+  //   if (logicFilter) {
+  //     return {
+  //       logic: LogicOP.AND,
+  //       compares: paramsActions?.getPreParams().current,
+  //     }
+  //   }
+  //   const compares = paramsActions?.getPreParams().current
+  //   const newParams: Record<string, any> = {}
+  //   if (compares) {
+  //     compares.forEach((compare) => {
+  //       if (
+  //         compare.source &&
+  //         compare.op === CompareOP.EQ &&
+  //         compare.target &&
+  //         compare.target !== ''
+  //       ) {
+  //         newParams[compare.source] = compare.target
+  //       }
+  //     })
+  //   }
+  //   return newParams
+  // }, [paramsActions, logicFilter])
 
   // 首次加载，手动提交。为了拿到 form 的 initial values
   useEffect(() => {
-    console.log('init load')
     // 如果有缓存，则使用缓存，重新请求
     if (params.length > 0) {
       run(...params)
@@ -138,65 +140,65 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
     // }
   }, [])
 
-  const _submit = useCallback(
-    (initParams?: any) => {
-      setTimeout(() => {
-        const submitParams = fetcParams()
-        const compares = paramsActions?.getPreParams().current || []
-        paramsActions?.setParams(
-          compares.filter(
-            (compare) =>
-              compare.source &&
-              compare.op === CompareOP.EQ &&
-              compare.target &&
-              compare.target !== ''
-          )
-        )
-        if (initParams) {
-          run(initParams[0], submitParams)
-          return
-        }
+  // const _submit = useCallback(
+  //   (initParams?: any) => {
+  //     setTimeout(() => {
+  //       const submitParams = fetcParams()
+  //       const compares = paramsActions?.getPreParams().current || []
+  //       paramsActions?.setParams(
+  //         compares.filter(
+  //           (compare) =>
+  //             compare.source &&
+  //             compare.op === CompareOP.EQ &&
+  //             compare.target &&
+  //             compare.target !== ''
+  //         )
+  //       )
+  //       if (initParams) {
+  //         run(initParams[0], submitParams)
+  //         return
+  //       }
 
-        run(
-          {
-            pageSize: options.defaultPageSize || 10,
-            ...((params[0] as PaginatedParams[0] | undefined) || {}), // 防止 manual 情况下，第一次触发 submit，此时没有 params[0]
-            current: 1,
-          },
-          submitParams
-        )
-      })
-    },
-    [paramsActions, fetcParams, run, params]
-  )
+  //       run(
+  //         {
+  //           pageSize: options.defaultPageSize || 10,
+  //           ...((params[0] as PaginatedParams[0] | undefined) || {}), // 防止 manual 情况下，第一次触发 submit，此时没有 params[0]
+  //           current: 1,
+  //         },
+  //         submitParams
+  //       )
+  //     })
+  //   },
+  //   [paramsActions, fetcParams, run, params]
+  // )
 
-  const _reset = useCallback(() => {
-    if (paramsActions) {
-      paramsActions.setPreParams(undefined)
-    }
-    _submit()
-  }, [paramsActions, _submit])
+  // const _reset = useCallback(() => {
+  //   if (paramsActions) {
+  //     paramsActions.setPreParams(undefined)
+  //   }
+  //   _submit()
+  // }, [paramsActions, _submit])
 
-  const submit = usePersistFn((e) => {
-    if (e && e.preventDefault) {
-      e.preventDefault()
-    }
-    _submit()
-  })
+  // const submit = usePersistFn((e) => {
+  //   if (e && e.preventDefault) {
+  //     e.preventDefault()
+  //   }
+  //   _submit()
+  // })
 
-  const reset = usePersistFn((e) => {
-    if (e && e.preventDefault) {
-      e.preventDefault()
-    }
-    _reset()
-  })
+  // const reset = usePersistFn((e) => {
+  //   if (e && e.preventDefault) {
+  //     e.preventDefault()
+  //   }
+  //   _reset()
+  // })
 
   return {
     ...result,
-    searchActions: {
-      submit,
-      reset,
-    },
+    // searchActions: {
+    //   submit,
+    //   reset,
+    // },
   }
 }
 

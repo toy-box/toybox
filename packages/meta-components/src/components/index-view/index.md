@@ -150,13 +150,13 @@ const visibleColumns = [
 ]
 
 export default () => {
-  const loadData = (params) => {
-    console.log('loaddata', params)
+  const loadData = (pageable, params) => {
+    console.log('loaddata', pageable, params)
     const result = {
       list: data,
       total: 20,
-      current: params.current,
-      pageSize: params.pageSize,
+      current: pageable?.current,
+      pageSize: pageable?.pageSize,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
@@ -378,6 +378,30 @@ export default () => {
     },
   ]
 
+  const tableOperate = {
+    items: [
+      {
+        text: 'view',
+        type: 'primary',
+        size: 'small',
+        callback: (text, record, index) => console.log(text, record, index),
+      },
+      {
+        text: 'edit',
+        type: 'dashed',
+        size: 'small',
+        callback: (text, record, index) => console.log(text, record, index),
+      },
+      {
+        text: 'remove',
+        type: 'text',
+        size: 'small',
+        danger: true,
+        callback: (text, record, index) => console.log(text, record, index),
+      },
+    ],
+  }
+
   return (
     <IndexView
       style={{ minWidth: '600px' }}
@@ -385,6 +409,7 @@ export default () => {
       objectMeta={objectMeta}
       loadData={loadData}
       defaultSelectionType="checkbox"
+      tableOperate={tableOperate}
       logicFilter
     >
       <ToolBar>

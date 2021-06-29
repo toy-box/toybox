@@ -78,6 +78,16 @@ export declare type IndexViewRefType = {
   selectedRows?: RowData[]
 }
 
+export interface Pageable {
+  current: number
+  pageSize: number
+}
+
+const defaultPageable = {
+  current: 1,
+  pageSize: 10,
+}
+
 export const IndexView = React.forwardRef(
   (
     {
@@ -95,6 +105,7 @@ export const IndexView = React.forwardRef(
       logicFilter,
       pagination,
       urlQuery,
+      tableOperate,
       children,
     }: IIndexViewProps & { children: React.ReactNode },
     ref: React.MutableRefObject<IndexViewRefType>
@@ -106,6 +117,8 @@ export const IndexView = React.forwardRef(
       useState<Toybox.MetaSchema.Types.ICompareOperation[]>()
     const [params, setParams] =
       useState<Toybox.MetaSchema.Types.ICompareOperation[]>()
+    const [pageable, setPageable] = useState<Pageable>(defaultPageable)
+
     const setQueryParams = useCallback(() => {
       setTimeout(() => {
         console.log('setQueryParams')
@@ -113,9 +126,30 @@ export const IndexView = React.forwardRef(
       })
     }, [preParamsRef])
 
+    const setQueryPageable = useCallback(
+      (pageable) => setQuery({ params, pageable: pageable }),
+      [preParamsRef, params]
+    )
+
     useEffect(() => {
       if (urlQuery) {
         setParams(query.params as any)
+        if (query.pageable) {
+          const { current, pageSize } = query.pageable as {
+            current?: string
+            pageSize?: string
+          }
+          setPageable({
+            current: current
+              ? Number.parseInt(current)
+              : defaultPageable.current,
+            pageSize: pageSize
+              ? Number.parseInt(pageSize)
+              : defaultPageable.pageSize,
+          })
+        } else {
+          setPageable(defaultPageable)
+        }
       }
     }, [urlQuery, query])
     useEffect(() => setPreParams(params), [params])
@@ -127,7 +161,6 @@ export const IndexView = React.forwardRef(
       paramsRef.current = params
       return () => undefined
     }, [params])
-    // useEffect(() => setParams(qsParams), [qsParams])
 
     const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
     const [selectedRows, setSelectedRows] = useState<RowData[]>([])
@@ -144,13 +177,10 @@ export const IndexView = React.forwardRef(
       [preParamsRef, setPreParams]
     )
 
-    const handleLoad = useCallback(
-      (page, params) => {
-        console.log('handleLoad', page, params)
-        return loadData(page, params)
-      },
-      [loadData]
-    )
+    const handleLoad = useCallback(() => {
+      console.log('handleLoad')
+      return loadData(pageable, params)
+    }, [loadData, pageable, params])
 
     const {
       pagination: innerPagination,
@@ -163,22 +193,31 @@ export const IndexView = React.forwardRef(
         paramsActions,
         urlQuery,
       },
-      params
+      params,
+      pageable
     )
 
     const paginationProps = useMemo(
       () => ({
         ...pagination,
         ...innerPagination,
+        current: pageable.current,
+        pageSize: pageable.pageSize,
+        onChange: (current: number, pageSize: number) => {
+          setQueryPageable({
+            current,
+            pageSize,
+          })
+        },
       }),
-      [pagination, innerPagination]
+      [pagination, innerPagination, pageable, urlQuery]
     )
 
     useImperativeHandle(
       ref,
       () => ({
-        reload: searchActions.submit,
-        reset: searchActions.reset,
+        reload: () => undefined,
+        reset: () => undefined,
         dataSource: tableProps.dataSource,
         selectedRowKeys,
         selectedRows,
@@ -345,6 +384,7 @@ export const IndexView = React.forwardRef(
               columnMetas={columnMetas}
               rowSelection={rowSelection}
               columnComponents={components}
+              operate={tableOperate}
               {...tableProps}
               pagination={false}
             />
@@ -358,6 +398,7 @@ export const IndexView = React.forwardRef(
                 columnMetas={columnMetas}
                 rowSelection={rowSelection}
                 columnComponents={components}
+                operate={tableOperate}
                 {...tableProps}
                 pagination={false}
               />
