@@ -34,7 +34,7 @@ export interface IFilterSearchProps {
   title?: string
   onChange?: (filter?: FilterType) => void
   onCancel?: () => void
-  logicFilter?: boolean
+  simple?: boolean
   onSubmit?: (value?: any) => void
 }
 
@@ -44,7 +44,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
   filterFieldService,
   value = [],
   title,
-  logicFilter,
+  simple,
   onChange,
   onCancel,
   onSubmit,
@@ -161,7 +161,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
         filterFieldService={filterFieldService}
         onChange={handleChange}
         onCancel={cencel}
-        logicFilter={logicFilter}
+        simple={simple}
       />
     )
   }, [fieldMetas, value, filterFieldService])

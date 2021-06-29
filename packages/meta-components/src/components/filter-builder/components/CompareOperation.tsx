@@ -93,11 +93,11 @@ export const CompareOperation: FC<CompareOperationProps> = ({
       label: field.name,
       value: field.key,
       disabled:
-        context.logicFilter &&
+        context.simple &&
         field.key !== compare.source &&
         selected.includes(field.key),
     }))
-  }, [fieldMetas, compare.source, context.logicFilter, selected])
+  }, [fieldMetas, compare.source, context.simple, selected])
 
   const filterFieldMeta = useMemo(
     () => fieldMetas.find((f) => f.key === compare.source),
@@ -105,7 +105,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   )
 
   const filterOperations = useMemo(() => {
-    if (context.logicFilter) {
+    if (context.simple) {
       return compareOperationData([CompareOP.EQ])
     }
     if (filterFieldMeta?.type) {
@@ -114,7 +114,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
       )
     }
     return []
-  }, [filterFieldMeta, context.logicFilter])
+  }, [filterFieldMeta, context.simple])
 
   function compareOperationData(
     compareOperation: Toybox.MetaSchema.Types.CompareOP[]
@@ -138,7 +138,6 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   const onKeyChange = useCallback(
     (source: string) => {
       const fieldMeta = fieldMetas.find((meta) => meta.key === source)
-      console.log('fieldMeta', fieldMeta, source, fieldMetas)
       const op =
         fieldMeta && FieldOpMap[fieldMeta.type].some((op) => op === compare.op)
           ? compare.op

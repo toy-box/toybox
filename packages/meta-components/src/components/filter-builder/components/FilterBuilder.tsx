@@ -29,7 +29,7 @@ export interface IFilterBuilderProps {
   /**
    * @description 简单模式，各种字段类型只有等于比较操作
    */
-  logicFilter?: boolean
+  simple?: boolean
 }
 
 export const FilterBuilder = ({
@@ -40,20 +40,18 @@ export const FilterBuilder = ({
   addText,
   className,
   style,
-  logicFilter,
+  simple,
 }: IFilterBuilderProps) => {
   const locale = useLocale()
   const localeData = useMemo(() => localeMap[locale], [locale])
 
   const addFilter = () => {
     onChange &&
-      onChange(
-        update(value, { $push: logicFilter ? [{ op: CompareOP.EQ }] : [{}] })
-      )
+      onChange(update(value, { $push: simple ? [{ op: CompareOP.EQ }] : [{}] }))
   }
 
   return (
-    <FilterBuilderContext.Provider value={{ value, onChange, logicFilter }}>
+    <FilterBuilderContext.Provider value={{ value, onChange, simple }}>
       <div className={classNames(className)} style={style}>
         {value.map((filterItem, idx) => (
           <CompareOperation
