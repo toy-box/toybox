@@ -16,6 +16,7 @@ export interface ICompareOperation<DataType = any> {
 export interface ILogicFilter {
   logic: LogicOP
   compares: Partial<ICompareOperation>[]
+  subLogic?: ILogicFilter[]
 }
 
 export enum CompareOP {
@@ -81,6 +82,7 @@ export interface IMetaSort {
 }
 
 export interface IMetaFindQuery {
+  extend?: boolean
   fields?: string[]
   filter?: ILogicFilter
   sort?: IMetaSort[]
