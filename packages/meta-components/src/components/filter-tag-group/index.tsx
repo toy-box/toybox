@@ -25,8 +25,6 @@ export const FilterTagGroup: FC<IFilterTagGroupProps> = ({
   tagOption,
   fieldService,
 }) => {
-  console.log('dataSource', dataSource)
-
   return (
     <div
       className={classNames('tbox-filter-tag-group', className)}

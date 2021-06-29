@@ -56,39 +56,44 @@ export interface BaseOptions<U>
   extends Omit<BasePaginatedOptions<U>, 'paginated'> {
   paramsActions?: IParamsActions
   logicFilter?: boolean
+  urlQuery?: boolean
 }
 
 export interface OptionsWithFormat<R, Item, U>
   extends Omit<PaginatedOptionsWithFormat<R, Item, U>, 'paginated'> {
   paramsActions?: IParamsActions
   logicFilter?: boolean
+  urlQuery?: boolean
 }
 
 function useAntdTable<R = any, Item = any, U extends Item = any>(
   service: CombineService<R, PaginatedParams>,
-  options: OptionsWithFormat<R, Item, U>
+  options: OptionsWithFormat<R, Item, U>,
+  initParams?: any
 ): Result<Item>
 function useAntdTable<R = any, Item = any, U extends Item = any>(
   service: CombineService<PaginatedFormatReturn<Item>, PaginatedParams>,
-  options: BaseOptions<U>
+  options: BaseOptions<U>,
+  initParams?: any
 ): Result<Item>
 function useAntdTable<R = any, Item = any, U extends Item = any>(
   service: CombineService<any, any>,
-  options: BaseOptions<U> | OptionsWithFormat<R, Item, U>
+  options: BaseOptions<U> | OptionsWithFormat<R, Item, U>,
+  initParams?: any
 ): any {
   const {
     logicFilter,
     paramsActions,
-    refreshDeps = [],
     manual,
     defaultParams,
+    urlQuery,
     ...restOptions
   } = options
-
   const result = useRequest(service, {
     ...restOptions,
     paginated: true,
     manual,
+    refreshDeps: [initParams],
   })
 
   const { params, run } = result
@@ -111,7 +116,6 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
           compare.target &&
           compare.target !== ''
         ) {
-          console.log('compare', compare)
           newParams[compare.source] = compare.target
         }
       })
@@ -121,6 +125,7 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
 
   // 首次加载，手动提交。为了拿到 form 的 initial values
   useEffect(() => {
+    console.log('init load')
     // 如果有缓存，则使用缓存，重新请求
     if (params.length > 0) {
       run(...params)
@@ -128,9 +133,9 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
     }
 
     // 如果没有缓存，触发 submit
-    if (!manual) {
-      _submit(defaultParams)
-    }
+    // if (!manual) {
+    //   _submit(defaultParams)
+    // }
   }, [])
 
   const _submit = useCallback(
@@ -171,13 +176,6 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
     }
     _submit()
   }, [paramsActions, _submit])
-
-  // refreshDeps 变化，reset。
-  useUpdateEffect(() => {
-    if (!manual) {
-      _reset()
-    }
-  }, [...refreshDeps])
 
   const submit = usePersistFn((e) => {
     if (e && e.preventDefault) {

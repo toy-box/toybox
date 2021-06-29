@@ -3,8 +3,12 @@ import { ISortableSelectProps } from '@toy-box/toybox-ui'
 import { IndexModeType, ISearchActions } from './types'
 
 export interface IIndexViewContextProps {
+  query: any
+  setQuery: (query: any) => void
+  urlQuery?: boolean
   params?: any
   setParams?: (params: any) => void
+  setQueryParams?: (queryParams: any) => void
   preParams?: any
   setPreParams?: (params: any) => void
   filterFields?: Toybox.MetaSchema.Types.IFieldMeta[]

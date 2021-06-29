@@ -94,7 +94,6 @@ export default () => {
   const remote = (value: (string | number)[]) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log('remote resolve')
         resolve(value.map((v) => ({ label: `label-${v}`, value: v })))
       }, 300)
     })

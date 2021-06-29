@@ -11,6 +11,7 @@ import classNames from 'classnames'
 import { PaginationProps } from 'antd'
 import { MetaValueType } from '@toy-box/meta-schema'
 import { PaginationBar, IButtonClusterProps } from '@toy-box/toybox-ui'
+import { useQuery, useTable } from './hooks'
 import { MetaTable } from '../meta-table'
 import { FilterPanel, ColumnsSetValueType, TableStatusBar } from './components'
 import { LoadDataType, IndexModeType } from './types'
@@ -22,8 +23,6 @@ import {
 import { IndexViewContext } from './context'
 export * from './hooks'
 export * from './components'
-
-import { useTable } from './hooks'
 
 const LIST_RENDER = 'listRender'
 
@@ -49,15 +48,14 @@ export interface IIndexViewProps<IParams = any> {
   className?: string
   columnComponents?: IMetaTableProps['columnComponents']
   /**
-   * @description 外部的Params
+   * @description urlQuery
    * @default false
    */
-  qsParams?: IParams
+  urlQuery?: boolean
   /**
    * @description 设置外部Params
    * @default false
    */
-  setQsParams?: (params?: IParams) => void
   defaultSelectionType?: string
   tableOperate?: IButtonClusterProps
   /**
@@ -96,18 +94,30 @@ export const IndexView = React.forwardRef(
       filterFieldKeys,
       logicFilter,
       pagination,
-      qsParams,
-      setQsParams,
+      urlQuery,
       children,
     }: IIndexViewProps & { children: React.ReactNode },
     ref: React.MutableRefObject<IndexViewRefType>
   ) => {
+    const [query, setQuery] = useQuery()
     const preParamsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
     const paramsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
     const [preParams, setPreParams] =
       useState<Toybox.MetaSchema.Types.ICompareOperation[]>()
     const [params, setParams] =
       useState<Toybox.MetaSchema.Types.ICompareOperation[]>()
+    const setQueryParams = useCallback(() => {
+      setTimeout(() => {
+        console.log('setQueryParams')
+        setQuery({ params: preParamsRef.current })
+      })
+    }, [preParamsRef])
+
+    useEffect(() => {
+      if (urlQuery) {
+        setParams(query.params as any)
+      }
+    }, [urlQuery, query])
     useEffect(() => setPreParams(params), [params])
     useEffect(() => {
       preParamsRef.current = preParams
@@ -134,14 +144,27 @@ export const IndexView = React.forwardRef(
       [preParamsRef, setPreParams]
     )
 
+    const handleLoad = useCallback(
+      (page, params) => {
+        console.log('handleLoad', page, params)
+        return loadData(page, params)
+      },
+      [loadData]
+    )
+
     const {
       pagination: innerPagination,
       tableProps,
       searchActions,
-    } = useTable(loadData, {
-      logicFilter,
-      paramsActions,
-    })
+    } = useTable(
+      handleLoad,
+      {
+        logicFilter,
+        paramsActions,
+        urlQuery,
+      },
+      params
+    )
 
     const paginationProps = useMemo(
       () => ({
@@ -261,6 +284,10 @@ export const IndexView = React.forwardRef(
     const indexViewContext = useMemo(
       () => ({
         objectMeta,
+        urlQuery,
+        query,
+        setQuery,
+        setQueryParams,
         params,
         setParams,
         preParams,
@@ -283,6 +310,10 @@ export const IndexView = React.forwardRef(
       }),
       [
         objectMeta,
+        urlQuery,
+        query,
+        setQuery,
+        setQueryParams,
         params,
         setParams,
         preParams,

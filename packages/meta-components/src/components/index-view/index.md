@@ -150,12 +150,13 @@ const visibleColumns = [
 ]
 
 export default () => {
-  const loadData = ({ current, pageSize }) => {
+  const loadData = (params) => {
+    console.log('loaddata', params)
     const result = {
       list: data,
       total: 20,
-      current,
-      pageSize,
+      current: params.current,
+      pageSize: params.pageSize,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
@@ -176,7 +177,7 @@ export default () => {
       visibleColumns={visibleColumns}
       objectMeta={objectMeta}
       loadData={loadData}
-      simple
+      urlQuery
     />
   )
 }
@@ -552,7 +553,6 @@ const visibleColumns = [
 
 export default () => {
   const loadData = ({ current, pageSize }, filterParams) => {
-    console.log('loadData', filterParams)
     const result = {
       list: data,
       total: 20,

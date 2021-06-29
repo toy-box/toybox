@@ -71,7 +71,6 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
 
   const filterValue = useCallback(
     (filed) => {
-      console.log('value', value)
       const meta = value?.find((val) => val.source === filed.key)
       const metaArr = value?.filter((val) => val.source === filed.key)
       if (metaArr && metaArr.length > 1) return
@@ -81,8 +80,9 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
         meta &&
         isShowMeta &&
         (!Array.isArray(meta.target) || meta.target.length === 1)
-      )
+      ) {
         return meta.target
+      }
       return
     },
     [value]
@@ -93,16 +93,6 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
     fieldMeta: Toybox.MetaSchema.Types.IFieldMeta
   ) => {
     handleValueChange(val, fieldMeta, CompareOP.EQ)
-    // switch (fieldMeta.type) {
-    //   case MetaValueType.STRING:
-    //   case MetaValueType.SINGLE_OPTION:
-    //   case MetaValueType.OBJECT_ID:
-    //     handleValueChange(val, fieldMeta, CompareOP.EQ)
-    //     break
-    //   default:
-    //     handleValueChange(val, fieldMeta, CompareOP.EQ)
-    //     break
-    // }
   }
 
   const handleValueChange = useCallback(

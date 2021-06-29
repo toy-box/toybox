@@ -138,7 +138,6 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   const onKeyChange = useCallback(
     (source: string) => {
       const fieldMeta = fieldMetas.find((meta) => meta.key === source)
-      console.log('fieldMeta', fieldMeta, source, fieldMetas)
       const op =
         fieldMeta && FieldOpMap[fieldMeta.type].some((op) => op === compare.op)
           ? compare.op

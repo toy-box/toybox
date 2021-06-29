@@ -25,7 +25,8 @@
     "classnames": "^2.3.1",
     "react": ">=16.8.0 || >=17.0.0",
     "react-dom": ">=16.8.0",
-    "react-is": ">=16.8.0 || >=17.0.0"
+    "react-is": ">=16.8.0 || >=17.0.0",
+    "react-router-dom": "^5.0.0"
   },
   "dependencies": {
     "@ahooksjs/antd-table": "^0.2.3",
@@ -40,13 +41,15 @@
     "lodash.get": "^4.4.2",
     "lodash.intersection": "^4.4.0",
     "qs": "^6.10.1",
-    "react-resizable": "^3.0.4"
+    "react-resizable": "^3.0.4",
+    "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.get": "^4.4.6",
     "@types/lodash.intersection": "^4.4.6",
+    "@types/qs": "^6.9.6",
     "@types/react-resizable": "^1.7.2"
   },
   "gitHead": "bacf76e04011fd26d75b201ff4ea989511a2ea21"
