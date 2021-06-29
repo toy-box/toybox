@@ -46,7 +46,7 @@ export const OperatePanel: FC<IOperatePanel> = ({
         {children}
       </>
     )
-  }, [placement])
+  }, [placement, innerItems])
 
   return <Space>{content}</Space>
 }

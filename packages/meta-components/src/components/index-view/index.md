@@ -377,6 +377,30 @@ export default () => {
     },
   ]
 
+  const tableOperate = {
+    items: [
+      {
+        text: 'view',
+        type: 'primary',
+        size: 'small',
+        callback: (text, record, index) => console.log(text, record, index),
+      },
+      {
+        text: 'edit',
+        type: 'dashed',
+        size: 'small',
+        callback: (text, record, index) => console.log(text, record, index),
+      },
+      {
+        text: 'remove',
+        type: 'text',
+        size: 'small',
+        danger: true,
+        callback: (text, record, index) => console.log(text, record, index),
+      },
+    ],
+  }
+
   return (
     <IndexView
       style={{ minWidth: '600px' }}
@@ -384,6 +408,7 @@ export default () => {
       objectMeta={objectMeta}
       loadData={loadData}
       defaultSelectionType="checkbox"
+      tableOperate={tableOperate}
       logicFilter
     >
       <ToolBar>

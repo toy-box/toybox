@@ -96,6 +96,7 @@ export const IndexView = React.forwardRef(
       filterFieldKeys,
       logicFilter,
       pagination,
+      tableOperate,
       qsParams,
       setQsParams,
       children,
@@ -314,6 +315,7 @@ export const IndexView = React.forwardRef(
               columnMetas={columnMetas}
               rowSelection={rowSelection}
               columnComponents={components}
+              operate={tableOperate}
               {...tableProps}
               pagination={false}
             />
@@ -327,6 +329,7 @@ export const IndexView = React.forwardRef(
                 columnMetas={columnMetas}
                 rowSelection={rowSelection}
                 columnComponents={components}
+                operate={tableOperate}
                 {...tableProps}
                 pagination={false}
               />
