@@ -72,3 +72,16 @@ export interface IDateFilterLocale {
     [key: string]: string
   }
 }
+
+export type SortType = 'asc' | 'desc'
+
+export interface IMetaSort {
+  key: string
+  sortType: SortType
+}
+
+export interface IMetaFindQuery {
+  fields?: string[]
+  filter?: ILogicFilter
+  sort?: IMetaSort[]
+}
