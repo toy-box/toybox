@@ -3,8 +3,8 @@ import React, {
   useRef,
   useImperativeHandle,
 } from 'react'
+import { Select, SelectProps } from '@toy-box/toybox-ui'
 import { BaseFieldProps } from '../interface'
-import { SelectPro, SelectProProps } from './components'
 
 export type SelectValue = React.ReactText | React.ReactText[]
 
@@ -12,8 +12,8 @@ export declare type FieldSelectProps = Omit<
   BaseFieldProps,
   'onChange' | 'value'
 > &
-  Omit<SelectProProps, 'mode' | 'defaultValue'> & {
-    selectMode?: SelectProProps['mode']
+  Omit<SelectProps, 'mode' | 'defaultValue'> & {
+    selectMode?: SelectProps['mode']
   }
 
 const FieldSelectFC: ForwardRefRenderFunction<any, FieldSelectProps> = (
@@ -27,7 +27,7 @@ const FieldSelectFC: ForwardRefRenderFunction<any, FieldSelectProps> = (
 
   return (
     <div onClick={onClick}>
-      <SelectPro
+      <Select
         ref={inputRef}
         mode={selectMode}
         defaultValue={field.defaultValue}
