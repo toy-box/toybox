@@ -1,14 +1,13 @@
 import { useMemo } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import qs from 'qs'
-import { IPageable } from '../types'
 
 export interface QueryData {
   pageable?: {
     current?: string
     pageSize?: string
   }
-  params?: Toybox.MetaSchema.Types.ICompareOperation[]
+  params?: string
 }
 
 export const useQuery = () => {

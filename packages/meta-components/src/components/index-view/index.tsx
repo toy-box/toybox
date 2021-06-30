@@ -9,7 +9,7 @@ import React, {
 } from 'react'
 import classNames from 'classnames'
 import { PaginationProps } from 'antd'
-import { MetaValueType } from '@toy-box/meta-schema'
+import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
 import update from 'immutability-helper'
 import { PaginationBar, IButtonClusterProps } from '@toy-box/toybox-ui'
 import { omit } from '@toy-box/toybox-shared'
@@ -28,6 +28,25 @@ export * from './hooks'
 export * from './components'
 
 const LIST_RENDER = 'listRender'
+
+const simpleParams = (
+  compares?: Toybox.MetaSchema.Types.ICompareOperation[]
+) => {
+  const sParams: Record<string, any> = {}
+  if (compares) {
+    compares.forEach((compare) => {
+      if (
+        compare.source &&
+        compare.op === CompareOP.EQ &&
+        compare.target &&
+        compare.target !== ''
+      ) {
+        sParams[compare.source] = compare.target
+      }
+    })
+  }
+  return sParams
+}
 
 export interface IIndexViewProps<IParams = any> {
   /**
@@ -134,7 +153,7 @@ export const IndexView = React.forwardRef(
               }
             : undefined
         )
-        setParams(query.params)
+        setParams(query.params ? JSON.parse(query.params) : undefined)
       }
     }, [query])
 
@@ -146,17 +165,27 @@ export const IndexView = React.forwardRef(
     const setQuerySearch = useCallback(
       (pageable) => {
         setTimeout(() => {
+          console.log(
+            'JSON.stringify(preParamsRef.current)',
+            JSON.stringify(preParamsRef.current)
+          )
           if (urlQuery) {
             if (pageable) {
               setQuery(
                 update(query, {
-                  params: { $set: preParamsRef.current },
+                  params: { $set: JSON.stringify(preParamsRef.current) },
                   pageable: { $set: pageable },
                 })
               )
             } else {
               setQuery(
-                update(query, { params: { $set: preParamsRef.current } })
+                update(query, {
+                  params: {
+                    $set: preParamsRef.current
+                      ? JSON.stringify(preParamsRef.current)
+                      : undefined,
+                  },
+                })
               )
             }
           } else {
@@ -166,6 +195,13 @@ export const IndexView = React.forwardRef(
         })
       },
       [urlQuery, preParamsRef]
+    )
+
+    const onloadData = useCallback(
+      (pageable, params) => {
+        return loadData(pageable, logicFilter ? params : simpleParams(params))
+      },
+      [logicFilter]
     )
 
     const paramsActions = useMemo(
@@ -183,7 +219,7 @@ export const IndexView = React.forwardRef(
       tableProps,
       searchActions,
     } = useTable(
-      loadData,
+      onloadData,
       {
         logicFilter,
         paramsActions,
@@ -318,7 +354,7 @@ export const IndexView = React.forwardRef(
     const indexViewContext = useMemo(
       () => ({
         objectMeta,
-        setQueryParams: setQuerySearch,
+        setQuerySearch,
         params,
         setParams,
         preParams,

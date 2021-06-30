@@ -47,6 +47,7 @@
     "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.get": "^4.4.6",
     "@types/lodash.intersection": "^4.4.6",
+    "@types/qs": "^6.9.6",
     "@types/react-resizable": "^1.7.2"
   },
   "gitHead": "bacf76e04011fd26d75b201ff4ea989511a2ea21"

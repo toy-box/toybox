@@ -4,7 +4,12 @@
 
 ```tsx
 import React, { useMemo } from 'react'
-import { IndexView, FilterDisplay } from '@toy-box/meta-components'
+import {
+  IndexView,
+  FilterDisplay,
+  FilterPanel,
+  TableStatusBar,
+} from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
 
 const objectMeta = {
@@ -151,9 +156,11 @@ const visibleColumns = [
 
 export default () => {
   const loadData = (pageable, params) => {
-    console.log('load data', pageable, params)
     const result = {
-      list: data,
+      list: data.map((row) => ({
+        ...row,
+        name: `${row.name}-${pageable?.current || '1'}`,
+      })),
       total: 20,
       current: pageable?.current || 1,
       pageSize: pageable?.pageSize || 10,
@@ -178,13 +185,15 @@ export default () => {
       objectMeta={objectMeta}
       loadData={loadData}
       urlQuery
-      simple
-    />
+    >
+      <FilterPanel simpleFilterKeys={['amount']} />
+      <TableStatusBar />
+    </IndexView>
   )
 }
 ```
 
-<!-- #### 开启多选
+#### 开启多选
 
 ```tsx
 import React, { useMemo } from 'react'
@@ -874,4 +883,4 @@ export default () => {
     </IndexView>
   )
 }
-``` -->
+```
