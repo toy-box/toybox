@@ -3,6 +3,7 @@ import { ISortableSelectProps } from '@toy-box/toybox-ui'
 import { IndexModeType, ISearchActions } from './types'
 
 export interface IIndexViewContextProps {
+  setQueryParams?: (params: any) => void
   params?: any
   setParams?: (params: any) => void
   preParams?: any

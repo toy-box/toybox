@@ -150,12 +150,13 @@ const visibleColumns = [
 ]
 
 export default () => {
-  const loadData = ({ current, pageSize }) => {
+  const loadData = (pageable, params) => {
+    console.log('load data', pageable, params)
     const result = {
       list: data,
       total: 20,
-      current,
-      pageSize,
+      current: pageable?.current || 1,
+      pageSize: pageable?.pageSize || 10,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
@@ -176,13 +177,14 @@ export default () => {
       visibleColumns={visibleColumns}
       objectMeta={objectMeta}
       loadData={loadData}
+      urlQuery
       simple
     />
   )
 }
 ```
 
-#### 开启多选
+<!-- #### 开启多选
 
 ```tsx
 import React, { useMemo } from 'react'
@@ -872,4 +874,4 @@ export default () => {
     </IndexView>
   )
 }
-```
+``` -->

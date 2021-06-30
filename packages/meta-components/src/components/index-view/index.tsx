@@ -10,9 +10,12 @@ import React, {
 import classNames from 'classnames'
 import { PaginationProps } from 'antd'
 import { MetaValueType } from '@toy-box/meta-schema'
+import update from 'immutability-helper'
 import { PaginationBar, IButtonClusterProps } from '@toy-box/toybox-ui'
+import { omit } from '@toy-box/toybox-shared'
 import { MetaTable } from '../meta-table'
 import { FilterPanel, ColumnsSetValueType, TableStatusBar } from './components'
+import { useTable, useQuery } from './hooks'
 import { LoadDataType, IndexModeType } from './types'
 import {
   IColumnVisible,
@@ -20,10 +23,9 @@ import {
   IMetaTableProps,
 } from '../meta-table/interface'
 import { IndexViewContext } from './context'
+
 export * from './hooks'
 export * from './components'
-
-import { useTable } from './hooks'
 
 const LIST_RENDER = 'listRender'
 
@@ -49,15 +51,10 @@ export interface IIndexViewProps<IParams = any> {
   className?: string
   columnComponents?: IMetaTableProps['columnComponents']
   /**
-   * @description 外部的Params
+   * @description 是否与url联动
    * @default false
    */
-  qsParams?: IParams
-  /**
-   * @description 设置外部Params
-   * @default false
-   */
-  setQsParams?: (params?: IParams) => void
+  urlQuery?: boolean
   defaultSelectionType?: string
   tableOperate?: IButtonClusterProps
   /**
@@ -97,18 +94,23 @@ export const IndexView = React.forwardRef(
       logicFilter,
       pagination,
       tableOperate,
-      qsParams,
-      setQsParams,
+      urlQuery,
       children,
     }: IIndexViewProps & { children: React.ReactNode },
     ref: React.MutableRefObject<IndexViewRefType>
   ) => {
+    const [query, setQuery] = useQuery()
     const preParamsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
     const paramsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
-    const [preParams, setPreParams] =
-      useState<Toybox.MetaSchema.Types.ICompareOperation[]>()
-    const [params, setParams] =
-      useState<Toybox.MetaSchema.Types.ICompareOperation[]>()
+    const [preParams, setPreParams] = useState<
+      Toybox.MetaSchema.Types.ICompareOperation[] | undefined
+    >()
+    const [params, setParams] = useState<
+      Toybox.MetaSchema.Types.ICompareOperation[] | undefined
+    >()
+    const [pageable, setPageable] =
+      useState<{ current?: number; pageSize?: number }>()
+
     useEffect(() => setPreParams(params), [params])
     useEffect(() => {
       preParamsRef.current = preParams
@@ -118,12 +120,53 @@ export const IndexView = React.forwardRef(
       paramsRef.current = params
       return () => undefined
     }, [params])
-    // useEffect(() => setParams(qsParams), [qsParams])
+    useEffect(() => {
+      if (urlQuery) {
+        setPageable(
+          query.pageable
+            ? {
+                current: query.pageable.current
+                  ? Number.parseInt(query.pageable.current)
+                  : undefined,
+                pageSize: query.pageable.pageSize
+                  ? Number.parseInt(query.pageable.pageSize)
+                  : undefined,
+              }
+            : undefined
+        )
+        setParams(query.params)
+      }
+    }, [query])
 
     const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
     const [selectedRows, setSelectedRows] = useState<RowData[]>([])
     const [selectionType, setSelectionType] = useState(defaultSelectionType)
     const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
+
+    const setQuerySearch = useCallback(
+      (pageable) => {
+        setTimeout(() => {
+          if (urlQuery) {
+            if (pageable) {
+              setQuery(
+                update(query, {
+                  params: { $set: preParamsRef.current },
+                  pageable: { $set: pageable },
+                })
+              )
+            } else {
+              setQuery(
+                update(query, { params: { $set: preParamsRef.current } })
+              )
+            }
+          } else {
+            setParams(preParamsRef.current)
+            pageable && setPageable(pageable)
+          }
+        })
+      },
+      [urlQuery, preParamsRef]
+    )
 
     const paramsActions = useMemo(
       () => ({
@@ -139,17 +182,30 @@ export const IndexView = React.forwardRef(
       pagination: innerPagination,
       tableProps,
       searchActions,
-    } = useTable(loadData, {
-      logicFilter,
-      paramsActions,
-    })
+    } = useTable(
+      loadData,
+      {
+        logicFilter,
+        paramsActions,
+      },
+      pageable,
+      params
+    )
 
     const paginationProps = useMemo(
       () => ({
         ...pagination,
-        ...innerPagination,
+        ...omit(innerPagination, ['onChange', 'current', 'pageSize']),
+        onChange: (current, pageSize) => {
+          setQuerySearch({
+            current,
+            pageSize,
+          })
+        },
+        current: pageable?.current || innerPagination.current,
+        pageSize: pageable?.pageSize || innerPagination.pageSize,
       }),
-      [pagination, innerPagination]
+      [pagination, innerPagination, pageable]
     )
 
     useImperativeHandle(
@@ -262,6 +318,7 @@ export const IndexView = React.forwardRef(
     const indexViewContext = useMemo(
       () => ({
         objectMeta,
+        setQueryParams: setQuerySearch,
         params,
         setParams,
         preParams,
@@ -284,6 +341,7 @@ export const IndexView = React.forwardRef(
       }),
       [
         objectMeta,
+        setQuerySearch,
         params,
         setParams,
         preParams,

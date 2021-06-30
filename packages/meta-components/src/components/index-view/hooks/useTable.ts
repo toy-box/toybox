@@ -66,15 +66,21 @@ export interface OptionsWithFormat<R, Item, U>
 
 function useAntdTable<R = any, Item = any, U extends Item = any>(
   service: CombineService<R, PaginatedParams>,
-  options: OptionsWithFormat<R, Item, U>
+  options: OptionsWithFormat<R, Item, U>,
+  pageable?: any,
+  params?: any
 ): Result<Item>
 function useAntdTable<R = any, Item = any, U extends Item = any>(
   service: CombineService<PaginatedFormatReturn<Item>, PaginatedParams>,
-  options: BaseOptions<U>
+  options: BaseOptions<U>,
+  pageable?: any,
+  params?: any
 ): Result<Item>
 function useAntdTable<R = any, Item = any, U extends Item = any>(
   service: CombineService<any, any>,
-  options: BaseOptions<U> | OptionsWithFormat<R, Item, U>
+  options: BaseOptions<U> | OptionsWithFormat<R, Item, U>,
+  pageable?: any,
+  params?: any
 ): any {
   const {
     logicFilter,
@@ -84,121 +90,124 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
     defaultParams,
     ...restOptions
   } = options
-
   const result = useRequest(service, {
     ...restOptions,
     paginated: true,
-    manual,
+    manual: true,
   })
 
-  const { params, run } = result
+  const { run } = result
 
+  useEffect(() => {
+    console.log('params changed', pageable, params)
+    run(pageable, params)
+  }, [params, pageable])
   // 获取当前展示的 form 字段值
-  const fetcParams = useCallback(() => {
-    if (logicFilter) {
-      return {
-        logic: LogicOP.AND,
-        compares: paramsActions?.getPreParams().current,
-      }
-    }
-    const compares = paramsActions?.getPreParams().current
-    const newParams: Record<string, any> = {}
-    if (compares) {
-      compares.forEach((compare) => {
-        if (
-          compare.source &&
-          compare.op === CompareOP.EQ &&
-          compare.target &&
-          compare.target !== ''
-        ) {
-          console.log('compare', compare)
-          newParams[compare.source] = compare.target
-        }
-      })
-    }
-    return newParams
-  }, [paramsActions, logicFilter])
+  // const fetcParams = useCallback(() => {
+  //   if (logicFilter) {
+  //     return {
+  //       logic: LogicOP.AND,
+  //       compares: paramsActions?.getPreParams().current,
+  //     }
+  //   }
+  //   const compares = paramsActions?.getPreParams().current
+  //   const newParams: Record<string, any> = {}
+  //   if (compares) {
+  //     compares.forEach((compare) => {
+  //       if (
+  //         compare.source &&
+  //         compare.op === CompareOP.EQ &&
+  //         compare.target &&
+  //         compare.target !== ''
+  //       ) {
+  //         console.log('compare', compare)
+  //         newParams[compare.source] = compare.target
+  //       }
+  //     })
+  //   }
+  //   return newParams
+  // }, [paramsActions, logicFilter])
 
   // 首次加载，手动提交。为了拿到 form 的 initial values
-  useEffect(() => {
-    // 如果有缓存，则使用缓存，重新请求
-    if (params.length > 0) {
-      run(...params)
-      return
-    }
+  // useEffect(() => {
+  //   // 如果有缓存，则使用缓存，重新请求
+  //   if (params.length > 0) {
+  //     run(...params)
+  //     return
+  //   }
 
-    // 如果没有缓存，触发 submit
-    if (!manual) {
-      _submit(defaultParams)
-    }
-  }, [])
+  //   // 如果没有缓存，触发 submit
+  //   if (!manual) {
+  //     _submit(defaultParams)
+  //   }
+  // }, [])
 
-  const _submit = useCallback(
-    (initParams?: any) => {
-      setTimeout(() => {
-        const submitParams = fetcParams()
-        const compares = paramsActions?.getPreParams().current || []
-        paramsActions?.setParams(
-          compares.filter(
-            (compare) =>
-              compare.source &&
-              compare.op === CompareOP.EQ &&
-              compare.target &&
-              compare.target !== ''
-          )
-        )
-        if (initParams) {
-          run(initParams[0], submitParams)
-          return
-        }
+  // const _submit = useCallback(
+  //   (initParams?: any) => {
+  //     setTimeout(() => {
+  //       // const submitParams = fetcParams()
+  //       const compares = paramsActions?.getPreParams().current || []
+  //       paramsActions?.setParams(
+  //         compares.filter(
+  //           (compare) =>
+  //             compare.source &&
+  //             compare.op === CompareOP.EQ &&
+  //             compare.target &&
+  //             compare.target !== ''
+  //         )
+  //       )
+  //       if (initParams) {
+  //         run(initParams[0], compares)
+  //         return
+  //       }
 
-        run(
-          {
-            pageSize: options.defaultPageSize || 10,
-            ...((params[0] as PaginatedParams[0] | undefined) || {}), // 防止 manual 情况下，第一次触发 submit，此时没有 params[0]
-            current: 1,
-          },
-          submitParams
-        )
-      })
-    },
-    [paramsActions, fetcParams, run, params]
-  )
+  //       run(
+  //         {
+  //           pageSize: options.defaultPageSize || 10,
+  //           ...((params[0] as PaginatedParams[0] | undefined) || {}), // 防止 manual 情况下，第一次触发 submit，此时没有 params[0]
+  //           current: 1,
+  //         },
+  //         compares
+  //       )
+  //     })
+  //   },
+  //   [paramsActions, run, params]
+  // )
 
-  const _reset = useCallback(() => {
-    if (paramsActions) {
-      paramsActions.setPreParams(undefined)
-    }
-    _submit()
-  }, [paramsActions, _submit])
+  // const _reset = useCallback(() => {
+  //   if (paramsActions) {
+  //     paramsActions.setPreParams(undefined)
+  //   }
+  //   _submit()
+  // }, [paramsActions, _submit])
 
   // refreshDeps 变化，reset。
-  useUpdateEffect(() => {
-    if (!manual) {
-      _reset()
-    }
-  }, [...refreshDeps])
+  // useUpdateEffect(() => {
+  //   if (!manual) {
+  //     _reset()
+  //   }
+  // }, [...refreshDeps])
 
-  const submit = usePersistFn((e) => {
-    if (e && e.preventDefault) {
-      e.preventDefault()
-    }
-    _submit()
-  })
+  // const submit = usePersistFn((e) => {
+  //   if (e && e.preventDefault) {
+  //     e.preventDefault()
+  //   }
+  //   _submit()
+  // })
 
-  const reset = usePersistFn((e) => {
-    if (e && e.preventDefault) {
-      e.preventDefault()
-    }
-    _reset()
-  })
+  // const reset = usePersistFn((e) => {
+  //   if (e && e.preventDefault) {
+  //     e.preventDefault()
+  //   }
+  //   _reset()
+  // })
 
   return {
     ...result,
-    searchActions: {
-      submit,
-      reset,
-    },
+    // searchActions: {
+    //   submit,
+    //   reset,
+    // },
   }
 }
 
