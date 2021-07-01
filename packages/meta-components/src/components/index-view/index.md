@@ -589,7 +589,6 @@ const visibleColumns = [
 
 export default () => {
   const loadData = (pageable, filterParams) => {
-    console.log('loadData', filterParams)
     const result = {
       list: data,
       total: 20,

@@ -99,7 +99,6 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
   const { run } = result
 
   useEffect(() => {
-    console.log('params changed', pageable, params)
     run(pageable, params)
   }, [params, pageable])
   // 获取当前展示的 form 字段值

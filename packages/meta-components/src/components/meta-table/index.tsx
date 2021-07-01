@@ -19,8 +19,9 @@ import {
   OperateColumn,
 } from './components'
 import { usePivot, useSortColumns } from './hooks'
-
 import './styles'
+
+export * from './utils'
 
 export const columnFactory = (
   columnMeta: ColumnMetaType,
@@ -145,12 +146,6 @@ export const MetaTable: FC<IMetaTableProps> = ({
             fixed: columnMeta.fixed,
             sorter: columnMeta.sorter,
             render: (text, record, index) => {
-              console.log(
-                'columnMeta.type',
-                columnMeta.type,
-                DefaultColumnRenderMap[columnMeta.type]
-              )
-
               const MetaRender = metaRender(
                 columnMeta,
                 mergeRenders,

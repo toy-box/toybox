@@ -165,10 +165,6 @@ export const IndexView = React.forwardRef(
     const setQuerySearch = useCallback(
       (pageable) => {
         setTimeout(() => {
-          console.log(
-            'JSON.stringify(preParamsRef.current)',
-            JSON.stringify(preParamsRef.current)
-          )
           if (urlQuery) {
             if (pageable) {
               setQuery(

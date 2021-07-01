@@ -4,7 +4,7 @@
 
 ```tsx
 import React, { useMemo } from 'react'
-import { MetaTable } from '@toy-box/meta-components'
+import { MetaTable, primaryGenerator } from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
 
 const objectMeta = {
@@ -89,12 +89,27 @@ const data = [
 
 export default () => {
   const columnMetas = useMemo(() => {
-    return Object.keys(objectMeta.properties).map((key) =>
-      Object.assign(objectMeta.properties[key])
-    )
+    return Object.keys(objectMeta.properties).map((key) => {
+      if (key === 'id') {
+        return Object.assign(objectMeta.properties[key], {
+          component: 'primary',
+        })
+      }
+      return Object.assign(objectMeta.properties[key])
+    })
   }, [objectMeta])
-
-  return <MetaTable dataSource={data} columnMetas={columnMetas} sort />
+  const PrimaryCol = primaryGenerator({
+    objectMeta: objectMeta,
+    onClick: (text, record, index) => console.log('click', record),
+  })
+  return (
+    <MetaTable
+      columnComponents={{ primary: PrimaryCol }}
+      dataSource={data}
+      columnMetas={columnMetas}
+      sort
+    />
+  )
 }
 ```
 
