@@ -311,12 +311,32 @@ export default () => {
         name: '公司',
         options: [
           {
-            label: '12323232',
-            value: '1',
+            label: '变量',
+            value: 'var',
+            children: [
+              {
+                label: '变量1',
+                value: 'var1',
+              },
+              {
+                label: '变量2',
+                value: 'var2',
+              },
+            ],
           },
           {
-            label: 'bbbbbbb',
-            value: '2',
+            label: '常量',
+            value: 'const',
+            children: [
+              {
+                label: '常量1',
+                value: 'const1',
+              },
+              {
+                label: '常量2',
+                value: 'const2',
+              },
+            ],
           },
         ],
         pattern: null,
@@ -338,22 +358,131 @@ export default () => {
     },
   }
 
+  const filter1 = {
+    filterFieldMetas: [
+      {
+        label: '变量',
+        value: 'var',
+        children: [
+          {
+            description: null,
+            exclusiveMaximum: null,
+            exclusiveMinimum: null,
+            format: null,
+            key: 'deptId',
+            maxLength: null,
+            maximum: null,
+            minLength: null,
+            minimum: null,
+            name: '部门',
+            options: null,
+            parentKey: 'parent_id',
+            pattern: null,
+            primary: null,
+            properties: null,
+            refObjectId: '5f9630d977b9ec42e4d0dca5',
+            required: null,
+            titleKey: 'name',
+            type: 'objectId',
+            unique: null,
+            unBasic: true,
+          },
+          {
+            description: null,
+            exclusiveMaximum: null,
+            exclusiveMinimum: null,
+            format: null,
+            key: 'date',
+            maxLength: null,
+            maximum: null,
+            minLength: null,
+            minimum: null,
+            name: '日期',
+            options: null,
+            pattern: null,
+            primary: null,
+            properties: null,
+            required: null,
+            type: 'date',
+          },
+          {
+            description: null,
+            exclusiveMaximum: null,
+            exclusiveMinimum: null,
+            format: null,
+            key: 'copId',
+            maxLength: null,
+            maximum: null,
+            minLength: null,
+            minimum: null,
+            name: '公司',
+            options: [
+              {
+                label: '变量',
+                value: 'var',
+                children: [
+                  {
+                    label: '变量1',
+                    value: 'var1',
+                  },
+                  {
+                    label: '变量2',
+                    value: 'var2',
+                  },
+                ],
+              },
+              {
+                label: '常量',
+                value: 'const',
+                children: [
+                  {
+                    label: '常量1',
+                    value: 'const1',
+                  },
+                  {
+                    label: '常量2',
+                    value: 'const2',
+                  },
+                ],
+              },
+            ],
+            pattern: null,
+            primary: null,
+            properties: null,
+            refObjectId: '5f9630d977b9ec42e4d0dca5',
+            required: null,
+            titleKey: 'name',
+            type: 'singleOption',
+            unique: null,
+            unBasic: true,
+          },
+        ],
+      },
+    ],
+
+    filterFieldService: {
+      findOptions: (key, name) => findOptions(key, name),
+      findOfValues: (key, value) => findOfValues(key, value),
+      findDataTrees: (key, parentId) => findDataTrees(key, parentId),
+    },
+  }
+
   const [value, setValue] = useState([
     {
       source: 'deptId',
       op: '$eq',
-      type: 'const',
+      type: 'INPUT',
       target: '1',
     },
   ])
   const specialOptions = [
     {
-      label: '全局常量',
-      value: 'const',
+      label: '引用变量',
+      value: 'REFERENCE',
     },
     {
-      label: '字段变量',
-      value: 'var',
+      label: '直接输入',
+      value: 'INPUT',
     },
   ]
   const handleFilter = useCallback(
@@ -363,7 +492,7 @@ export default () => {
   return (
     <div>
       <FilterBuilder
-        fieldMetas={filter.filterFieldMetas}
+        fieldMetas={filter1.filterFieldMetas}
         value={value}
         filterFieldService={filter.filterFieldService}
         onChange={(filterItem: Partial<ICompareOperation>[]) =>

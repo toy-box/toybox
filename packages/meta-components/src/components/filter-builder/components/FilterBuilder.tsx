@@ -19,7 +19,9 @@ import '../styles/index.less'
 import classNames from 'classnames'
 
 export interface IFilterBuilderProps {
-  fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
+  fieldMetas:
+    | Toybox.MetaSchema.Types.IFieldMeta[]
+    | Toybox.MetaSchema.Types.IFieldGroupMeta[]
   value?: IUncheckCompare[]
   filterFieldService?: IFieldService
   onChange: (compares: IUncheckCompare[]) => void

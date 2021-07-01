@@ -21,6 +21,8 @@ import { OptionItem, OptionItemsType, OptionReturnType } from '../interface'
 
 declare type SelectValue = React.ReactText | React.ReactText[]
 
+const { Option, OptGroup } = Select
+
 export interface SelectProProps extends SelectProps<SelectValue> {
   value?: SelectValue
   defaultValue?: SelectValue
@@ -230,6 +232,23 @@ const SelectRF: ForwardRefRenderFunction<any, SelectProProps> = (
     }
     return <span>{Array.isArray(values) ? values.join(', ') : values}</span>
   }
+  const optGroup = useMemo(() => {
+    return mergeOptions.map((option) =>
+      option.children ? (
+        <OptGroup key={option.value} label={option.label}>
+          {option.children.map((child) => (
+            <Option key={child.value} value={child.value}>
+              {child.label}
+            </Option>
+          ))}
+        </OptGroup>
+      ) : (
+        <Option key={option.value} value={option.value}>
+          {option.label}
+        </Option>
+      )
+    )
+  }, [mergeOptions])
 
   return (
     <Select
@@ -241,14 +260,16 @@ const SelectRF: ForwardRefRenderFunction<any, SelectProProps> = (
       loading={loading}
       placeholder={placeholder}
       ref={inputRef}
-      options={mergeOptions}
+      // options={mergeOptions}
       mode={mode}
       dropdownRender={dropdownRender}
       onDropdownVisibleChange={handleOpen}
       showSearch={showSearch}
       filterOption={filterOption}
       {...otherProps}
-    />
+    >
+      {optGroup}
+    </Select>
   )
 }
 

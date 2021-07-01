@@ -4,13 +4,14 @@ import React, {
   useEffect,
   useMemo,
   CSSProperties,
+  useContext,
 } from 'react'
 import { SelectValue } from 'antd/lib/select'
 import { RawValueType } from 'rc-tree-select/lib/interface'
 import dayjs, { Dayjs } from 'dayjs'
 import get from 'lodash.get'
 import { useLocale } from '@toy-box/toybox-shared'
-import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
+import { CompareOP, CompareType, MetaValueType } from '@toy-box/meta-schema'
 import { DatePicker } from '@toy-box/toybox-ui'
 import { DateUnitRange } from '../../date-unit-range'
 import { localeMap } from '../locale'
@@ -168,6 +169,32 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
           field={{ type: 'boolean', key: 'target', name: 'target' }}
           value={value}
           onChange={(checked) => handleValue(checked)}
+        />
+      )
+    } else if (type === CompareType.INPUT) {
+      // const option = context?.specialOptions?.find((op) => op.value === 'formula');
+      // const metaSchema = option?.config || [];
+      // return (
+      //   <FormulaModel
+      //     value={value}
+      //     onChange={handleValue}
+      //     metaSchema={metaSchema}
+      //     inputStyle={style}
+      //   />
+      // )
+      return (
+        <FieldString
+          disabled={fieldMeta == null}
+          field={fieldMeta}
+          mode={mode}
+          style={style}
+          placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
+            fieldMeta.name
+          }`}
+          value={value}
+          allowClear
+          onChange={handleValue}
+          onPressEnter={onSubmit}
         />
       )
     }

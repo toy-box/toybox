@@ -2,7 +2,7 @@ import React, { FC, useCallback, useContext, useMemo } from 'react'
 import update from 'immutability-helper'
 import { Button, Select, Input, Space } from 'antd'
 import { CloseLine } from '@airclass/icons'
-import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
+import { CompareOP, MetaValueType, IFieldMeta } from '@toy-box/meta-schema'
 import get from 'lodash.get'
 import { FilterValueInput } from './FilterValueInput'
 import { FilterBuilderContext } from '../context'
@@ -10,9 +10,13 @@ import { IFieldService } from '../interface'
 
 const inputStyle = { width: '320px' }
 
+const { Option, OptGroup } = Select
+
 export interface CompareOperationProps {
   index: number
-  fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
+  fieldMetas:
+    | Toybox.MetaSchema.Types.IFieldMeta[]
+    | Toybox.MetaSchema.Types.IFieldGroupMeta[]
   compare: Partial<Toybox.MetaSchema.Types.ICompareOperation>
   filterFieldService?: IFieldService
   localeData: any
@@ -89,20 +93,46 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   )
 
   const fieldOptions = useMemo(() => {
-    return fieldMetas.map((field) => ({
-      label: field.name,
-      value: field.key,
-      disabled:
-        context.logicFilter &&
-        field.key !== compare.source &&
-        selected.includes(field.key),
-    }))
-  }, [fieldMetas, compare.source, context.logicFilter, selected])
+    console.log(fieldMetas, 'field222222222222')
+    return fieldMetas.map((field) => {
+      if (field.children) {
+        const children = field.children.map((child) => ({
+          label: child.name,
+          value: child.key,
+          disabled:
+            context.logicFilter &&
+            child.key !== compare.source &&
+            selected.includes(child.key),
+        }))
+        return {
+          label: field.label,
+          value: field.value,
+          children,
+        }
+      } else {
+        return {
+          label: field.name,
+          value: field.key,
+          disabled:
+            context.logicFilter &&
+            field.key !== compare.source &&
+            selected.includes(field.key),
+        }
+      }
+    })
+  }, [fieldMetas])
 
-  const filterFieldMeta = useMemo(
-    () => fieldMetas.find((f) => f.key === compare.source),
-    [fieldMetas, compare.source]
-  )
+  const filterFieldMeta = useMemo(() => {
+    let fieldMeta: any = {}
+    fieldMetas.forEach((meta) => {
+      if (meta.children) {
+        fieldMeta = meta.children.find((f) => f.key === compare.source)
+      } else if (meta.key === compare.source) {
+        fieldMeta = meta
+      }
+    })
+    return fieldMeta
+  }, [fieldMetas, compare.source])
 
   const filterOperations = useMemo(() => {
     if (context.logicFilter) {
@@ -137,17 +167,24 @@ export const CompareOperation: FC<CompareOperationProps> = ({
 
   const onKeyChange = useCallback(
     (source: string) => {
-      const fieldMeta = fieldMetas.find((meta) => meta.key === source)
+      let fieldMeta: any = {}
+      fieldMetas.forEach((meta) => {
+        if (meta.children) {
+          fieldMeta = meta.children.find((f) => f.key === compare.source)
+        } else if (meta.key === compare.source) {
+          fieldMeta = meta
+        }
+      })
       console.log('fieldMeta', fieldMeta, source, fieldMetas)
       const op =
         fieldMeta && FieldOpMap[fieldMeta.type].some((op) => op === compare.op)
           ? compare.op
-          : undefined
+          : FieldOpMap[fieldMeta?.type as any]?.[0]
       const type = context?.specialOptions?.some(
         (op) => op.value === compare.type
       )
         ? compare.type
-        : undefined
+        : context?.specialOptions?.[0].value
       const obj = {
         source: { $set: source },
         op: { $set: op },
@@ -240,19 +277,40 @@ export const CompareOperation: FC<CompareOperationProps> = ({
     )
   }, [filterFieldMeta, multiple, compare, onValueChange])
 
+  const optGroup = useMemo(() => {
+    return fieldOptions.map((option) =>
+      option.children ? (
+        <OptGroup key={option.value} label={option.label}>
+          {option.children.map((child) => (
+            <Option key={child.value} value={child.value}>
+              {child.label}
+            </Option>
+          ))}
+        </OptGroup>
+      ) : (
+        <Option key={option.value} value={option.value}>
+          {option.label}
+        </Option>
+      )
+    )
+  }, [fieldOptions])
+
   return (
     <div className="tbox-filter-compare">
       <Space>
         <Select
           style={{ width: '154px' }}
           value={compare.source}
-          options={fieldOptions}
+          // options={fieldOptions}
           placeholder={get(localeData.lang, 'filed.placeholderOp.select')}
           onChange={onKeyChange}
-        />
+        >
+          {optGroup}
+        </Select>
         <Select
           style={{ width: '92px' }}
           value={compare.op}
+          placeholder="运算符"
           options={filterOperations}
           onChange={onOperationChange}
           showArrow={false}
@@ -261,6 +319,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
           <Select
             style={{ width: '108px' }}
             value={compare.type}
+            placeholder="类型"
             options={filterFieldMeta ? context.specialOptions : []}
             onChange={onTypeChange}
             showArrow={false}

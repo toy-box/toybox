@@ -26,6 +26,7 @@ export interface IFieldOption {
   label: string
   value: string
   disabled?: boolean
+  children?: IFieldOption[]
 }
 
 export interface IFieldItems {
@@ -78,3 +79,9 @@ export interface IMetaPageableResult<RowData = DefaultRowData>
 }
 
 export type IMetaObjectResult = DefaultRowData
+
+export interface IFieldGroupMeta {
+  label: string
+  value: string
+  children: IFieldMeta[]
+}

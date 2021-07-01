@@ -31,6 +31,7 @@ export enum CompareOP {
   IS_NULL = '$isNull',
   UNIT_DATE_RANGE = '$unitDateRange',
   BETWEEN = '$between',
+  op = 'op',
 }
 
 export type DateFilterUnitType = 'DAY' | 'WEEK' | 'MONTH' | 'SEASON' | 'YEAR'
@@ -72,4 +73,9 @@ export interface IDateFilterLocale {
   lang: {
     [key: string]: string
   }
+}
+
+export enum CompareType {
+  REFERENCE = 'REFERENCE',
+  INPUT = 'INPUT',
 }
