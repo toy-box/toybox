@@ -351,12 +351,13 @@ const visibleColumns = [
 ]
 
 export default () => {
-  const loadData = ({ current, pageSize }, filterParams) => {
+  const loadData = (pageable, filterParams) => {
+    console.log('loadData', pageable)
     const result = {
       list: data,
       total: 20,
-      current,
-      pageSize,
+      current: pageable?.current || 1,
+      pageSize: pageable?.pageSize || 10,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
@@ -587,13 +588,13 @@ const visibleColumns = [
 ]
 
 export default () => {
-  const loadData = ({ current, pageSize }, filterParams) => {
+  const loadData = (pageable, filterParams) => {
     console.log('loadData', filterParams)
     const result = {
       list: data,
       total: 20,
-      current,
-      pageSize,
+      current: pageable?.current || 1,
+      pageSize: pageable?.pageSize || 10,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
@@ -807,12 +808,12 @@ const visibleColumns = [
 ]
 
 export default () => {
-  const loadData = ({ current, pageSize }, filterParams) => {
+  const loadData = (pageable, filterParams) => {
     const result = {
       list: data,
       total: 20,
-      current,
-      pageSize,
+      current: pageable?.current || 1,
+      pageSize: pageable?.pageSize || 10,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
