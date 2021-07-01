@@ -653,7 +653,7 @@ export default () => {
 }
 ```
 
-#### 当请求数据的接口并不按 MetaRepository 的 ILogicFilter 格式方式时
+#### 高级模式 当请求数据的接口按 MetaRepository 的 ILogicFilter
 
 ```tsx
 import React, { useMemo } from 'react'
