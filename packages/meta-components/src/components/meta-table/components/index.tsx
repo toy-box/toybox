@@ -5,6 +5,7 @@ import { DefaultColumn } from './DefaultColumn'
 import { BooleanColumn } from './BooleanColumn'
 import { SingleOptionColumn } from './SingleOptionColumn'
 import { RefObjectColumn } from './RefObjectColumn'
+import { PrimaryColumn } from './PrimaryColumn'
 import { IColumnProps } from '../interface'
 
 export * from './OperateColumn'
@@ -18,6 +19,8 @@ export const DefaultColumnRenderMap: Record<string, FC<IColumnProps>> = {
   singleOption: SingleOptionColumn,
   boolean: BooleanColumn,
   string: DefaultColumn,
+  integer: DefaultColumn,
   number: DefaultColumn,
   objectId: RefObjectColumn,
+  primary: PrimaryColumn,
 }

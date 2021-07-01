@@ -145,10 +145,17 @@ export const MetaTable: FC<IMetaTableProps> = ({
             fixed: columnMeta.fixed,
             sorter: columnMeta.sorter,
             render: (text, record, index) => {
+              console.log(
+                'columnMeta.type',
+                columnMeta.type,
+                DefaultColumnRenderMap[columnMeta.type]
+              )
+
               const MetaRender = metaRender(
                 columnMeta,
                 mergeRenders,
-                DefaultColumnRenderMap['string']
+                DefaultColumnRenderMap[columnMeta.type] ||
+                  DefaultColumnRenderMap['string']
               )
               const obj = {
                 children: (

@@ -11,13 +11,15 @@ const objectMeta = {
   key: 'bill',
   name: '账单',
   description: '账单',
+  primaryKey: 'id',
+  titleKey: 'name',
   properties: {
     id: {
       key: 'id',
       name: 'ID',
       description: 'ID',
       type: 'string',
-      fixed: 'left',
+      primary: true,
     },
     name: {
       key: 'name',
@@ -107,6 +109,7 @@ const objectMeta = {
   key: 'bill',
   name: '账单',
   description: '账单',
+  titleKey: 'name',
   properties: {
     id: {
       key: 'id',
@@ -148,7 +151,6 @@ const objectMeta = {
       },
     },
   },
-  titleKey: 'name',
 }
 
 const data = [
