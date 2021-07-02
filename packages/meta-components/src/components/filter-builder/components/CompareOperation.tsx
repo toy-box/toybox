@@ -49,6 +49,7 @@ const stringOps = [
   CompareOP.LT,
   CompareOP.GTE,
   CompareOP.LTE,
+  CompareOP.LIKE,
   CompareOP.IS_NULL,
 ]
 

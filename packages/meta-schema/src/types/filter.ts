@@ -29,6 +29,7 @@ export enum CompareOP {
   NE = '$ne',
   NIN = '$nin',
   IS_NULL = '$isNull',
+  LIKE = '$like',
   UNIT_DATE_RANGE = '$unitDateRange',
   BETWEEN = '$between',
 }
