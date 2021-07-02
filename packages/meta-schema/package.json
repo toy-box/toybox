@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/meta-schema",
-  "version": "1.0.28",
+  "version": "1.0.34",
   "license": "MIT",
   "description": "",
   "main": "lib/index.js",
