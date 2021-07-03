@@ -2,12 +2,12 @@ import { Input, InputProps } from 'antd'
 import React, {
   Ref,
   ForwardRefRenderFunction,
+  useCallback,
   useRef,
-  useMemo,
   useImperativeHandle,
 } from 'react'
 import { DatePicker } from '@toy-box/toybox-ui'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 
 import { BaseFieldProps } from '../interface'
 
@@ -18,6 +18,7 @@ export declare type FieldStringProps = Omit<
   Omit<InputProps, 'onChange' | 'onPressEnter' | 'defaultValue'> & {
     onChange?: (value?: string) => void
     onPressEnter?: () => void
+    onClear?: () => void
   }
 
 const FieldStringFC: ForwardRefRenderFunction<any, FieldStringProps> = (
@@ -30,6 +31,7 @@ const FieldStringFC: ForwardRefRenderFunction<any, FieldStringProps> = (
     onClick,
     onChange,
     onPressEnter,
+    onClear,
     ...otherProps
   },
   ref: Ref<any>
@@ -43,6 +45,20 @@ const FieldStringFC: ForwardRefRenderFunction<any, FieldStringProps> = (
     []
   )
 
+  const handleDateChange = useCallback((date: Dayjs) => {
+    onChange && onChange(date ? date.format('YYYY-MM-DD') : undefined)
+    if (date == null) {
+      onClear && onClear()
+    }
+  }, [])
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    onChange && onChange(e.target.value)
+    if (e.target.value === '') {
+      onClear && onClear()
+    }
+  }, [])
+
   if (mode === 'read') {
     const dom = value || '-'
     return <span onClick={onClick}>{dom}</span>
@@ -53,9 +69,7 @@ const FieldStringFC: ForwardRefRenderFunction<any, FieldStringProps> = (
         ref={inputRef}
         picker="date"
         value={value ? dayjs(value as string) : undefined}
-        onChange={(date) =>
-          onChange && onChange(date ? date.format('YYYY-MM-DD') : undefined)
-        }
+        onChange={handleDateChange}
         defaultValue={
           field.defaultValue ? dayjs(field.defaultValue as string) : undefined
         }
@@ -71,7 +85,7 @@ const FieldStringFC: ForwardRefRenderFunction<any, FieldStringProps> = (
     <Input
       ref={inputRef}
       value={value}
-      onChange={(e) => onChange && onChange(e.target.value)}
+      onChange={handleChange}
       onPressEnter={(e) => onPressEnter && onPressEnter()}
       defaultValue={field.defaultValue}
       placeholder={placeholder}
