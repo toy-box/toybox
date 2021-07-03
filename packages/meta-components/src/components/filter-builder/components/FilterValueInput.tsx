@@ -183,6 +183,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             allowClear
             onChange={handleValue}
             onPressEnter={onSubmit}
+            onClear={onSubmit}
           />
         )
       case MetaValueType.NUMBER:
