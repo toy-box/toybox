@@ -125,10 +125,10 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
 
   const searchOptions = useCallback(
     async (value: any) => {
-      if (fieldMeta == null) {
+      if (fieldMeta == null || fieldMetaService?.findOptions == null) {
         return []
       }
-      const ops = await fieldMetaService?.findOptions(fieldMeta.key, value)
+      const ops = await fieldMetaService.findOptions(fieldMeta.key, value)
       return ops || ([] as OptionItem[])
     },
     [fieldMeta, fieldMetaService]
@@ -136,12 +136,18 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
 
   const searchByValue = useCallback(async () => {
     const ids = Array.isArray(value) ? value : [value]
-    const ops = await fieldMetaService?.findOfValues(fieldMeta.key, ids)
+    if (fieldMetaService?.findOfValues == null) {
+      return []
+    }
+    const ops = await fieldMetaService.findOfValues(fieldMeta.key, ids)
     return ops || []
   }, [fieldMeta.key, fieldMetaService, value])
 
   const findDataTrees = useCallback(
     async (parentId) => {
+      if (fieldMetaService?.findDataTrees == null) {
+        return []
+      }
       const ops = await fieldMetaService?.findDataTrees(fieldMeta.key, parentId)
       return ops || []
     },
