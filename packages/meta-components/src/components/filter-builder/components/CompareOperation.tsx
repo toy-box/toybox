@@ -12,7 +12,7 @@ const inputStyle = { width: '320px' }
 
 export interface CompareOperationProps {
   index: number
-  fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
+  fieldMetas?: Toybox.MetaSchema.Types.IFieldMeta[]
   compare: Partial<Toybox.MetaSchema.Types.ICompareOperation>
   filterFieldService?: IFieldService
   localeData: any
@@ -78,7 +78,7 @@ const FieldOpMap: Record<string, Array<Toybox.MetaSchema.Types.CompareOP>> = {
 
 export const CompareOperation: FC<CompareOperationProps> = ({
   index,
-  fieldMetas,
+  fieldMetas = [],
   compare,
   localeData,
   filterFieldService,

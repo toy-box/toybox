@@ -1,10 +1,4 @@
-import React, {
-  CSSProperties,
-  FC,
-  useCallback,
-  useContext,
-  useMemo,
-} from 'react'
+import React, { CSSProperties, useMemo } from 'react'
 import { Button } from 'antd'
 import update from 'immutability-helper'
 import { AddCircleLine } from '@airclass/icons'
@@ -19,7 +13,7 @@ import '../styles/index.less'
 import classNames from 'classnames'
 
 export interface IFilterBuilderProps {
-  fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
+  fieldMetas?: Toybox.MetaSchema.Types.IFieldMeta[]
   value?: IUncheckCompare[]
   filterFieldService?: IFieldService
   onChange: (compares: IUncheckCompare[]) => void
@@ -34,7 +28,7 @@ export interface IFilterBuilderProps {
 
 export const FilterBuilder = ({
   value = [],
-  fieldMetas,
+  fieldMetas = [],
   filterFieldService,
   onChange,
   addText,
@@ -49,7 +43,6 @@ export const FilterBuilder = ({
     onChange &&
       onChange(update(value, { $push: simple ? [{ op: CompareOP.EQ }] : [{}] }))
   }
-
   return (
     <FilterBuilderContext.Provider value={{ value, onChange, simple }}>
       <div className={classNames(className)} style={style}>
