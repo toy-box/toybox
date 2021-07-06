@@ -1,4 +1,4 @@
-import React, { Ref, ForwardRefRenderFunction, ReactNode } from 'react'
+import React, { Ref } from 'react'
 import { BaseFieldProps, CustomizeComponent } from '../interface'
 
 export interface FieldBusinessObjectProps extends BaseFieldProps {
@@ -8,13 +8,22 @@ export interface FieldBusinessObjectProps extends BaseFieldProps {
 }
 
 // TODO: edit 模式需要考虑
-const BusinessObject: ForwardRefRenderFunction<any, FieldBusinessObjectProps> =
-  ({ value, field, onClick, component: Component = 'span' }, ref: Ref<any>) => {
+export const FieldBusinessObject = React.forwardRef(
+  (
+    {
+      value,
+      field,
+      onClick,
+      component: Component = 'span',
+    }: FieldBusinessObjectProps,
+    ref: Ref<any>
+  ) => {
     return (
-      <Component onClick={onClick}>
-        {value ? value[field.titleKey || field.idKey || 'id'] : null}
+      <Component onClick={() => onClick && onClick(value)}>
+        {value ? value[field.titleKey || field.primaryKey || 'id'] : null}
       </Component>
     )
   }
+)
 
-export const FieldBusinessObject = React.forwardRef(BusinessObject)
+FieldBusinessObject.displayName = 'FieldBusinessObject'

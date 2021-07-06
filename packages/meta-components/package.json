@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/meta-components",
-  "version": "1.0.5",
+  "version": "1.0.37",
   "license": "MIT",
   "description": "",
   "main": "lib/index.js",
@@ -24,15 +24,15 @@
     "antd": "^4.0.0",
     "classnames": "^2.3.1",
     "react": ">=16.8.0 || >=17.0.0",
-    "react-dom": ">=16.8.0",
+    "react-dom": ">=16.8.0 || >=17.0.0",
     "react-is": ">=16.8.0 || >=17.0.0"
   },
   "dependencies": {
     "@ahooksjs/antd-table": "^0.2.3",
     "@airclass/icons": "^4.3.4",
-    "@toy-box/meta-schema": "^1.0.5",
-    "@toy-box/toybox-shared": "^1.0.5",
-    "@toy-box/toybox-ui": "^1.0.5",
+    "@toy-box/meta-schema": "^1.0.34",
+    "@toy-box/toybox-shared": "^1.0.6",
+    "@toy-box/toybox-ui": "^1.0.37",
     "ahooks": "^2.10.6",
     "hoist-non-react-statics": "^3.3.1",
     "immutability-helper": "^3.1.1",
@@ -47,6 +47,7 @@
     "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.get": "^4.4.6",
     "@types/lodash.intersection": "^4.4.6",
+    "@types/qs": "^6.9.6",
     "@types/react-resizable": "^1.7.2"
   },
   "gitHead": "bacf76e04011fd26d75b201ff4ea989511a2ea21"

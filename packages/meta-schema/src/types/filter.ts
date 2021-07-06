@@ -17,6 +17,7 @@ export interface ICompareOperation<DataType = any> {
 export interface ILogicFilter {
   logic: LogicOP
   compares: Partial<ICompareOperation>[]
+  subLogic?: ILogicFilter[]
 }
 
 export enum CompareOP {
@@ -29,6 +30,7 @@ export enum CompareOP {
   NE = '$ne',
   NIN = '$nin',
   IS_NULL = '$isNull',
+  LIKE = '$like',
   UNIT_DATE_RANGE = '$unitDateRange',
   BETWEEN = '$between',
   op = 'op',
@@ -78,4 +80,18 @@ export interface IDateFilterLocale {
 export enum CompareType {
   REFERENCE = 'REFERENCE',
   INPUT = 'INPUT',
+}
+
+export type SortType = 'asc' | 'desc'
+
+export interface IMetaSort {
+  key: string
+  sortType: SortType
+}
+
+export interface IMetaFindQuery {
+  extend?: boolean
+  fields?: string[]
+  filter?: ILogicFilter
+  sort?: IMetaSort[]
 }

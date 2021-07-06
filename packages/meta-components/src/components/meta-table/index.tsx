@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  useCallback,
-  useMemo,
-  useState,
-  ReactNode,
-  JSXElementConstructor,
-} from 'react'
+import React, { FC, useCallback, useMemo, useState } from 'react'
 import { Table } from 'antd'
 import update from 'immutability-helper'
 import { ColumnsType, ColumnType } from 'antd/lib/table'
@@ -26,8 +19,9 @@ import {
   OperateColumn,
 } from './components'
 import { usePivot, useSortColumns } from './hooks'
-
 import './styles'
+
+export * from './utils'
 
 export const columnFactory = (
   columnMeta: ColumnMetaType,
@@ -155,7 +149,8 @@ export const MetaTable: FC<IMetaTableProps> = ({
               const MetaRender = metaRender(
                 columnMeta,
                 mergeRenders,
-                DefaultColumnRenderMap['string']
+                DefaultColumnRenderMap[columnMeta.type] ||
+                  DefaultColumnRenderMap['string']
               )
               const obj = {
                 children: (

@@ -53,6 +53,7 @@ const stringOps = [
   CompareOP.LT,
   CompareOP.GTE,
   CompareOP.LTE,
+  CompareOP.LIKE,
   CompareOP.IS_NULL,
 ]
 
@@ -100,7 +101,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
           label: child.name,
           value: child.key,
           disabled:
-            context.logicFilter &&
+            context.simple &&
             child.key !== compare.source &&
             selected.includes(child.key),
         }))
@@ -114,7 +115,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
           label: field.name,
           value: field.key,
           disabled:
-            context.logicFilter &&
+            context.simple &&
             field.key !== compare.source &&
             selected.includes(field.key),
         }
@@ -135,7 +136,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   }, [fieldMetas, compare.source])
 
   const filterOperations = useMemo(() => {
-    if (context.logicFilter) {
+    if (context.simple) {
       return compareOperationData([CompareOP.EQ])
     }
     if (filterFieldMeta?.type) {
@@ -144,7 +145,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
       )
     }
     return []
-  }, [filterFieldMeta, context.logicFilter])
+  }, [filterFieldMeta, context.simple])
 
   function compareOperationData(
     compareOperation: Toybox.MetaSchema.Types.CompareOP[]

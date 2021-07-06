@@ -4,7 +4,12 @@
 
 ```tsx
 import React, { useMemo } from 'react'
-import { IndexView, FilterDisplay } from '@toy-box/meta-components'
+import {
+  IndexView,
+  FilterDisplay,
+  FilterPanel,
+  TableStatusBar,
+} from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
 
 const objectMeta = {
@@ -59,7 +64,7 @@ const objectMeta = {
 const data = [
   {
     id: '1234',
-    name: '销售',
+    name: '特殊',
     billCycle: '2020-01-01',
     amount: 2000,
     user: {
@@ -133,6 +138,7 @@ const visibleColumns = [
   {
     key: 'name',
     visiable: true,
+    fixed: true,
   },
   {
     key: 'billCycle',
@@ -149,12 +155,15 @@ const visibleColumns = [
 ]
 
 export default () => {
-  const loadData = ({ current, pageSize }) => {
+  const loadData = (pageable, params) => {
     const result = {
-      list: data,
+      list: data.map((row) => ({
+        ...row,
+        name: `${row.name}-${pageable?.current || '1'}`,
+      })),
       total: 20,
-      current,
-      pageSize,
+      current: pageable?.current || 1,
+      pageSize: pageable?.pageSize || 10,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
@@ -175,8 +184,11 @@ export default () => {
       visibleColumns={visibleColumns}
       objectMeta={objectMeta}
       loadData={loadData}
-      simple
-    />
+      urlQuery
+    >
+      <FilterPanel simpleFilterKeys={['amount']} />
+      <TableStatusBar />
+    </IndexView>
   )
 }
 ```
@@ -322,6 +334,7 @@ const visibleColumns = [
   {
     key: 'name',
     visiable: true,
+    fixed: true,
   },
   {
     key: 'billCycle',
@@ -338,12 +351,12 @@ const visibleColumns = [
 ]
 
 export default () => {
-  const loadData = ({ current, pageSize }, filterParams) => {
+  const loadData = (pageable, filterParams) => {
     const result = {
       list: data,
       total: 20,
-      current,
-      pageSize,
+      current: pageable?.current || 1,
+      pageSize: pageable?.pageSize || 10,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
@@ -375,6 +388,30 @@ export default () => {
     },
   ]
 
+  const tableOperate = {
+    items: [
+      {
+        text: 'view',
+        type: 'primary',
+        size: 'small',
+        callback: (text, record, index) => console.log(text, record, index),
+      },
+      {
+        text: 'edit',
+        type: 'dashed',
+        size: 'small',
+        callback: (text, record, index) => console.log(text, record, index),
+      },
+      {
+        text: 'remove',
+        type: 'text',
+        size: 'small',
+        danger: true,
+        callback: (text, record, index) => console.log(text, record, index),
+      },
+    ],
+  }
+
   return (
     <IndexView
       style={{ minWidth: '600px' }}
@@ -382,6 +419,7 @@ export default () => {
       objectMeta={objectMeta}
       loadData={loadData}
       defaultSelectionType="checkbox"
+      tableOperate={tableOperate}
       logicFilter
     >
       <ToolBar>
@@ -549,13 +587,12 @@ const visibleColumns = [
 ]
 
 export default () => {
-  const loadData = ({ current, pageSize }, filterParams) => {
-    console.log('loadData', filterParams)
+  const loadData = (pageable, filterParams) => {
     const result = {
       list: data,
       total: 20,
-      current,
-      pageSize,
+      current: pageable?.current || 1,
+      pageSize: pageable?.pageSize || 10,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
@@ -606,7 +643,6 @@ export default () => {
       loadData={loadData}
       defaultSelectionType="checkbox"
       pagination={{ simple: true }}
-      logicFilter
     >
       <FilterPanel fieldMetas={fiterFieldMetas} simpleFilterKeys={['key-2']} />
       <FilterDisplay fieldMetas={fiterFieldMetas} />
@@ -616,7 +652,7 @@ export default () => {
 }
 ```
 
-#### 当请求数据的接口并不按 MetaRepository 的 ILogicFilter 格式方式时
+#### 高级模式 当请求数据的接口按 MetaRepository 的 ILogicFilter
 
 ```tsx
 import React, { useMemo } from 'react'
@@ -770,13 +806,12 @@ const visibleColumns = [
 ]
 
 export default () => {
-  const loadData = ({ current, pageSize }, filterParams) => {
-    console.log('loadData', current, pageSize, filterParams)
+  const loadData = (pageable, filterParams) => {
     const result = {
       list: data,
       total: 20,
-      current,
-      pageSize,
+      current: pageable?.current || 1,
+      pageSize: pageable?.pageSize || 10,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
@@ -822,6 +857,11 @@ export default () => {
       type: 'date',
       name: '日期',
     },
+    {
+      key: 'key-4',
+      type: 'string',
+      name: '名称',
+    },
   ]
 
   return (
@@ -831,10 +871,11 @@ export default () => {
       objectMeta={objectMeta}
       loadData={loadData}
       defaultSelectionType="checkbox"
+      logicFilter
     >
       <FilterPanel
         fieldMetas={fiterFieldMetas}
-        simpleFilterKeys={['key-2', 'key-3', 'key-1']}
+        simpleFilterKeys={['key-2', 'key-4', 'key-1']}
       />
       <FilterDisplay fieldMetas={fiterFieldMetas} />
       <TableStatusBar />
@@ -842,3 +883,5 @@ export default () => {
   )
 }
 ```
+
+<API></API>

@@ -18,8 +18,8 @@ export enum MetaValueType {
 export declare type DefaultRowData = Record<string, any>
 
 export interface IObjectMeta extends IFieldMeta {
-  idKey?: string
-  titleKey: string
+  primaryKey: string
+  properties: Record<string, IFieldMeta>
 }
 
 export interface IFieldOption {
@@ -56,13 +56,13 @@ export interface IFieldMeta {
   maxProperties?: number
   pattern?: string
   format?: string
-  idKey?: string
   titleKey?: string
-  properties?: { [key: string]: IFieldMeta }
+  primaryKey?: string
+  parentKey?: string
+  properties?: Record<string, IFieldMeta>
   items?: IFieldItems
   index?: number
   defaultValue?: any
-  parentKey?: string
 }
 
 export interface IMetaListResult<RowData = DefaultRowData> {

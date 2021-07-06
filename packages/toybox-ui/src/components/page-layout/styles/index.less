@@ -1,0 +1,17 @@
+@import '../../../styles/theme.less';
+
+.@{prefix}-page-layout {
+  display: flex;
+  padding: 16px;
+  &-containter {
+    &.oneSide {
+      width: 33.33%;
+    }
+    &.twoSide {
+      width: 25%;
+    }
+    &.main {
+      flex-grow: 1;
+    }
+  }
+}

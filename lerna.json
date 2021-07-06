@@ -3,7 +3,6 @@
   "npmClient": "npm",
   "command": {
     "bootstrap": {
-      "ignore": "component-*",
       "npmClientArgs": ["--no-package-lock"]
     },
     "publish": {
@@ -11,5 +10,5 @@
     }
   },
   "useWorkspaces": true,
-  "version": "1.0.5"
+  "version": "1.0.37"
 }

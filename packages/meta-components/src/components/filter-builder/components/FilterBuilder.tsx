@@ -1,10 +1,4 @@
-import React, {
-  CSSProperties,
-  FC,
-  useCallback,
-  useContext,
-  useMemo,
-} from 'react'
+import React, { CSSProperties, useMemo } from 'react'
 import { Button } from 'antd'
 import update from 'immutability-helper'
 import { AddCircleLine } from '@airclass/icons'
@@ -28,39 +22,33 @@ export interface IFilterBuilderProps {
   addText?: string
   className?: string
   style?: CSSProperties
-  /**
-   * @description 简单模式，各种字段类型只有等于比较操作
-   */
-  logicFilter?: boolean
   specialMode?: boolean
   specialOptions?: IspecialOption[]
+  simple?: boolean
 }
 
 export const FilterBuilder = ({
   value = [],
-  fieldMetas,
+  fieldMetas = [],
   filterFieldService,
   onChange,
   addText,
   className,
   style,
-  logicFilter,
   specialMode,
   specialOptions,
+  simple,
 }: IFilterBuilderProps) => {
   const locale = useLocale()
   const localeData = useMemo(() => localeMap[locale], [locale])
 
   const addFilter = () => {
     onChange &&
-      onChange(
-        update(value, { $push: logicFilter ? [{ op: CompareOP.EQ }] : [{}] })
-      )
+      onChange(update(value, { $push: simple ? [{ op: CompareOP.EQ }] : [{}] }))
   }
-
   return (
     <FilterBuilderContext.Provider
-      value={{ value, onChange, logicFilter, specialMode, specialOptions }}
+      value={{ value, onChange, simple, specialMode, specialOptions }}
     >
       <div className={classNames(className)} style={style}>
         {value.map((filterItem, idx) => (

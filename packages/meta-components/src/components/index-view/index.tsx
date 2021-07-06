@@ -1,18 +1,21 @@
 import React, {
   CSSProperties,
-  FC,
   useCallback,
   useEffect,
   useMemo,
   useState,
   useRef,
+  useImperativeHandle,
 } from 'react'
 import classNames from 'classnames'
 import { PaginationProps } from 'antd'
-import { MetaValueType } from '@toy-box/meta-schema'
+import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
+import update from 'immutability-helper'
 import { PaginationBar, IButtonClusterProps } from '@toy-box/toybox-ui'
+import { omit } from '@toy-box/toybox-shared'
 import { MetaTable } from '../meta-table'
 import { FilterPanel, ColumnsSetValueType, TableStatusBar } from './components'
+import { useTable, useQuery } from './hooks'
 import { LoadDataType, IndexModeType } from './types'
 import {
   IColumnVisible,
@@ -20,12 +23,30 @@ import {
   IMetaTableProps,
 } from '../meta-table/interface'
 import { IndexViewContext } from './context'
+
 export * from './hooks'
 export * from './components'
 
-import { useTable } from './hooks'
-
 const LIST_RENDER = 'listRender'
+
+const simpleParams = (
+  compares?: Toybox.MetaSchema.Types.ICompareOperation[]
+) => {
+  const sParams: Record<string, any> = {}
+  if (compares) {
+    compares.forEach((compare) => {
+      if (
+        compare.source &&
+        compare.op === CompareOP.EQ &&
+        compare.target &&
+        compare.target !== ''
+      ) {
+        sParams[compare.source] = compare.target
+      }
+    })
+  }
+  return sParams
+}
 
 export interface IIndexViewProps<IParams = any> {
   /**
@@ -49,15 +70,10 @@ export interface IIndexViewProps<IParams = any> {
   className?: string
   columnComponents?: IMetaTableProps['columnComponents']
   /**
-   * @description 外部的Params
+   * @description 是否与url联动
    * @default false
    */
-  qsParams?: IParams
-  /**
-   * @description 设置外部Params
-   * @default false
-   */
-  setQsParams?: (params?: IParams) => void
+  urlQuery?: boolean
   defaultSelectionType?: string
   tableOperate?: IButtonClusterProps
   /**
@@ -72,247 +88,370 @@ export interface IIndexViewProps<IParams = any> {
   pagination?: Omit<PaginationProps, 'onChange'>
 }
 
-export const IndexView: FC<IIndexViewProps & { children: React.ReactNode }> = ({
-  objectMeta,
-  visibleColumns,
-  visibleColumnSet,
-  mode = 'table',
-  viewModes = [],
-  className,
-  style,
-  columnComponents = {},
-  defaultSelectionType,
-  loadData,
-  filterFieldKeys,
-  logicFilter,
-  pagination,
-  qsParams,
-  setQsParams,
-  children,
-}) => {
-  const paramsRef = useRef(null)
-  const [params, setParams] = useState<any>()
-  useEffect(() => {
-    setQsParams && setQsParams(params)
-    paramsRef.current = params
-    return () => undefined
-  }, [params])
-  useEffect(() => setParams(qsParams), [qsParams])
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
-  const [selectedRows, setSelectedRows] = useState<RowData[]>([])
-  const [selectionType, setSelectionType] = useState(defaultSelectionType)
-  const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
+export declare type IndexViewRefType = {
+  reload: () => void
+  reset: () => void
+  dataSource?: RowData[]
+  selectedRowKey?: string[]
+  selectedRows?: RowData[]
+}
 
-  const paramsActions = useMemo(
-    () => ({
-      getParams: () => paramsRef,
-      resetParams: () => setParams(undefined),
-    }),
-    [paramsRef, setParams]
-  )
-
-  // const [query, setQuery] = useQuery()
-
-  // 可配置的字段key
-  const metaColumnKeys = useMemo(
-    () => visibleColumns.map((col) => col.key),
-    [visibleColumns]
-  )
-
-  const defaultColumnKeys = useMemo(
-    () => visibleColumns.filter((col) => col.visiable).map((col) => col.key),
-    [visibleColumns]
-  )
-
-  const defaultColumns = useMemo(() => {
-    const { properties } = objectMeta
-    if (properties) {
-      return Object.keys(properties)
-        .filter((key) => metaColumnKeys.includes(key))
-        .map((key) => ({
-          label: properties[key].name,
-          value: key,
-        }))
-    }
-    return []
-  }, [metaColumnKeys, objectMeta])
-
-  const [columns, setColumns] = useState<ColumnsSetValueType>(defaultColumns)
-  const [visibleKeys, setVisibleKeys] = useState(defaultColumnKeys)
-
-  const rowSelection = useMemo(
-    () =>
-      selectionType != null
-        ? {
-            selectedRowKeys,
-            selectionType,
-            onChange: (keys: string[], rows: RowData[]) => {
-              setSelectedRowKeys(keys), setSelectedRows(rows)
-            },
-          }
-        : undefined,
-    [selectedRowKeys, selectionType, setSelectedRowKeys]
-  )
-
-  const columnMetas = useMemo(() => {
-    if (currentMode === 'list') {
-      return [
-        {
-          key: objectMeta.key,
-          component: LIST_RENDER,
-          name: objectMeta.name,
-          type: MetaValueType.OBJECT,
-        },
-      ]
-    }
-    const { properties } = objectMeta
-    if (properties == null) {
-      return []
-    }
-    return columns
-      .filter((col) => visibleKeys.some((k) => k === col.value))
-      .map((col) => {
-        const fieldMeta = properties[col.value]
-        const column = visibleColumns.find(
-          (c) => c.key === col.value
-        ) as IColumnVisible
-        return {
-          ...column,
-          ...fieldMeta,
-        }
-      })
-      .filter((c) => c != null)
-  }, [currentMode, columns, visibleKeys, objectMeta, visibleColumns])
-
-  const components = useMemo(() => {
-    return columnComponents
-  }, [columnComponents, currentMode])
-
-  const {
-    pagination: innerPagination,
-    tableProps,
-    searchActions,
-  } = useTable(loadData, {
-    logicFilter,
-    paramsActions,
-  })
-
-  const paginationProps = useMemo(
-    () => ({
-      ...pagination,
-      ...innerPagination,
-    }),
-    [pagination, innerPagination]
-  )
-
-  const filterFields = useMemo(() => {
-    const { properties } = objectMeta
-    if (properties) {
-      return Object.keys(properties)
-        .filter((key) => {
-          return filterFieldKeys
-            ? filterFieldKeys.includes(key)
-            : key != objectMeta.idKey
-        })
-        .map((key) => properties[key])
-    }
-    return []
-  }, [objectMeta, filterFieldKeys])
-
-  const indexViewContext = useMemo(
-    () => ({
+export const IndexView = React.forwardRef(
+  (
+    {
       objectMeta,
-      params,
-      setParams,
+      visibleColumns,
       visibleColumnSet,
-      columns,
-      setColumns,
-      visibleKeys,
-      setVisibleKeys,
-      currentMode,
-      setCurrentMode,
-      viewModes,
+      mode = 'table',
+      viewModes = [],
+      className,
+      style,
+      columnComponents = {},
+      defaultSelectionType,
+      loadData,
       filterFieldKeys,
-      selectedRowKeys,
-      selectionType,
-      setSelectionType,
-      searchActions,
-      filterFields,
       logicFilter,
-    }),
-    [
-      objectMeta,
-      params,
-      setParams,
-      columns,
-      setColumns,
-      visibleColumnSet,
-      visibleKeys,
-      setVisibleKeys,
-      currentMode,
-      setCurrentMode,
-      viewModes,
-      filterFieldKeys,
-      selectedRowKeys,
-      selectionType,
-      setSelectionType,
-      searchActions,
-      filterFields,
-      logicFilter,
-    ]
-  )
+      pagination,
+      tableOperate,
+      urlQuery,
+      children,
+    }: IIndexViewProps & { children: React.ReactNode },
+    ref: React.MutableRefObject<IndexViewRefType>
+  ) => {
+    const [query, setQuery] = useQuery()
+    const preParamsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
+    const paramsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
+    const [preParams, setPreParams] = useState<
+      Toybox.MetaSchema.Types.ICompareOperation[] | undefined
+    >()
+    const [params, setParams] = useState<
+      Toybox.MetaSchema.Types.ICompareOperation[] | undefined
+    >()
+    const [pageable, setPageable] =
+      useState<{ current?: number; pageSize?: number }>()
 
-  const IndexContent = useCallback(() => {
-    switch (currentMode) {
-      case 'list':
-        return (
-          <MetaTable
-            rowKey={objectMeta.idKey}
-            columnMetas={columnMetas}
-            rowSelection={rowSelection}
-            columnComponents={components}
-            {...tableProps}
-            pagination={false}
-          />
+    useEffect(() => setPreParams(params), [params])
+    useEffect(() => {
+      preParamsRef.current = preParams
+      return () => undefined
+    }, [preParams])
+    useEffect(() => {
+      paramsRef.current = params
+      return () => undefined
+    }, [params])
+    useEffect(() => {
+      if (urlQuery) {
+        setPageable(
+          query.pageable
+            ? {
+                current: query.pageable.current
+                  ? Number.parseInt(query.pageable.current)
+                  : undefined,
+                pageSize: query.pageable.pageSize
+                  ? Number.parseInt(query.pageable.pageSize)
+                  : undefined,
+              }
+            : undefined
         )
-      case 'table':
-      default:
-        return (
-          <>
+        setParams(query.params ? JSON.parse(query.params) : undefined)
+      }
+    }, [query])
+
+    const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
+    const [selectedRows, setSelectedRows] = useState<RowData[]>([])
+    const [selectionType, setSelectionType] = useState(defaultSelectionType)
+    const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
+
+    const setQuerySearch = useCallback(
+      (pageable) => {
+        setTimeout(() => {
+          if (urlQuery) {
+            if (pageable) {
+              setQuery(
+                update(query, {
+                  params: { $set: JSON.stringify(preParamsRef.current) },
+                  pageable: { $set: pageable },
+                })
+              )
+            } else {
+              setQuery(
+                update(query, {
+                  params: {
+                    $set: preParamsRef.current
+                      ? JSON.stringify(preParamsRef.current)
+                      : undefined,
+                  },
+                })
+              )
+            }
+          } else {
+            setParams(preParamsRef.current)
+            pageable && setPageable(pageable)
+          }
+        })
+      },
+      [urlQuery, preParamsRef]
+    )
+
+    const onloadData = useCallback(
+      (pageable, params) => {
+        return loadData(pageable, logicFilter ? params : simpleParams(params))
+      },
+      [logicFilter]
+    )
+
+    const paramsActions = useMemo(
+      () => ({
+        getParams: () => paramsRef,
+        getPreParams: () => preParamsRef,
+        setPreParams,
+        setParams,
+      }),
+      [preParamsRef, setPreParams]
+    )
+
+    const {
+      pagination: innerPagination,
+      tableProps,
+      searchActions,
+    } = useTable(
+      onloadData,
+      {
+        logicFilter,
+        paramsActions,
+      },
+      pageable,
+      params
+    )
+
+    const paginationProps = useMemo(
+      () => ({
+        ...pagination,
+        ...omit(innerPagination, ['onChange', 'current', 'pageSize']),
+        onChange: (current, pageSize) => {
+          setQuerySearch({
+            current,
+            pageSize,
+          })
+        },
+        current: pageable?.current || innerPagination.current,
+        pageSize: pageable?.pageSize || innerPagination.pageSize,
+      }),
+      [pagination, innerPagination, pageable]
+    )
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        reload: searchActions.submit,
+        reset: searchActions.reset,
+        dataSource: tableProps.dataSource,
+        selectedRowKeys,
+        selectedRows,
+      }),
+      [selectedRowKeys, selectedRows, tableProps, searchActions]
+    )
+
+    // 可配置的字段key
+    const metaColumnKeys = useMemo(
+      () => visibleColumns.map((col) => col.key),
+      [visibleColumns]
+    )
+
+    const defaultColumnKeys = useMemo(
+      () => visibleColumns.filter((col) => col.visiable).map((col) => col.key),
+      [visibleColumns]
+    )
+
+    const defaultColumns = useMemo(() => {
+      const { properties } = objectMeta
+      if (properties) {
+        return Object.keys(properties)
+          .filter((key) => metaColumnKeys.includes(key))
+          .map((key) => {
+            const column = visibleColumns.find(
+              (c) => c.key === key
+            ) as IColumnVisible
+            return {
+              label: properties[key].name,
+              value: key,
+              ...column,
+            }
+          })
+      }
+      return []
+    }, [metaColumnKeys, objectMeta])
+
+    const [columns, setColumns] = useState<ColumnsSetValueType>(defaultColumns)
+    const [visibleKeys, setVisibleKeys] = useState(defaultColumnKeys)
+
+    const rowSelection = useMemo(
+      () =>
+        selectionType != null
+          ? {
+              selectedRowKeys,
+              selectionType,
+              onChange: (keys: string[], rows: RowData[]) => {
+                setSelectedRowKeys(keys), setSelectedRows(rows)
+              },
+            }
+          : undefined,
+      [selectedRowKeys, selectionType, setSelectedRowKeys]
+    )
+
+    const columnMetas = useMemo(() => {
+      if (currentMode === 'list') {
+        return [
+          {
+            key: objectMeta.key,
+            component: LIST_RENDER,
+            name: objectMeta.name,
+            type: MetaValueType.OBJECT,
+          },
+        ]
+      }
+      const { properties } = objectMeta
+      if (properties == null) {
+        return []
+      }
+      return columns
+        .filter((col) => visibleKeys.some((k) => k === col.value))
+        .map((col) => {
+          const fieldMeta = properties[col.value]
+          const column = visibleColumns.find(
+            (c) => c.key === col.value
+          ) as IColumnVisible
+          return {
+            ...column,
+            ...fieldMeta,
+          }
+        })
+        .filter((c) => c != null)
+    }, [currentMode, columns, visibleKeys, objectMeta, visibleColumns])
+
+    const components = useMemo(() => {
+      return columnComponents
+    }, [columnComponents, currentMode])
+
+    const filterFields = useMemo(() => {
+      const { properties } = objectMeta
+      if (properties) {
+        return Object.keys(properties)
+          .filter((key) => {
+            return filterFieldKeys
+              ? filterFieldKeys.includes(key)
+              : key != objectMeta.primaryKey
+          })
+          .map((key) => properties[key])
+      }
+      return []
+    }, [objectMeta, filterFieldKeys])
+
+    const indexViewContext = useMemo(
+      () => ({
+        objectMeta,
+        setQuerySearch,
+        params,
+        setParams,
+        preParams,
+        setPreParams,
+        visibleColumnSet,
+        columns,
+        setColumns,
+        visibleKeys,
+        setVisibleKeys,
+        currentMode,
+        setCurrentMode,
+        viewModes,
+        filterFieldKeys,
+        selectedRowKeys,
+        selectionType,
+        setSelectionType,
+        searchActions,
+        filterFields,
+        logicFilter,
+      }),
+      [
+        objectMeta,
+        setQuerySearch,
+        params,
+        setParams,
+        preParams,
+        setPreParams,
+        columns,
+        setColumns,
+        visibleColumnSet,
+        visibleKeys,
+        setVisibleKeys,
+        currentMode,
+        setCurrentMode,
+        viewModes,
+        filterFieldKeys,
+        selectedRowKeys,
+        selectionType,
+        setSelectionType,
+        searchActions,
+        filterFields,
+        logicFilter,
+      ]
+    )
+
+    const IndexContent = useCallback(() => {
+      switch (currentMode) {
+        case 'list':
+          return (
             <MetaTable
-              rowKey={objectMeta.idKey}
+              rowKey={objectMeta.primaryKey}
               columnMetas={columnMetas}
               rowSelection={rowSelection}
               columnComponents={components}
+              operate={tableOperate}
               {...tableProps}
               pagination={false}
             />
-            <PaginationBar {...paginationProps} />
-          </>
-        )
-    }
-  }, [
-    currentMode,
-    objectMeta.idKey,
-    columnMetas,
-    rowSelection,
-    components,
-    tableProps,
-  ])
+          )
+        case 'table':
+        default:
+          return (
+            <>
+              <MetaTable
+                rowKey={objectMeta.primaryKey}
+                columnMetas={columnMetas}
+                rowSelection={rowSelection}
+                columnComponents={components}
+                operate={tableOperate}
+                {...tableProps}
+                pagination={false}
+              />
+              <PaginationBar {...paginationProps} />
+            </>
+          )
+      }
+    }, [
+      currentMode,
+      objectMeta.primaryKey,
+      columnMetas,
+      rowSelection,
+      components,
+      tableProps,
+    ])
 
-  return (
-    <IndexViewContext.Provider value={indexViewContext}>
-      <div className={classNames('tbox-index-view', className)} style={style}>
-        {children ? (
-          children
-        ) : (
-          <>
-            <FilterPanel />
-            <TableStatusBar />
-          </>
-        )}
-        <IndexContent />
-      </div>
-    </IndexViewContext.Provider>
-  )
-}
+    return (
+      <IndexViewContext.Provider value={indexViewContext}>
+        <div className={classNames('tbox-index-view', className)} style={style}>
+          {children ? (
+            children
+          ) : (
+            <>
+              <FilterPanel />
+              <TableStatusBar />
+            </>
+          )}
+          <IndexContent />
+        </div>
+      </IndexViewContext.Provider>
+    )
+  }
+)
+
+IndexView.displayName = 'IndexView'

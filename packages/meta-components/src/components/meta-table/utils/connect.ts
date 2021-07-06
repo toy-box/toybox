@@ -6,7 +6,10 @@ declare type JSXComponent =
   | keyof JSX.IntrinsicElements
   | React.JSXElementConstructor<any>
 
-export const connect = <T extends JSXComponent>(target: T) => {
+export const connect = <T extends JSXComponent>(
+  target: T,
+  recordValue?: boolean
+) => {
   const Destination = React.forwardRef((props: IColumnProps, ref) => {
     const {
       fixed,
@@ -20,7 +23,7 @@ export const connect = <T extends JSXComponent>(target: T) => {
     } = props.columnMeta
     return React.createElement(target, {
       field,
-      value: props.text,
+      value: recordValue ? props.record : props.text,
       mode: 'read',
       ref,
     })

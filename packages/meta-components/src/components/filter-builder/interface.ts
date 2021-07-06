@@ -1,15 +1,15 @@
 import { SimpleTreeNode } from '../meta-fields/interface'
 
 export interface IFieldService {
-  findOptions: (
+  findOptions?: (
     key: string,
     name: string
   ) => Promise<Toybox.MetaSchema.Types.IFieldOption[]>
-  findOfValues: (
+  findOfValues?: (
     key: string,
     value: (string | number)[]
   ) => Promise<Toybox.MetaSchema.Types.IFieldOption[]>
-  findDataTrees: (
+  findDataTrees?: (
     key: string,
     parentId: string | number
   ) => Promise<SimpleTreeNode[]>

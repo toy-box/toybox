@@ -12,12 +12,11 @@ import dayjs, { Dayjs } from 'dayjs'
 import get from 'lodash.get'
 import { useLocale } from '@toy-box/toybox-shared'
 import { CompareOP, CompareType, MetaValueType } from '@toy-box/meta-schema'
-import { DatePicker } from '@toy-box/toybox-ui'
+import { DatePicker, Search } from '@toy-box/toybox-ui'
 import { DateUnitRange } from '../../date-unit-range'
 import { localeMap } from '../locale'
 import {
   FieldSelect,
-  FieldTreeSelect,
   FieldString,
   FieldDate,
   FieldPercent,
@@ -129,10 +128,10 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
 
   const searchOptions = useCallback(
     async (value: any) => {
-      if (fieldMeta == null) {
+      if (fieldMeta == null || fieldMetaService?.findOptions == null) {
         return []
       }
-      const ops = await fieldMetaService?.findOptions(fieldMeta.key, value)
+      const ops = await fieldMetaService.findOptions(fieldMeta.key, value)
       return ops || ([] as OptionItem[])
     },
     [fieldMeta, fieldMetaService]
@@ -140,12 +139,18 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
 
   const searchByValue = useCallback(async () => {
     const ids = Array.isArray(value) ? value : [value]
-    const ops = await fieldMetaService?.findOfValues(fieldMeta.key, ids)
+    if (fieldMetaService?.findOfValues == null) {
+      return []
+    }
+    const ops = await fieldMetaService.findOfValues(fieldMeta.key, ids)
     return ops || []
   }, [fieldMeta.key, fieldMetaService, value])
 
   const findDataTrees = useCallback(
     async (parentId) => {
+      if (fieldMetaService?.findDataTrees == null) {
+        return []
+      }
       const ops = await fieldMetaService?.findDataTrees(fieldMeta.key, parentId)
       return ops || []
     },
@@ -213,6 +218,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             allowClear
             onChange={handleValue}
             onPressEnter={onSubmit}
+            onClear={onSubmit}
           />
         )
       case MetaValueType.NUMBER:
@@ -343,25 +349,26 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
           />
         )
       case MetaValueType.OBJECT_ID:
-        if (
-          fieldMeta.parentKey != null &&
-          fieldMeta.parentKey !== '' &&
-          multiple
-        ) {
-          return (
-            <FieldTreeSelect
-              field={fieldMeta}
-              style={style}
-              mode={mode}
-              placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
-              multiple={multiple}
-              value={value}
-              onChange={handleValue}
-              loadData={findDataTrees}
-              loadByValue={searchByValue}
-            />
-          )
-        }
+        // TODO: 需要判断何时用
+        // if (
+        //   fieldMeta.parentKey != null &&
+        //   fieldMeta.parentKey !== '' &&
+        //   multiple
+        // ) {
+        //   return (
+        //     <FieldTreeSelect
+        //       field={fieldMeta}
+        //       style={style}
+        //       mode={mode}
+        //       placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
+        //       multiple={multiple}
+        //       value={value}
+        //       onChange={handleValue}
+        //       loadData={findDataTrees}
+        //       loadByValue={searchByValue}
+        //     />
+        //   )
+        // }
         return (
           <FieldSelect
             placeholder={get(localeData.lang, 'filed.placeholderOp.value')}

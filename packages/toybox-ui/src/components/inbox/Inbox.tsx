@@ -6,7 +6,8 @@ import React, {
   useMemo,
   ReactNode,
 } from 'react'
-import { Badge, Button, Dropdown, Menu, Space } from 'antd'
+import { Badge, Dropdown, Menu, Space } from 'antd'
+import { Button } from '../button'
 import classNames from 'classnames'
 import {
   Filter3Line,
@@ -15,12 +16,12 @@ import {
   DeleteBinLine,
   CheckLine,
 } from '@airclass/icons'
-import { InboxContent } from './InboxContent'
-import { DropdownMenu, IMenuItem } from '../../dropdown-menu'
-import { InboxBadge, IInboxBadgeProps } from './InboxBadge'
+import { InboxContent } from './components/InboxContent'
+import { DropdownMenu, IMenuItem } from '../dropdown-menu'
+import { InboxBadge, IInboxBadgeProps } from './components/InboxBadge'
 import { INotificationMessage } from './interface'
 
-import '../styles'
+import './styles'
 
 export interface IMessageType {
   type: string
@@ -181,16 +182,20 @@ export const Inbox: FC<IInboxProps> & { InboxBadge: FC<IInboxBadgeProps> } = ({
   const InBoxPanel = () => {
     return (
       <div className="tbox-inbox-panel">
-        <div className="inbox-panel--tabs">
+        <div className="tbox-inbox-panel__tabs">
           <div
-            className={classNames('inbox-panel--tab', { active: !unRead })}
+            className={classNames('tbox-inbox-panel__tabs--tab', {
+              active: !unRead,
+            })}
             onClick={() => setUnread(false)}
           >
             <span>全部</span>
             <Badge count={badge} />
           </div>
           <div
-            className={classNames('inbox-panel--tab', { active: unRead })}
+            className={classNames('tbox-inbox-panel__tabs--tab', {
+              active: unRead,
+            })}
             onClick={() => setUnread(true)}
           >
             <span>未读</span>

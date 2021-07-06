@@ -2,7 +2,15 @@ import { useMemo } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import qs from 'qs'
 
-export default () => {
+export interface QueryData {
+  pageable?: {
+    current?: string
+    pageSize?: string
+  }
+  params?: string
+}
+
+export const useQuery = () => {
   const history = useHistory()
   const location = useLocation()
 
@@ -12,5 +20,5 @@ export default () => {
     () => qs.parse(location.search.substr(1)),
     [location.search]
   )
-  return [query, setQuery] as [qs.ParsedQs, (query: any) => void]
+  return [query, setQuery] as [QueryData, (query: any) => void]
 }

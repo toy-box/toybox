@@ -26,7 +26,7 @@ export interface BaseFieldProps {
   mode?: FieldModeType
   disabled?: boolean
   value?: any
-  onClick?: () => void
+  onClick?: (value: any) => void
   onChange?: (value: any, test?: any) => void
   onPressEnter?: (value: any, test?: any) => void
 }

@@ -12,9 +12,9 @@
     border-bottom: 1px solid @gray-4;
     align-items: center;
     justify-content: space-between;
-    .@{prefix}-panel--tabs {
+    &__tabs {
       display: flex;
-      .@{prefix}-panel--tab {
+      &--tab {
         display: flex;
         align-items: center;
         font-weight: bold;
@@ -32,7 +32,7 @@
         .@{ant-prefix}-badge-count {
           margin-left: 8px;
         }
-        + .inbox-panel--tab {
+        + .@{prefix}-inbox-panel__tabs--tab {
           margin-left: 8px;
         }
       }

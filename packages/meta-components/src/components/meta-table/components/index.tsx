@@ -6,6 +6,7 @@ import { BooleanColumn } from './BooleanColumn'
 import { SingleOptionColumn } from './SingleOptionColumn'
 import { RefObjectColumn } from './RefObjectColumn'
 import { IColumnProps } from '../interface'
+export * from './PrimaryColumn'
 
 export * from './OperateColumn'
 export { default as ResizableTitle, ResizeCallbackData } from './ResizableTitle'
@@ -18,6 +19,7 @@ export const DefaultColumnRenderMap: Record<string, FC<IColumnProps>> = {
   singleOption: SingleOptionColumn,
   boolean: BooleanColumn,
   string: DefaultColumn,
+  integer: DefaultColumn,
   number: DefaultColumn,
   objectId: RefObjectColumn,
 }

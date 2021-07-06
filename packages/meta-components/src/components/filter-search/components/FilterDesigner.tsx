@@ -7,6 +7,7 @@ import { IFieldService } from '../../filter-builder/interface'
 import { FilterType } from '..'
 
 import '../styles/filterDesigner.less'
+
 export interface IFilterDesignerProps {
   fieldMetas: Toybox.MetaSchema.Types.IFieldMeta[]
   value?: FilterType
@@ -14,7 +15,7 @@ export interface IFilterDesignerProps {
   filterFieldService?: IFieldService
   onChange?: (value: FilterType) => void
   onCancel?: () => void
-  logicFilter?: boolean
+  simple?: boolean
 }
 
 export const FilterDesigner: FC<IFilterDesignerProps> = ({
@@ -24,7 +25,7 @@ export const FilterDesigner: FC<IFilterDesignerProps> = ({
   onCancel,
   title,
   filterFieldService,
-  logicFilter,
+  simple,
 }) => {
   const locale = useLocale()
   const localeData = useMemo(() => localeMap[locale], [locale])
@@ -51,7 +52,7 @@ export const FilterDesigner: FC<IFilterDesignerProps> = ({
           value={compares}
           filterFieldService={filterFieldService}
           onChange={setCompares}
-          logicFilter={logicFilter}
+          simple={simple}
         />
       </div>
       <div className="tbox-filter-designer__bottom">

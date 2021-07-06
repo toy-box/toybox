@@ -35,9 +35,11 @@ export const FilterTagGroup: FC<IFilterTagGroupProps> = ({
           (fieldMeta) => fieldMeta.key === compare.source
         )
         if (fieldMeta) {
-          const remote = fieldService
-            ? (value: string[]) =>
-                fieldService.findOfValues(fieldMeta.key, value)
+          const findOfValues = fieldService
+            ? fieldService.findOfValues
+            : undefined
+          const remote = findOfValues
+            ? (value: string[]) => findOfValues(fieldMeta.key, value)
             : undefined
           return (
             <FilterTag

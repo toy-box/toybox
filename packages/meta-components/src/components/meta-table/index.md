@@ -4,20 +4,22 @@
 
 ```tsx
 import React, { useMemo } from 'react'
-import { MetaTable } from '@toy-box/meta-components'
+import { MetaTable, primaryGenerator } from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
 
 const objectMeta = {
   key: 'bill',
   name: '账单',
   description: '账单',
+  primaryKey: 'id',
+  titleKey: 'name',
   properties: {
     id: {
       key: 'id',
       name: 'ID',
       description: 'ID',
       type: 'string',
-      fixed: 'left',
+      primary: true,
     },
     name: {
       key: 'name',
@@ -87,12 +89,27 @@ const data = [
 
 export default () => {
   const columnMetas = useMemo(() => {
-    return Object.keys(objectMeta.properties).map((key) =>
-      Object.assign(objectMeta.properties[key])
-    )
+    return Object.keys(objectMeta.properties).map((key) => {
+      if (key === 'id') {
+        return Object.assign(objectMeta.properties[key], {
+          component: 'primary',
+        })
+      }
+      return Object.assign(objectMeta.properties[key])
+    })
   }, [objectMeta])
-
-  return <MetaTable dataSource={data} columnMetas={columnMetas} sort />
+  const PrimaryCol = primaryGenerator({
+    objectMeta: objectMeta,
+    onClick: (text, record, index) => console.log('click', record),
+  })
+  return (
+    <MetaTable
+      columnComponents={{ primary: PrimaryCol }}
+      dataSource={data}
+      columnMetas={columnMetas}
+      sort
+    />
+  )
 }
 ```
 
@@ -107,6 +124,7 @@ const objectMeta = {
   key: 'bill',
   name: '账单',
   description: '账单',
+  titleKey: 'name',
   properties: {
     id: {
       key: 'id',
@@ -148,7 +166,6 @@ const objectMeta = {
       },
     },
   },
-  titleKey: 'name',
 }
 
 const data = [
@@ -192,27 +209,29 @@ export default () => {
       resizableTitle
       dataSource={data}
       columnMetas={columnMetas}
-      operateItems={[
-        {
-          text: 'view',
-          type: 'primary',
-          size: 'small',
-          callback: (record, index) => console.log(recode, index),
-        },
-        {
-          text: 'edit',
-          type: 'dashed',
-          size: 'small',
-          callback: (record, index) => console.log(recode, index),
-        },
-        {
-          text: 'remove',
-          type: 'text',
-          size: 'small',
-          danger: true,
-          callback: (record, index) => console.log(recode, index),
-        },
-      ]}
+      operate={{
+        items: [
+          {
+            text: 'view',
+            type: 'primary',
+            size: 'small',
+            callback: (text, record, index) => console.log(text, record, index),
+          },
+          {
+            text: 'edit',
+            type: 'dashed',
+            size: 'small',
+            callback: (text, record, index) => console.log(text, record, index),
+          },
+          {
+            text: 'remove',
+            type: 'text',
+            size: 'small',
+            danger: true,
+            callback: (text, record, index) => console.log(text, record, index),
+          },
+        ],
+      }}
     />
   )
 }
@@ -839,3 +858,5 @@ export default () => {
   )
 }
 ```
+
+<API></API>

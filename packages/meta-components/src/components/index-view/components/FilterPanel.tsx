@@ -16,11 +16,11 @@ export const FilterPanel: FC<IFilterPanelProps> = ({
   const indexView = useIndexView()
   return (
     <FilterSearch
-      value={indexView.params}
-      onChange={indexView.setParams}
+      value={indexView.preParams}
+      onChange={indexView.setPreParams}
       fieldMetas={fieldMetas || indexView.filterFields}
-      logicFilter={indexView.logicFilter}
-      onSubmit={indexView.searchActions.submit}
+      simple={!indexView.logicFilter}
+      onSubmit={indexView.setQuerySearch}
       {...props}
     />
   )

@@ -3,7 +3,7 @@ import { Space, Tooltip, Popover, Button } from 'antd'
 import { Filter3Line } from '@airclass/icons'
 import update from 'immutability-helper'
 import { useLocale } from '@toy-box/toybox-shared'
-import { CompareOP } from '@toy-box/meta-schema'
+import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
 import { FilterValueInput } from '../filter-builder/components/FilterValueInput'
 import { FilterDesigner } from './components'
 import localeMap from './locale'
@@ -34,7 +34,7 @@ export interface IFilterSearchProps {
   title?: string
   onChange?: (filter?: FilterType) => void
   onCancel?: () => void
-  logicFilter?: boolean
+  simple?: boolean
   onSubmit?: (value?: any) => void
 }
 
@@ -42,9 +42,9 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
   fieldMetas = [],
   simpleFilterKeys = [],
   filterFieldService,
-  value,
+  value = [],
   title,
-  logicFilter,
+  simple,
   onChange,
   onCancel,
   onSubmit,
@@ -91,17 +91,15 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
     val: any,
     fieldMeta: Toybox.MetaSchema.Types.IFieldMeta
   ) => {
-    handleValueChange(val, fieldMeta, CompareOP.EQ)
-    // switch (fieldMeta.type) {
-    //   case MetaValueType.STRING:
-    //   case MetaValueType.SINGLE_OPTION:
-    //   case MetaValueType.OBJECT_ID:
-    //     handleValueChange(val, fieldMeta, CompareOP.EQ)
-    //     break
-    //   default:
-    //     handleValueChange(val, fieldMeta, CompareOP.EQ)
-    //     break
-    // }
+    handleValueChange(
+      val,
+      fieldMeta,
+      [MetaValueType.STRING, MetaValueType.TEXT].some(
+        (type) => type === fieldMeta.type
+      )
+        ? CompareOP.LIKE
+        : CompareOP.EQ
+    )
   }
 
   const handleValueChange = useCallback(
@@ -160,7 +158,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
         filterFieldService={filterFieldService}
         onChange={handleChange}
         onCancel={cencel}
-        logicFilter={logicFilter}
+        simple={simple}
       />
     )
   }, [fieldMetas, value, filterFieldService])
@@ -169,12 +167,12 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
     <div className="filter-model">
       <Space>
         <Popover
-          overlayClassName="no-padding"
           placement="bottom"
           content={filterContainer}
           trigger="click"
           visible={filterEditVisible}
           onVisibleChange={setFilterEditVisible}
+          destroyTooltipOnHide={false}
         >
           <Tooltip placement="top" title={localeData.lang.filter['tip']}>
             <Button icon={<Filter3Line />} />

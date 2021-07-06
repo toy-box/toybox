@@ -36,7 +36,7 @@ export default () => {
       serviceTest(resolve, key)
     }).then((res) => {
       if (key === 'deptId')
-        return [{ id: '2', pId: '1', value: '1', title: 'Expand to load2' }]
+        return [{ id: '2', value: '1', title: 'Expand to load2' }]
       return [
         {
           label: 'SIX',
@@ -159,7 +159,7 @@ export default () => {
   const [value, setValue] = useState([
     {
       source: 'deptId',
-      op: '$in',
+      op: '$eq',
       target: '1',
     },
   ])
@@ -176,6 +176,7 @@ export default () => {
         onChange={(filterItem: Partial<ICompareOperation>[]) =>
           handleFilter(filterItem)
         }
+        logicFitler
       />
     </div>
   )
@@ -542,7 +543,7 @@ export default () => {
       serviceTest(resolve, key)
     }).then((res) => {
       if (key === 'deptId')
-        return [{ id: '2', pId: '1', value: '1', title: 'Expand to load2' }]
+        return [{ id: '2', value: '1', title: 'Expand to load2' }]
       return [
         {
           label: 'SIX',
@@ -662,14 +663,7 @@ export default () => {
     },
   }
 
-  const [value, setValue] = useState([
-    {
-      source: 'deptId',
-      op: '$eq',
-      type: 'const',
-      target: '1',
-    },
-  ])
+  const [value, setValue] = useState([])
   const handleFilter = useCallback(
     (logicFilter: IUncheckLogicFilter) => setValue(logicFilter),
     []
@@ -683,9 +677,11 @@ export default () => {
         onChange={(filterItem: Partial<ICompareOperation>[]) =>
           handleFilter(filterItem)
         }
-        logicFilter
+        simple
       />
     </div>
   )
 }
 ```
+
+<API></API>

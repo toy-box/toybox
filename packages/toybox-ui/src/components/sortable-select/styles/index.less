@@ -6,6 +6,12 @@
     padding-left: 0;
     max-height: 200px;
     overflow-y: auto;
+    &.fixed {
+      border-bottom: 1px solid @border-color-split;
+      > ul {
+        padding-left: 0;
+      }
+    }
   }
 }
 
@@ -23,14 +29,17 @@
   &.picked {
     background: fade(@black, 25%);
   }
+  .fixed-icon,
   .drag-handle {
     margin-right: 8px;
     color: fade(@black, 25%);
     transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    cursor: grab;
     &:hover {
       color: fade(@black, 45%);
     }
+  }
+  .drag-handle {
+    cursor: grab;
   }
   .select-item__label {
     flex-grow: 1;
