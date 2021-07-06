@@ -73,6 +73,7 @@ export const Select = React.forwardRef(
       showSearch = false,
       itemRender,
       optionSearch,
+      children,
       ...otherProps
     }: SelectProps,
     ref
@@ -248,7 +249,7 @@ export const Select = React.forwardRef(
     }
 
     const optGroup = useMemo(() => {
-      return mergeOptions.map((option) =>
+      return mergeOptions?.map((option) =>
         option.children ? (
           <OptGroup key={option.value} label={option.label}>
             {option.children.map((child) => (
@@ -282,10 +283,12 @@ export const Select = React.forwardRef(
         filterOption={filterOption}
         {...otherProps}
       >
-        {optGroup}
+        {children || optGroup}
       </AntSelect>
     )
   }
 )
+
+export { Option, OptGroup }
 
 Select.displayName = 'Select'

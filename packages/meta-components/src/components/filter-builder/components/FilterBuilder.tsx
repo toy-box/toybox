@@ -24,6 +24,7 @@ export interface IFilterBuilderProps {
   style?: CSSProperties
   specialMode?: boolean
   specialOptions?: IspecialOption[]
+  quoteOptions?: Toybox.MetaSchema.Types.IFieldOption[]
   simple?: boolean
 }
 
@@ -37,6 +38,7 @@ export const FilterBuilder = ({
   style,
   specialMode,
   specialOptions,
+  quoteOptions,
   simple,
 }: IFilterBuilderProps) => {
   const locale = useLocale()
@@ -48,7 +50,14 @@ export const FilterBuilder = ({
   }
   return (
     <FilterBuilderContext.Provider
-      value={{ value, onChange, simple, specialMode, specialOptions }}
+      value={{
+        value,
+        onChange,
+        simple,
+        specialMode,
+        specialOptions,
+        quoteOptions,
+      }}
     >
       <div className={classNames(className)} style={style}>
         {value.map((filterItem, idx) => (

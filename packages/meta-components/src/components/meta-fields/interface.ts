@@ -10,6 +10,7 @@ import { FieldBoolean, FieldBooleanProps } from './Boolean'
 import { FieldBusinessObject, FieldBusinessObjectProps } from './BusinessObject'
 import { FieldTreeSelectProps } from './TreeSelect'
 import { ReactNode } from 'react'
+import { IspecialOption } from '../filter-builder'
 
 type Component<P> =
   | React.ComponentType<P>
@@ -23,6 +24,7 @@ export declare type FieldModeType = 'read' | 'edit' | 'update'
 
 export interface BaseFieldProps {
   field: Toybox.MetaSchema.Types.IFieldMeta
+  quoteOptions?: Toybox.MetaSchema.Types.IFieldOption[]
   mode?: FieldModeType
   disabled?: boolean
   value?: any

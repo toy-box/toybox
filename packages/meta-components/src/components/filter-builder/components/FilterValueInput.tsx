@@ -24,6 +24,7 @@ import {
   FieldBoolean,
 } from '../../meta-fields'
 import { IFieldService } from '../interface'
+import { FilterBuilderContext } from '../context'
 
 export declare type FilterValueInputType =
   | 'string'
@@ -69,7 +70,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
     () => localeMap[locale || innerLocale],
     [locale, innerLocale]
   )
-
+  const context = useContext(FilterBuilderContext)
   const handleValue = useCallback(
     (value?: any, text?: string[]) => {
       onChange(value === undefined ? null : value, text)
@@ -176,30 +177,23 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
           onChange={(checked) => handleValue(checked)}
         />
       )
-    } else if (type === CompareType.INPUT) {
-      // const option = context?.specialOptions?.find((op) => op.value === 'formula');
-      // const metaSchema = option?.config || [];
-      // return (
-      //   <FormulaModel
-      //     value={value}
-      //     onChange={handleValue}
-      //     metaSchema={metaSchema}
-      //     inputStyle={style}
-      //   />
-      // )
+    } else if (type === CompareType.REFERENCE) {
       return (
-        <FieldString
-          disabled={fieldMeta == null}
+        <FieldSelect
           field={fieldMeta}
-          mode={mode}
-          style={style}
-          placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
-            fieldMeta.name
-          }`}
-          value={value}
+          quoteOptions={context.quoteOptions}
+          disabled={fieldMeta == null}
+          placeholder={`${get(
+            localeData.lang,
+            'filed.placeholderOp.variable'
+          )}`}
           allowClear
-          onChange={handleValue}
-          onPressEnter={onSubmit}
+          style={style}
+          showSearch
+          value={filterValue}
+          onChange={(value, options) =>
+            handleSelectOptions(value, options as OptionItem)
+          }
         />
       )
     }

@@ -486,6 +486,39 @@ export default () => {
       value: 'INPUT',
     },
   ]
+  const quoteOptions = [
+    {
+      label: '变量',
+      value: 'var',
+      children: [
+        {
+          label: '变量1',
+          value: 'var1',
+          key: 'deptId',
+        },
+        {
+          label: '变量2',
+          value: 'var2',
+          key: 'date',
+        },
+      ],
+    },
+    {
+      label: '常量',
+      value: 'const',
+      children: [
+        {
+          label: '常量1',
+          value: 'const1',
+        },
+        {
+          label: '常量2',
+          value: 'const2',
+          key: 'copId',
+        },
+      ],
+    },
+  ]
   const handleFilter = useCallback(
     (logicFilter: IUncheckLogicFilter) => setValue(logicFilter),
     []
@@ -501,6 +534,7 @@ export default () => {
         }
         specialMode
         specialOptions={specialOptions}
+        quoteOptions={quoteOptions}
       />
     </div>
   )
