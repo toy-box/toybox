@@ -94,7 +94,6 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   )
 
   const fieldOptions = useMemo(() => {
-    console.log(fieldMetas, 'field222222222222')
     return fieldMetas.map((field) => {
       if (field.children) {
         const children = field.children.map((child) => ({
@@ -172,13 +171,14 @@ export const CompareOperation: FC<CompareOperationProps> = ({
       fieldMetas.forEach((meta) => {
         if (meta.children) {
           fieldMeta = meta.children.find((f) => f.key === compare.source)
-        } else if (meta.key === compare.source) {
+        } else if (meta.key === source) {
           fieldMeta = meta
         }
       })
       console.log('fieldMeta', fieldMeta, source, fieldMetas)
       const op =
-        fieldMeta && FieldOpMap[fieldMeta.type].some((op) => op === compare.op)
+        fieldMeta?.type &&
+        FieldOpMap[fieldMeta.type].some((op) => op === compare.op)
           ? compare.op
           : FieldOpMap[fieldMeta?.type as any]?.[0]
       const type = context?.specialOptions?.some(

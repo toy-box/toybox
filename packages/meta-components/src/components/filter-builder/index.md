@@ -156,13 +156,7 @@ export default () => {
     },
   }
 
-  const [value, setValue] = useState([
-    {
-      source: 'deptId',
-      op: '$eq',
-      target: '1',
-    },
-  ])
+  const [value, setValue] = useState([])
   const handleFilter = useCallback(
     (logicFilter: IUncheckLogicFilter) => setValue(logicFilter),
     []
@@ -176,7 +170,6 @@ export default () => {
         onChange={(filterItem: Partial<ICompareOperation>[]) =>
           handleFilter(filterItem)
         }
-        logicFitler
       />
     </div>
   )
