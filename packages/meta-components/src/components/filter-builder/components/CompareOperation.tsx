@@ -1,16 +1,15 @@
 import React, { FC, useCallback, useContext, useMemo } from 'react'
 import update from 'immutability-helper'
-import { Button, Select, Input, Space } from 'antd'
+import { Input, Space } from 'antd'
 import { CloseLine } from '@airclass/icons'
-import { CompareOP, MetaValueType, IFieldMeta } from '@toy-box/meta-schema'
+import { Button, Select } from '@toy-box/toybox-ui'
+import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
 import get from 'lodash.get'
 import { FilterValueInput } from './FilterValueInput'
 import { FilterBuilderContext } from '../context'
 import { IFieldService } from '../interface'
 
 const inputStyle = { width: '320px' }
-
-const { Option, OptGroup } = Select
 
 export interface CompareOperationProps {
   index: number
@@ -278,23 +277,23 @@ export const CompareOperation: FC<CompareOperationProps> = ({
     )
   }, [filterFieldMeta, multiple, compare, onValueChange])
 
-  const optGroup = useMemo(() => {
-    return fieldOptions.map((option) =>
-      option.children ? (
-        <OptGroup key={option.value} label={option.label}>
-          {option.children.map((child) => (
-            <Option key={child.value} value={child.value}>
-              {child.label}
-            </Option>
-          ))}
-        </OptGroup>
-      ) : (
-        <Option key={option.value} value={option.value}>
-          {option.label}
-        </Option>
-      )
-    )
-  }, [fieldOptions])
+  // const optGroup = useMemo(() => {
+  //   return fieldOptions.map((option) =>
+  //     option.children ? (
+  //       <OptGroup key={option.value} label={option.label}>
+  //         {option.children.map((child) => (
+  //           <Option key={child.value} value={child.value}>
+  //             {child.label}
+  //           </Option>
+  //         ))}
+  //       </OptGroup>
+  //     ) : (
+  //       <Option key={option.value} value={option.value}>
+  //         {option.label}
+  //       </Option>
+  //     )
+  //   )
+  // }, [fieldOptions])
 
   return (
     <div className="tbox-filter-compare">
@@ -302,12 +301,10 @@ export const CompareOperation: FC<CompareOperationProps> = ({
         <Select
           style={{ width: '154px' }}
           value={compare.source}
-          // options={fieldOptions}
+          options={fieldOptions}
           placeholder={get(localeData.lang, 'filed.placeholderOp.select')}
           onChange={onKeyChange}
-        >
-          {optGroup}
-        </Select>
+        />
         <Select
           style={{ width: '92px' }}
           value={compare.op}

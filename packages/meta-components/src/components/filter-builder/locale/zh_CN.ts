@@ -12,6 +12,7 @@ const lang = {
     $lte: '小于等于',
     $in: '包含',
     $nin: '不包含',
+    $like: '匹配',
     $unitDateRange: '在',
     $between: '介于',
     $isNull: '为空',
