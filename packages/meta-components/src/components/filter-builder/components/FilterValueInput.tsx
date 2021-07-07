@@ -181,7 +181,6 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
       return (
         <FieldSelect
           field={fieldMeta}
-          quoteOptions={context.quoteOptions}
           disabled={fieldMeta == null}
           placeholder={`${get(
             localeData.lang,
