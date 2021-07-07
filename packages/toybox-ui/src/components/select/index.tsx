@@ -73,7 +73,6 @@ export const Select = React.forwardRef(
       showSearch = false,
       itemRender,
       optionSearch,
-      children,
       ...otherProps
     }: SelectProps,
     ref
@@ -283,7 +282,7 @@ export const Select = React.forwardRef(
         filterOption={filterOption}
         {...otherProps}
       >
-        {children || optGroup}
+        {optGroup}
       </AntSelect>
     )
   }
@@ -291,4 +290,4 @@ export const Select = React.forwardRef(
 
 export { Option, OptGroup }
 
-Select.displayName = 'Select'
+Select.displayName = 'SelectPro'
