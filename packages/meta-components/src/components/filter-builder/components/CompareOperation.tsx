@@ -277,24 +277,6 @@ export const CompareOperation: FC<CompareOperationProps> = ({
     )
   }, [filterFieldMeta, multiple, compare, onValueChange])
 
-  // const optGroup = useMemo(() => {
-  //   return fieldOptions.map((option) =>
-  //     option.children ? (
-  //       <OptGroup key={option.value} label={option.label}>
-  //         {option.children.map((child) => (
-  //           <Option key={child.value} value={child.value}>
-  //             {child.label}
-  //           </Option>
-  //         ))}
-  //       </OptGroup>
-  //     ) : (
-  //       <Option key={option.value} value={option.value}>
-  //         {option.label}
-  //       </Option>
-  //     )
-  //   )
-  // }, [fieldOptions])
-
   return (
     <div className="tbox-filter-compare">
       <Space>
