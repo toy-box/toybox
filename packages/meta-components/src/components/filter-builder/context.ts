@@ -8,7 +8,6 @@ export interface IFilterBuilderContextProps {
   ) => void
   specialMode?: boolean
   specialOptions?: IspecialOption[]
-  quoteOptions?: Toybox.MetaSchema.Types.IFieldOption[]
   simple?: boolean
 }
 

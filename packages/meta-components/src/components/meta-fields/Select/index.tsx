@@ -18,7 +18,7 @@ export declare type FieldSelectProps = Omit<
     selectMode?: SelectProps['mode']
   }
 
-const FieldSelect = React.forwardRef(
+export const FieldSelect = React.forwardRef(
   (
     { mode, field, selectMode, onClick, ...otherProps }: FieldSelectProps,
     ref
@@ -27,14 +27,6 @@ const FieldSelect = React.forwardRef(
     useImperativeHandle(ref, () => ({
       ...(inputRef.current || {}),
     }))
-
-    const isDisabled = useCallback(
-      (child) => {
-        if (!child.key) return false
-        return child.key !== field.key
-      },
-      [field]
-    )
 
     return (
       <div onClick={onClick}>
@@ -45,7 +37,7 @@ const FieldSelect = React.forwardRef(
           options={field.options}
           readMode={mode === 'read'}
           {...otherProps}
-        ></Select>
+        />
       </div>
     )
   }

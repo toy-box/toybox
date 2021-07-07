@@ -252,13 +252,21 @@ export const Select = React.forwardRef(
         option.children ? (
           <OptGroup key={option.value} label={option.label}>
             {option.children.map((child) => (
-              <Option key={child.value} value={child.value}>
+              <Option
+                disabled={child.disabled}
+                key={child.value}
+                value={child.value}
+              >
                 {child.label}
               </Option>
             ))}
           </OptGroup>
         ) : (
-          <Option key={option.value} value={option.value}>
+          <Option
+            disabled={option.disabled}
+            key={option.value}
+            value={option.value}
+          >
             {option.label}
           </Option>
         )

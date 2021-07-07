@@ -4,7 +4,6 @@ import React, {
   useEffect,
   useMemo,
   CSSProperties,
-  useContext,
 } from 'react'
 import { SelectValue } from 'antd/lib/select'
 import { RawValueType } from 'rc-tree-select/lib/interface'
@@ -24,7 +23,6 @@ import {
   FieldBoolean,
 } from '../../meta-fields'
 import { IFieldService } from '../interface'
-import { FilterBuilderContext } from '../context'
 
 export declare type FilterValueInputType =
   | 'string'
@@ -70,7 +68,6 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
     () => localeMap[locale || innerLocale],
     [locale, innerLocale]
   )
-  const context = useContext(FilterBuilderContext)
   const handleValue = useCallback(
     (value?: any, text?: string[]) => {
       onChange(value === undefined ? null : value, text)
@@ -181,7 +178,6 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
       return (
         <FieldSelect
           field={fieldMeta}
-          quoteOptions={context.quoteOptions}
           disabled={fieldMeta == null}
           placeholder={`${get(
             localeData.lang,

@@ -394,7 +394,23 @@ export default () => {
             minLength: null,
             minimum: null,
             name: '日期',
-            options: null,
+            options: [
+              {
+                label: '常量',
+                value: 'const',
+                children: [
+                  {
+                    label: '时间',
+                    value: 'time1',
+                    disabled: true,
+                  },
+                  {
+                    label: '时间2',
+                    value: 'time2',
+                  },
+                ],
+              },
+            ],
             pattern: null,
             primary: null,
             properties: null,
@@ -420,6 +436,7 @@ export default () => {
                   {
                     label: '变量1',
                     value: 'var1',
+                    disabled: true,
                   },
                   {
                     label: '变量2',
@@ -529,7 +546,6 @@ export default () => {
         }
         specialMode
         specialOptions={specialOptions}
-        quoteOptions={quoteOptions}
       />
     </div>
   )
