@@ -18,7 +18,7 @@ export declare type FieldSelectProps = Omit<
     selectMode?: SelectProps['mode']
   }
 
-const FieldSelect = React.forwardRef(
+export const FieldSelect = React.forwardRef(
   (
     { mode, field, selectMode, onClick, ...otherProps }: FieldSelectProps,
     ref
