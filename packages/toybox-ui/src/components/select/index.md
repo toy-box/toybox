@@ -81,6 +81,47 @@ export default () => {
 }
 ```
 
+### 远程
+
+```tsx
+import React from 'react'
+import { Select } from '@toy-box/toybox-ui'
+
+const options = [
+  {
+    label: '111',
+    value: '111',
+  },
+  {
+    label: '222',
+    value: '222',
+  },
+  {
+    label: '333',
+    value: '333',
+  },
+  {
+    label: '444',
+    value: '444',
+  },
+  {
+    label: '555',
+    value: '555',
+  },
+  {
+    label: '666',
+    value: '666',
+  },
+]
+const search = async () => {
+  return await options
+}
+
+export default () => {
+  return <Select remote={search} style={{ width: '200px' }} />
+}
+```
+
 ### 只读模式
 
 ```tsx

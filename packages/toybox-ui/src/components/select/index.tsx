@@ -65,7 +65,7 @@ export const Select = React.forwardRef(
       placeholder,
       params,
       mode,
-      options = [],
+      options: localOptions = [],
       readMode,
       onChange,
       remote,
@@ -83,7 +83,6 @@ export const Select = React.forwardRef(
     )
     const [initOptions, setInitOptions] = useState<OptionsType>([])
     const [initialed, setInitialed] = useState(false)
-    const [localOptions, setLocalOptions] = useState<OptionsType>(options)
     const [optionSearchKey, setOptionSearchKey] = useState<string>()
     const inputRef = useRef<any>()
     const searchRef = useRef<any>()
@@ -145,10 +144,6 @@ export const Select = React.forwardRef(
     }))
 
     useEffect(() => {
-      setLocalOptions(options || [])
-    }, [options])
-
-    useEffect(() => {
       const init = async () => {
         if (value != null && current == null && !initialed && remoteByValue) {
           const options = await remoteByValue(value, params)
@@ -204,7 +199,7 @@ export const Select = React.forwardRef(
           fetchData(key)
         }
       },
-      [remote, fetchData, setOptionSearchKey, options]
+      [remote, fetchData, setOptionSearchKey]
     )
 
     const handleOpen = useCallback(
@@ -247,7 +242,7 @@ export const Select = React.forwardRef(
       return <span>{Array.isArray(values) ? values.join(', ') : values}</span>
     }
 
-    const optGroup = useMemo(() => {
+    const optionRender = useMemo(() => {
       return mergeOptions?.map((option) =>
         option.children ? (
           <OptGroup key={option.value} label={option.label}>
@@ -290,7 +285,7 @@ export const Select = React.forwardRef(
         filterOption={filterOption}
         {...otherProps}
       >
-        {optGroup}
+        {optionRender}
       </AntSelect>
     )
   }
