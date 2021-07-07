@@ -322,7 +322,6 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             onChange={(value, options) =>
               handleSelectOptions(value, options as OptionItem)
             }
-            // onClear={() => onSubmit && onSubmit()}
           />
         )
       case MetaValueType.OBJECT:
@@ -339,7 +338,6 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             onChange={(value, options) =>
               handleSelectOptions(value, options as OptionItem)
             }
-            // onClear={() => onSubmit && onSubmit()}
           />
         )
       case MetaValueType.OBJECT_ID:
@@ -375,7 +373,6 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             onChange={(value, options) =>
               handleSelectOptions(value, options as OptionItem)
             }
-            // onClear={() => onSubmit && onSubmit()}
           />
         )
       case MetaValueType.BOOLEAN:

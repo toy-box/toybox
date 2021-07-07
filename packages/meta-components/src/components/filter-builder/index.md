@@ -15,6 +15,7 @@ export default () => {
   }
 
   function findOptions(key, name) {
+    console.log('findOfValues', key, name)
     return new Promise((resolve) => {
       serviceTest(resolve, key)
     }).then((res) => {
@@ -211,8 +212,9 @@ export default () => {
     return new Promise((resolve) => {
       serviceTest(resolve, key)
     }).then((res) => {
-      if (key === 'deptId')
+      if (key === 'deptId') {
         return [{ id: '2', pId: '1', value: '1', title: 'Expand to load2' }]
+      }
       return [
         {
           label: 'SIX',
