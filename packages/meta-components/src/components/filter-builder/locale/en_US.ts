@@ -11,6 +11,7 @@ const lang = {
     $gte: 'Greater or equal than',
     $lte: 'Less or equal than',
     $in: 'Include',
+    $like: 'Like',
     $nin: 'Not include',
     $unitDateRange: 'On',
     $between: 'Between',
