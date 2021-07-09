@@ -3,13 +3,14 @@
 #### 基本用法
 
 ```tsx
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo, useRef } from 'react'
 import {
   IndexView,
   FilterDisplay,
   FilterPanel,
   TableStatusBar,
 } from '@toy-box/meta-components'
+import { Button } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 
 const objectMeta = {
@@ -155,7 +156,9 @@ const visibleColumns = [
 ]
 
 export default () => {
+  const ref = useRef()
   const loadData = (pageable, params) => {
+    console.log('load data')
     const result = {
       list: data.map((row) => ({
         ...row,
@@ -178,17 +181,32 @@ export default () => {
     return promise
   }
 
+  const reload = useCallback(() => {
+    console.log('ref.current', ref.current)
+    ref.current.reload()
+  }, [ref])
+
+  const reset = useCallback(() => {
+    console.log('ref.current', ref.current)
+    ref.current.reset()
+  }, [ref])
+
   return (
-    <IndexView
-      style={{ minWidth: '600px' }}
-      visibleColumns={visibleColumns}
-      objectMeta={objectMeta}
-      loadData={loadData}
-      urlQuery
-    >
-      <FilterPanel simpleFilterKeys={['amount']} />
-      <TableStatusBar />
-    </IndexView>
+    <>
+      <IndexView
+        ref={ref}
+        style={{ minWidth: '600px' }}
+        visibleColumns={visibleColumns}
+        objectMeta={objectMeta}
+        loadData={loadData}
+        urlQuery
+      >
+        <FilterPanel simpleFilterKeys={['amount']} />
+        <TableStatusBar />
+      </IndexView>
+      <Button onClick={reload}>重新读取数据</Button>
+      <Button onClick={reset}>重置</Button>
+    </>
   )
 }
 ```

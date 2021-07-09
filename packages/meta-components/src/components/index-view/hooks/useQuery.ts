@@ -14,8 +14,10 @@ export const useQuery = () => {
   const history = useHistory()
   const location = useLocation()
 
-  const setQuery = (query: any) =>
+  const setQuery = (query: any) => {
     history.replace(`${location.pathname}?${qs.stringify(query)}`)
+  }
+
   const query = useMemo(
     () => qs.parse(location.search.substr(1)),
     [location.search]
