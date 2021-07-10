@@ -202,7 +202,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             mode={mode}
             style={style}
             placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
-              fieldMeta.name
+              fieldMeta.name || ''
             }`}
             value={value}
             allowClear
@@ -218,7 +218,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             disabled={fieldMeta == null}
             field={fieldMeta}
             placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
-              fieldMeta.name
+              fieldMeta.name || ''
             }`}
             style={style}
             value={value}
@@ -233,7 +233,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             field={fieldMeta}
             mode={'edit'}
             placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
-              fieldMeta.name
+              fieldMeta.name || ''
             }`}
             style={style}
             value={value}
@@ -296,7 +296,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
               placeholder={`${get(
                 localeData.lang,
                 'filed.placeholderOp.paramSelect'
-              )}${fieldMeta.name}`}
+              )}${fieldMeta.name || ''}`}
               onChange={(value, dateString) =>
                 handleValue(value, dateString ? [dateString] : undefined)
               }
@@ -309,7 +309,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             field={fieldMeta}
             disabled={fieldMeta == null}
             placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
-              fieldMeta.name
+              fieldMeta.name || ''
             }`}
             allowClear
             style={style}
@@ -337,26 +337,6 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
           />
         )
       case MetaValueType.OBJECT_ID:
-        // TODO: 需要判断何时用
-        // if (
-        //   fieldMeta.parentKey != null &&
-        //   fieldMeta.parentKey !== '' &&
-        //   multiple
-        // ) {
-        //   return (
-        //     <FieldTreeSelect
-        //       field={fieldMeta}
-        //       style={style}
-        //       mode={mode}
-        //       placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
-        //       multiple={multiple}
-        //       value={value}
-        //       onChange={handleValue}
-        //       loadData={findDataTrees}
-        //       loadByValue={searchByValue}
-        //     />
-        //   )
-        // }
         return (
           <FieldSelect
             placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
@@ -387,7 +367,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             mode={mode}
             style={style}
             placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
-              fieldMeta.name
+              fieldMeta.name || ''
             }`}
             value={value}
             onChange={handleValue}
