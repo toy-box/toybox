@@ -662,7 +662,10 @@ export default () => {
       defaultSelectionType="checkbox"
       pagination={{ simple: true }}
     >
-      <FilterPanel fieldMetas={fiterFieldMetas} simpleFilterKeys={['key-2']} />
+      <FilterPanel
+        fieldMetas={fiterFieldMetas}
+        simpleFilterKeys={['key-2', 'key-1']}
+      />
       <FilterDisplay fieldMetas={fiterFieldMetas} />
       <TableStatusBar />
     </IndexView>

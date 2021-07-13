@@ -34,7 +34,6 @@ const simpleParams = (
 ) => {
   const sParams: Record<string, any> = {}
   if (compares) {
-    console.log('compares', compares)
     compares.forEach((compare) => {
       if (
         compare.source &&

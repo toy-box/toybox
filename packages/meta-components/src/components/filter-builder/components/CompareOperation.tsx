@@ -174,7 +174,6 @@ export const CompareOperation: FC<CompareOperationProps> = ({
           fieldMeta = meta
         }
       })
-      console.log('fieldMeta', fieldMeta, source, fieldMetas)
       const op =
         fieldMeta?.type &&
         FieldOpMap[fieldMeta.type].some((op) => op === compare.op)

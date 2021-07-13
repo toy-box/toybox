@@ -1,7 +1,8 @@
 import React, { FC, useState, useMemo, useCallback } from 'react'
 import { Space } from 'antd'
 import update from 'immutability-helper'
-import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
+import { isStr } from '@toy-box/toybox-shared'
+import { CompareOP } from '@toy-box/meta-schema'
 import { FilterValueInput } from '../filter-builder/components/FilterValueInput'
 import { FilterWidget } from './components'
 import { IFieldService } from '../filter-builder/interface'
@@ -23,9 +24,16 @@ export interface FilterLabel {
   ellipsis?: boolean
 }
 
+export interface ISimpleFilter {
+  key: string
+  op: CompareOP
+}
+
+export type SimpleFilterType = string | ISimpleFilter
+
 export interface IFilterSearchProps {
   fieldMetas?: Toybox.MetaSchema.Types.IFieldMeta[]
-  simpleFilterKeys?: string[]
+  simpleFilterKeys?: SimpleFilterType[]
   value?: FilterType
   filterFieldService?: IFieldService
   title?: string
@@ -86,17 +94,10 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
 
   const onSimpleValueChange = (
     val: any,
-    fieldMeta: Toybox.MetaSchema.Types.IFieldMeta
+    fieldMeta: Toybox.MetaSchema.Types.IFieldMeta,
+    op: CompareOP = CompareOP.EQ
   ) => {
-    handleValueChange(
-      val,
-      fieldMeta,
-      [MetaValueType.STRING, MetaValueType.TEXT].some(
-        (type) => type === fieldMeta.type
-      )
-        ? CompareOP.LIKE
-        : CompareOP.EQ
-    )
+    handleValueChange(val, fieldMeta, op)
   }
 
   const handleValueChange = useCallback(
@@ -147,8 +148,12 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
 
   const simpleFilter = useMemo(() => {
     return simple
-      ? simpleFilterKeys.map((key, idx) => {
-          const fieldMeta = fieldMetas.find((field) => field.key === key)
+      ? simpleFilterKeys.map((simpleFilter, idx) => {
+          const filterKey = isStr(simpleFilter)
+            ? simpleFilter
+            : simpleFilter.key
+          const op = isStr(simpleFilter) ? CompareOP.EQ : simpleFilter.op
+          const fieldMeta = fieldMetas.find((field) => field.key === filterKey)
           return fieldMeta ? (
             <FilterValueInput
               key={idx}
@@ -156,14 +161,14 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
               fieldMetaService={filterFieldService}
               multiple={false}
               fieldMeta={fieldMeta}
-              onChange={(value) => onSimpleValueChange(value, fieldMeta)}
+              onChange={(value) => onSimpleValueChange(value, fieldMeta, op)}
               onSubmit={handleSubmit}
               style={{ width: '160px' }}
             />
           ) : undefined
         })
       : null
-  }, [simpleFilterKeys])
+  }, [simpleFilterKeys, filterValue])
 
   return (
     <div className="filter-model">
@@ -178,6 +183,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
             filterFieldService={filterFieldService}
             onChange={handleChange}
             onCancel={cancel}
+            simple={simple}
           />
         )}
         {simpleFilter}
