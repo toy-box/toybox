@@ -54,6 +54,9 @@ export interface IFieldMeta {
   multipleOf?: number
   minProperties?: number
   maxProperties?: number
+  maxItems?: number
+  minItems?: number
+  uniqueItems?: boolean
   pattern?: string
   format?: string
   titleKey?: string
