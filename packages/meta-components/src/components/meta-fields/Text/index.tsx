@@ -12,48 +12,50 @@ export declare type FieldTextProps = Omit<
     onChange?: (value: string) => void
   }
 
-const FieldTextFC = (
-  {
-    mode,
-    value,
-    field,
-    onChange,
-    placeholder,
-    disabled,
-    onClick,
-    ...otherProps
-  }: FieldTextProps,
-  ref: Ref<any>
-) => {
-  const inputRef = useRef<any>()
-  useImperativeHandle(
-    ref,
-    () => ({
-      ...(inputRef.current || {}),
-    }),
-    []
-  )
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-      onChange && onChange(e.target.value),
-    [onChange]
-  )
+export const FieldText = React.forwardRef<any, FieldTextProps>(
+  (
+    {
+      mode,
+      value,
+      field,
+      onChange,
+      placeholder,
+      disabled,
+      onClick,
+      ...otherProps
+    },
+    ref
+  ) => {
+    const inputRef = useRef<any>()
+    useImperativeHandle(
+      ref,
+      () => ({
+        ...(inputRef.current || {}),
+      }),
+      []
+    )
+    const handleChange = useCallback(
+      (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+        onChange && onChange(e.target.value),
+      [onChange]
+    )
 
-  if (mode === 'read') {
-    const dom = value || '-'
-    return <div onClick={onClick}>{dom}</div>
+    if (mode === 'read') {
+      const dom = value || '-'
+      return <div onClick={onClick}>{dom}</div>
+    }
+    return (
+      <Input.TextArea
+        ref={inputRef}
+        defaultValue={field.defaultValue}
+        value={value}
+        onChange={handleChange}
+        placeholder={placeholder}
+        disabled={disabled}
+        {...otherProps}
+      />
+    )
   }
-  return (
-    <Input.TextArea
-      ref={inputRef}
-      defaultValue={field.defaultValue}
-      value={value}
-      onChange={handleChange}
-      placeholder={placeholder}
-      disabled={disabled}
-      {...otherProps}
-    />
-  )
-}
+)
 
-export const FieldText = React.forwardRef(FieldTextFC)
+FieldText.displayName = 'FieldText'

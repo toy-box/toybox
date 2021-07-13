@@ -44,7 +44,7 @@ export interface FieldTreeSelectProps<ValueType = DefaultValueType>
   treeData?: SimpleTreeNode[]
 }
 
-export const FieldTreeSelect = React.forwardRef(
+export const FieldTreeSelect = React.forwardRef<any, FieldTreeSelectProps>(
   (
     {
       loadData,
@@ -58,8 +58,8 @@ export const FieldTreeSelect = React.forwardRef(
       multiple,
       defaultValue,
       ...otherProps
-    }: FieldTreeSelectProps,
-    ref: Ref<any>
+    },
+    ref
   ) => {
     const inputRef = useRef<any>()
     useImperativeHandle(
@@ -76,7 +76,6 @@ export const FieldTreeSelect = React.forwardRef(
     useEffect(() => {
       if (!initialized) {
         if (value) {
-          console.log('loadByValue', loadByValue)
           loadByValue(isArr(value) ? value : [value]).then((data) => {
             setLabelValueCache(data)
             setInitialized(true)

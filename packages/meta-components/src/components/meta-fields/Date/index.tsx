@@ -31,81 +31,89 @@ export declare type FieldDateProps = FieldBasePickerProps & {
 const DateFormat = 'YYYY/MM/DD'
 const DatetimeFormat = 'YYYY/MM/DD HH:mm:ss'
 
-const DateFC: ForwardRefRenderFunction<any, FieldDateProps> = (
-  {
-    disabled,
-    value,
-    placeholder,
-    mode,
-    field,
-    open,
-    bordered,
-    onChange,
-    onClick,
-    onOpenChange,
-    dateMode,
-    ...otherProps
-  },
-  ref: Ref<any>
-) => {
-  const showTime = useMemo(
-    () => field.type === MetaValueType.DATETIME,
-    [field.type]
-  )
-
-  const defaultValue = useMemo(
-    () =>
-      field.defaultValue ? dayjs(field.defaultValue as string) : undefined,
-    [field.defaultValue]
-  )
-
-  const innerFormat = useMemo(
-    () =>
-      field.format || field.type === MetaValueType.DATE
-        ? DateFormat
-        : DatetimeFormat,
-    [field.format]
-  )
-
-  const innerOnChange = useCallback(
-    (date: Dayjs | null, dateString: string = '') => {
-      onChange &&
-        onChange(date ? dayjs(dateString).toISOString() : undefined, dateString)
+export const FieldDate = React.forwardRef<any, FieldDateProps>(
+  (
+    {
+      disabled,
+      value,
+      placeholder,
+      mode,
+      field,
+      open,
+      bordered,
+      onChange,
+      onClick,
+      onOpenChange,
+      dateMode,
+      ...otherProps
     },
-    [innerFormat, onChange]
-  )
+    ref
+  ) => {
+    const showTime = useMemo(
+      () => field.type === MetaValueType.DATETIME,
+      [field.type]
+    )
 
-  const innerValue = useMemo(() => (value ? dayjs(value) : undefined), [value])
+    const defaultValue = useMemo(
+      () =>
+        field.defaultValue ? dayjs(field.defaultValue as string) : undefined,
+      [field.defaultValue]
+    )
 
-  const text = useMemo(
-    () => (value ? dayjs(value).format(innerFormat) : '-'),
-    [value, innerFormat]
-  )
+    const innerFormat = useMemo(
+      () =>
+        field.format || field.type === MetaValueType.DATE
+          ? DateFormat
+          : DatetimeFormat,
+      [field.format]
+    )
 
-  if (mode === 'read') {
+    const innerOnChange = useCallback(
+      (date: Dayjs | null, dateString: string = '') => {
+        onChange &&
+          onChange(
+            date ? dayjs(dateString).toISOString() : undefined,
+            dateString
+          )
+      },
+      [innerFormat, onChange]
+    )
+
+    const innerValue = useMemo(
+      () => (value ? dayjs(value) : undefined),
+      [value]
+    )
+
+    const text = useMemo(
+      () => (value ? dayjs(value).format(innerFormat) : '-'),
+      [value, innerFormat]
+    )
+
+    if (mode === 'read') {
+      return (
+        <span ref={ref} onClick={onClick}>
+          {text}
+        </span>
+      )
+    }
     return (
-      <span ref={ref} onClick={onClick}>
-        {text}
-      </span>
+      <DatePicker
+        ref={ref}
+        value={innerValue}
+        bordered={bordered}
+        placeholder={placeholder}
+        defaultValue={defaultValue}
+        disabled={disabled}
+        onChange={innerOnChange}
+        open={open}
+        style={{ width: '100%' }}
+        mode={dateMode}
+        showTime={showTime ? { format: 'HH:mm:ss' } : false}
+        onOpenChange={onOpenChange}
+        {...otherProps}
+      />
     )
   }
-  return (
-    <DatePicker
-      ref={ref}
-      value={innerValue}
-      bordered={bordered}
-      placeholder={placeholder}
-      defaultValue={defaultValue}
-      disabled={disabled}
-      onChange={innerOnChange}
-      open={open}
-      style={{ width: '100%' }}
-      mode={dateMode}
-      showTime={showTime ? { format: 'HH:mm:ss' } : false}
-      onOpenChange={onOpenChange}
-      {...otherProps}
-    />
-  )
-}
+)
 
-export const FieldDate = React.forwardRef(DateFC)
+FieldDate.displayName = 'FieldDate'

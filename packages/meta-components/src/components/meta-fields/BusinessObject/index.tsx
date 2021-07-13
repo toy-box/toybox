@@ -8,22 +8,15 @@ export interface FieldBusinessObjectProps extends BaseFieldProps {
 }
 
 // TODO: edit 模式需要考虑
-export const FieldBusinessObject = React.forwardRef(
-  (
-    {
-      value,
-      field,
-      onClick,
-      component: Component = 'span',
-    }: FieldBusinessObjectProps,
-    ref: Ref<any>
-  ) => {
-    return (
-      <Component onClick={() => onClick && onClick(value)}>
-        {value ? value[field.titleKey || field.primaryKey || 'id'] : null}
-      </Component>
-    )
-  }
-)
+export const FieldBusinessObject = React.forwardRef<
+  any,
+  FieldBusinessObjectProps
+>(({ value, field, onClick, component: Component = 'span' }, ref) => {
+  return (
+    <Component onClick={() => onClick && onClick(value)}>
+      {value ? value[field.titleKey || field.primaryKey || 'id'] : null}
+    </Component>
+  )
+})
 
 FieldBusinessObject.displayName = 'FieldBusinessObject'
