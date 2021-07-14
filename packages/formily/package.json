@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/formily",
-  "version": "1.0.46",
+  "version": "1.0.47",
   "license": "MIT",
   "description": "",
   "main": "lib/index.js",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@airclass/icons": "^4.3.4",
     "@formily/react": "^2.0.0-beta.77",
-    "@toy-box/meta-components": "^1.0.45",
+    "@toy-box/meta-components": "^1.0.47",
     "@toy-box/meta-schema": "^1.0.45",
     "@toy-box/toybox-ui": "^1.0.40"
   }
