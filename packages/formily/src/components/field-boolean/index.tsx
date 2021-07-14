@@ -15,7 +15,7 @@ export const FieldBoolean: ComposedInput = connect(
     return {
       ...props,
       mode: field.readPretty ? 'read' : ('edit' as FieldModeType),
-      field: convertFormilyField2IFieldMeta(field, 'boolean'),
+      field: convertFormilyField2IFieldMeta(field, props, 'boolean'),
     }
   })
 )

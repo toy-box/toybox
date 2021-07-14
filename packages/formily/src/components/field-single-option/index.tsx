@@ -15,7 +15,7 @@ export const FieldSingleOption: ComposedInput = connect(
     return {
       ...props,
       mode: field.readPretty ? 'read' : ('edit' as FieldModeType),
-      field: convertFormilyField2IFieldMeta(field, 'singleOption'),
+      field: convertFormilyField2IFieldMeta(field, props, 'singleOption'),
     }
   })
 )

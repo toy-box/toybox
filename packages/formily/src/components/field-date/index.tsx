@@ -15,7 +15,7 @@ export const FieldDate: ComposedInput = connect(
     return {
       ...props,
       mode: field.readPretty ? 'read' : ('edit' as FieldModeType),
-      field: convertFormilyField2IFieldMeta(field),
+      field: convertFormilyField2IFieldMeta(field, props),
     }
   })
 )

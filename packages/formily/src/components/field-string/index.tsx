@@ -16,7 +16,7 @@ export const FieldString: ComposedInput = connect(
     return {
       ...props,
       mode: field.readPretty ? 'read' : ('edit' as FieldModeType),
-      field: convertFormilyField2IFieldMeta(field, 'string'),
+      field: convertFormilyField2IFieldMeta(field, props, 'string'),
       suffix: (
         <span>
           {field?.['loading'] || field?.['validating'] ? (

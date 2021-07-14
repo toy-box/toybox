@@ -15,7 +15,7 @@ export const FieldNumber: ComposedInput = connect(
     return {
       ...props,
       mode: field.readPretty ? 'read' : ('edit' as FieldModeType),
-      field: convertFormilyField2IFieldMeta(field, 'number'),
+      field: convertFormilyField2IFieldMeta(field, props, 'number'),
     }
   })
 )
