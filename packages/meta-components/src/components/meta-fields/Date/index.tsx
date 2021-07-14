@@ -6,10 +6,10 @@ import React, {
 } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
-import { DatePickerProps } from 'antd/lib/date-picker'
 import { PickerBaseProps } from 'antd/lib/date-picker/generatePicker'
 import { MetaValueType } from '@toy-box/meta-schema'
 import { DatePicker } from '@toy-box/toybox-ui'
+import { omit } from '@toy-box/toybox-shared'
 import { BaseFieldProps } from '../interface'
 
 dayjs.extend(LocalizedFormat)
@@ -110,7 +110,7 @@ export const FieldDate = React.forwardRef<any, FieldDateProps>(
         mode={dateMode}
         showTime={showTime ? { format: 'HH:mm:ss' } : false}
         onOpenChange={onOpenChange}
-        {...otherProps}
+        {...omit(otherProps, ['format'])}
       />
     )
   }

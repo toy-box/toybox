@@ -4,6 +4,7 @@ import { pick } from '@toy-box/toybox-shared'
 
 export const convertFormilyField2IFieldMeta = (
   schema: ISchema,
+  props: Record<string, any>,
   type?: string
 ): Toybox.MetaSchema.Types.IFieldMeta => {
   const pickProps = pick(schema, [
@@ -14,14 +15,12 @@ export const convertFormilyField2IFieldMeta = (
     'exclusiveMinimum',
     'maxLength',
     'minLength',
-    'pattern',
     'maxItems',
     'minItems',
     'uniqueItems',
     'maxProperties',
     'minProperties',
     'required',
-    'format',
     'description',
   ]) as Pick<
     Toybox.MetaSchema.Types.IFieldMeta,
@@ -32,14 +31,12 @@ export const convertFormilyField2IFieldMeta = (
     | 'exclusiveMinimum'
     | 'maxLength'
     | 'minLength'
-    | 'pattern'
     | 'maxItems'
     | 'minItems'
     | 'uniqueItems'
     | 'maxProperties'
     | 'minProperties'
     | 'required'
-    | 'format'
     | 'description'
   >
 
@@ -48,6 +45,8 @@ export const convertFormilyField2IFieldMeta = (
     type: type || (schema.type as string),
     name: schema.title,
     ...pickProps,
+    format: props.format,
+    pattern: props.pattern,
     options: schema.enum as IFieldOption[],
   }
 }
