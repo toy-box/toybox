@@ -3,6 +3,7 @@ import { connect, mapProps } from '@formily/react'
 import {
   FieldNumber as MetaFieldNumber,
   FieldNumberProps,
+  FieldModeType,
 } from '@toy-box/meta-components'
 import { convertFormilyField2IFieldMeta } from '../../schema/convert'
 
@@ -13,7 +14,7 @@ export const FieldNumber: ComposedInput = connect(
   mapProps((props, field) => {
     return {
       ...props,
-      mode: field.readPretty ? 'read' : 'edit',
+      mode: field.readPretty ? 'read' : ('edit' as FieldModeType),
       field: convertFormilyField2IFieldMeta(field, 'number'),
     }
   })
