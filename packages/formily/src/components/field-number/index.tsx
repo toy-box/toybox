@@ -13,6 +13,7 @@ export const FieldNumber: ComposedInput = connect(
   mapProps((props, field) => {
     return {
       ...props,
+      mode: field.readPretty ? 'read' : 'edit',
       field: convertFormilyField2IFieldMeta(field, 'number'),
     }
   })
