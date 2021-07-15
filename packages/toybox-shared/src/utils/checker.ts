@@ -25,3 +25,8 @@ export const isReactElement = (obj: any): boolean =>
 export const isHTMLElement = (target: any): target is EventTarget => {
   return Object.prototype.toString.call(target).indexOf('HTML') > -1
 }
+export const instOf = (value: any, cls: any) => {
+  if (isFn(cls)) return value instanceof cls
+  if (isStr(cls)) return window[cls] ? value instanceof window[cls] : false
+  return false
+}

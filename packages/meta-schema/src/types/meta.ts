@@ -29,9 +29,9 @@ export interface IFieldOption {
   children?: IFieldOption[]
 }
 
-export interface IFieldItems {
+export interface IFieldItems<T = IFieldMeta> {
   type: MetaValueType | string
-  properties: { [key: string]: IFieldMeta }
+  properties?: { [key: string]: T }
 }
 
 export interface IFieldMeta {
@@ -63,7 +63,7 @@ export interface IFieldMeta {
   primaryKey?: string
   parentKey?: string
   properties?: Record<string, IFieldMeta>
-  items?: IFieldItems
+  items?: IFieldItems<IFieldMeta>
   index?: number
   defaultValue?: any
 }

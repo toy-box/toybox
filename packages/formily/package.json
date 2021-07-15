@@ -26,9 +26,11 @@
   },
   "dependencies": {
     "@airclass/icons": "^4.3.4",
+    "@designable/core": "^0.4.8",
     "@formily/react": "^2.0.0-beta.77",
     "@toy-box/meta-components": "^1.0.48",
     "@toy-box/meta-schema": "^1.0.45",
-    "@toy-box/toybox-ui": "^1.0.48"
+    "@toy-box/toybox-ui": "^1.0.48",
+    "ts-transformer-keys": "^0.4.3"
   }
 }
