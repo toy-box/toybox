@@ -72,6 +72,11 @@ export interface IToyboxSchema {
   form?: Record<string, any>
 }
 
+export interface FormilySchema {
+  schema?: ISchema
+  form?: Record<string, any>
+}
+
 const createOptions = (options: ITransformerOptions): ITransformerOptions => {
   return {
     designableFieldName: 'DesignableField',
@@ -199,5 +204,16 @@ export const converSchemaToFormily = (schema: IMetaSchema) => {
       field,
     },
     ...others,
+  }
+}
+
+export const convertTreeNodesToFormily = (
+  node: TreeNode,
+  options: ITransformerOptions
+): FormilySchema => {
+  const data = convertTreeNodesToSchema(node, options)
+  return {
+    schema: data.schema ? converSchemaToFormily(data.schema) : undefined,
+    form: data.form,
   }
 }

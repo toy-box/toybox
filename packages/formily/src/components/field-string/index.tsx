@@ -6,7 +6,6 @@ import {
   FieldModeType,
 } from '@toy-box/meta-components'
 import { LoadingOutlined } from '@ant-design/icons'
-import { convertFormilyField2IFieldMeta } from '../../schema/convert'
 
 type ComposedInput = React.FC<FieldStringProps>
 

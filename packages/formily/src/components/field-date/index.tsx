@@ -5,7 +5,6 @@ import {
   FieldDateProps,
   FieldModeType,
 } from '@toy-box/meta-components'
-import { convertFormilyField2IFieldMeta } from '../../schema/convert'
 
 type ComposedInput = React.FC<FieldDateProps>
 
