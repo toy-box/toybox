@@ -2,7 +2,6 @@ import { ISchema } from '@formily/react'
 import { IFieldMeta, IFieldOption, MetaValueType } from '@toy-box/meta-schema'
 import { pick, clone } from '@toy-box/toybox-shared'
 import { TreeNode } from '@designable/core'
-import { keys } from 'ts-transformer-keys'
 import { IMetaSchema } from '../types'
 
 export const convertFormilyField2IFieldMeta = (
@@ -183,7 +182,39 @@ export const converSchemaToFormily = (schema: IMetaSchema) => {
     ['x-component-props']: componentsProps,
     ...others
   } = schema
-  const field = pick(schema, keys<IFieldMeta>())
+  const field = pick(schema, [
+    'key',
+    'name',
+    'type',
+    'description',
+    'primary',
+    'options',
+    'refObjectId',
+    'unique',
+    'required',
+    'maximum',
+    'minimum',
+    'exclusiveMaximum',
+    'exclusiveMinimum',
+    'maxLength',
+    'minLength',
+    'precision',
+    'multipleOf',
+    'minProperties',
+    'maxProperties',
+    'maxItems',
+    'minItems',
+    'uniqueItems',
+    'pattern',
+    'format',
+    'titleKey',
+    'primaryKey',
+    'parentKey',
+    'properties',
+    'items',
+    'index',
+    'defaultValue',
+  ])
   return {
     name: key,
     title: name,

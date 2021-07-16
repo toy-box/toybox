@@ -30,7 +30,6 @@
     "@formily/react": "^2.0.0-beta.77",
     "@toy-box/meta-components": "^1.0.49",
     "@toy-box/meta-schema": "^1.0.49",
-    "@toy-box/toybox-ui": "^1.0.48",
-    "ts-transformer-keys": "^0.4.3"
+    "@toy-box/toybox-ui": "^1.0.48"
   }
 }
