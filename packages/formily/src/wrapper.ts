@@ -16,6 +16,15 @@ export const wrapperForFormily = (target) => {
 }
 
 export const wrapperForDesignable = (target) => {
+  return connect(
+    target,
+    mapProps((props, field) => {
+      return {
+        ...props,
+        mode: field.readPretty ? 'read' : ('edit' as FieldModeType),
+      }
+    })
+  )
   const Destination = React.forwardRef(
     (props: React.ComponentProps<any>, ref) => {
       const field = pick(props, [

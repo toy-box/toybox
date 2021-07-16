@@ -216,6 +216,7 @@ export const converSchemaToFormily = (schema: IMetaSchema) => {
     'defaultValue',
   ])
   return {
+    ...others,
     name: key,
     title: name,
     default: defaultValue,
@@ -230,7 +231,6 @@ export const converSchemaToFormily = (schema: IMetaSchema) => {
         }
       : undefined,
     enum: options,
-    ...others,
     ['x-component-props']: {
       ...componentsProps,
       field,
