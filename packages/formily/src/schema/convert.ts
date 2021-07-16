@@ -1,7 +1,7 @@
 import { ISchema } from '@formily/react'
 import { IFieldMeta, IFieldOption, MetaValueType } from '@toy-box/meta-schema'
-import { pick, clone } from '@toy-box/toybox-shared'
-import { TreeNode } from '@designable/core'
+import { pick, clone, uid } from '@toy-box/toybox-shared'
+import { ITreeNode, TreeNode } from '@designable/core'
 import { IMetaSchema } from '../types'
 
 export const convertFormilyField2IFieldMeta = (
@@ -230,11 +230,11 @@ export const converSchemaToFormily = (schema: IMetaSchema) => {
         }
       : undefined,
     enum: options,
+    ...others,
     ['x-component-props']: {
       ...componentsProps,
       field,
     },
-    ...others,
   }
 }
 
@@ -248,3 +248,43 @@ export const convertTreeNodesToFormily = (
     form: data.form,
   }
 }
+
+// export const convertToTreeNode = (
+//   toyboxSchema: IToyboxSchema = {},
+//   options?: ITransformerOptions
+// ) => {
+//   const realOptions = createOptions(options)
+//   const root: ITreeNode = {
+//     componentName: realOptions.designableFormName,
+//     props: toyboxSchema.form,
+//     children: [],
+//   }
+//   // const schema = new Schema(formily.schema)
+//   const cleanProps = (props: any) => {
+//     delete props['version']
+//     delete props['_isJSONSchemaObject']
+//     return props
+//   }
+//   const appendTreeNode = (parent: ITreeNode, schema: IMetaSchema) => {
+//     if (!schema) return
+//     const current = {
+//       id: schema['_designableId'] || uid(),
+//       componentName: realOptions.designableFieldName,
+//       props: cleanProps(schema),
+//       children: [],
+//     }
+//     parent.children.push(current)
+//     if (schema.items && !Array.isArray(schema.items)) {
+//       appendTreeNode(current, schema.items)
+//     }
+//     schema.mapProperties((schema) => {
+//       schema['_designableId'] = schema['_designableId'] || uid()
+//       appendTreeNode(current, schema)
+//     })
+//   }
+//   schema.mapProperties((schema) => {
+//     schema['_designableId'] = schema['_designableId'] || uid()
+//     appendTreeNode(root, schema)
+//   })
+//   return root
+// }
