@@ -13,6 +13,7 @@ export enum MetaValueType {
   PERCENT = 'percent',
   OBJECT = 'object',
   RATE = 'rate',
+  TIMESTAMP = 'timestamp',
 }
 
 export declare type DefaultRowData = Record<string, any>

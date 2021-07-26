@@ -21,6 +21,7 @@ import {
   FieldPercent,
   FieldNumber,
   FieldBoolean,
+  FieldTimestamp,
 } from '../../meta-fields'
 import { IFieldService } from '../interface'
 
@@ -290,6 +291,54 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
         return (
           <div style={style}>
             <FieldDate
+              value={value}
+              mode={mode}
+              field={fieldMeta}
+              placeholder={`${get(
+                localeData.lang,
+                'filed.placeholderOp.paramSelect'
+              )}${fieldMeta.name || ''}`}
+              onChange={(value, dateString) =>
+                handleValue(value, dateString ? [dateString] : undefined)
+              }
+            />
+          </div>
+        )
+      case MetaValueType.TIMESTAMP:
+        if (operation === CompareOP.UNIT_DATE_RANGE) {
+          return (
+            <DateUnitRange
+              style={style}
+              value={value}
+              onChange={(value, text) => handleValue(value, text ? [text] : [])}
+            />
+          )
+        }
+        if (operation === CompareOP.BETWEEN) {
+          const innerValue =
+            value != null
+              ? ([dayjs(value[0]), dayjs(value[1])] as [Dayjs, Dayjs])
+              : undefined
+          return (
+            <DatePicker.RangePicker
+              value={innerValue}
+              onChange={(value) => {
+                const doValue = value
+                  ? [
+                      value[0] ? dayjs(value[0]).unix() : undefined,
+                      value[1] ? dayjs(value[1]).unix() : undefined,
+                    ]
+                  : []
+                handleValue(doValue)
+              }}
+              style={style}
+              showTime={{ format: 'HH:mm:ss' }}
+            />
+          )
+        }
+        return (
+          <div style={style}>
+            <FieldTimestamp
               value={value}
               mode={mode}
               field={fieldMeta}
