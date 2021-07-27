@@ -471,6 +471,38 @@ export default () => {
           },
         ],
       },
+      {
+        label: '集合变量',
+        value: 'var',
+        children: [
+          {
+            description: null,
+            exclusiveMaximum: null,
+            exclusiveMinimum: null,
+            format: null,
+            key: 'connent1',
+            maxLength: null,
+            maximum: null,
+            minLength: null,
+            minimum: null,
+            name: '集合',
+            options: null,
+            parentKey: 'parent_id',
+            pattern: null,
+            primary: null,
+            properties: null,
+            refObjectId: '5f9630d977b9ec42e4d0dca5',
+            required: null,
+            titleKey: 'name',
+            items: {
+              type: 'string',
+            },
+            type: 'array',
+            unique: null,
+            unBasic: true,
+          },
+        ],
+      },
     ],
 
     filterFieldService: {

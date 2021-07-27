@@ -77,6 +77,7 @@ const FieldOpMap: Record<string, Array<Toybox.MetaSchema.Types.CompareOP>> = {
   [MetaValueType.SINGLE_OPTION]: optionOps,
   [MetaValueType.OBJECT_ID]: optionOps,
   [MetaValueType.OBJECT]: optionOps,
+  [MetaValueType.ARRAY]: optionOps,
 }
 
 export const CompareOperation: FC<CompareOperationProps> = ({
@@ -123,11 +124,13 @@ export const CompareOperation: FC<CompareOperationProps> = ({
 
   const filterFieldMeta = useMemo(() => {
     let fieldMeta: any = {}
-    fieldMetas.forEach((meta) => {
+    fieldMetas.some((meta) => {
       if (meta.children) {
         fieldMeta = meta.children.find((f) => f.key === compare.source)
+        return fieldMeta
       } else if (meta.key === compare.source) {
         fieldMeta = meta
+        return fieldMeta
       }
     })
     return fieldMeta
