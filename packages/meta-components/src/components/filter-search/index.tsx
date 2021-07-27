@@ -1,12 +1,10 @@
 import React, { FC, useState, useMemo, useCallback } from 'react'
-import { Space, Tooltip, Popover, Button } from 'antd'
-import { Filter3Line } from '@airclass/icons'
+import { Space } from 'antd'
 import update from 'immutability-helper'
-import { useLocale } from '@toy-box/toybox-shared'
-import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
+import { isStr } from '@toy-box/toybox-shared'
+import { CompareOP } from '@toy-box/meta-schema'
 import { FilterValueInput } from '../filter-builder/components/FilterValueInput'
-import { FilterDesigner } from './components'
-import localeMap from './locale'
+import { FilterWidget } from './components'
 import { IFieldService } from '../filter-builder/interface'
 
 export interface ILabelValue {
@@ -26,16 +24,24 @@ export interface FilterLabel {
   ellipsis?: boolean
 }
 
+export interface ISimpleFilter {
+  key: string
+  op: CompareOP
+}
+
+export type SimpleFilterType = string | ISimpleFilter
+
 export interface IFilterSearchProps {
   fieldMetas?: Toybox.MetaSchema.Types.IFieldMeta[]
-  simpleFilterKeys?: string[]
+  simpleFilterKeys?: SimpleFilterType[]
   value?: FilterType
   filterFieldService?: IFieldService
   title?: string
   onChange?: (filter?: FilterType) => void
   onCancel?: () => void
-  simple?: boolean
   onSubmit?: (value?: any) => void
+  simple?: boolean
+  hiddenDesigner?: boolean
 }
 
 export const FilterSearch: FC<IFilterSearchProps> = ({
@@ -45,13 +51,12 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
   value = [],
   title,
   simple,
+  hiddenDesigner,
   onChange,
   onCancel,
   onSubmit,
 }) => {
   const [filterEditVisible, setFilterEditVisible] = useState(false)
-  const locale = useLocale()
-  const localeData = useMemo(() => localeMap[locale], [locale])
 
   const handleSubmit = useCallback(() => {
     onSubmit && onSubmit()
@@ -89,17 +94,10 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
 
   const onSimpleValueChange = (
     val: any,
-    fieldMeta: Toybox.MetaSchema.Types.IFieldMeta
+    fieldMeta: Toybox.MetaSchema.Types.IFieldMeta,
+    op: CompareOP = CompareOP.EQ
   ) => {
-    handleValueChange(
-      val,
-      fieldMeta,
-      [MetaValueType.STRING, MetaValueType.TEXT].some(
-        (type) => type === fieldMeta.type
-      )
-        ? CompareOP.LIKE
-        : CompareOP.EQ
-    )
+    handleValueChange(val, fieldMeta, op)
   }
 
   const handleValueChange = useCallback(
@@ -144,42 +142,18 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
     [value, onChange]
   )
 
-  const cencel = useCallback(() => {
+  const cancel = useCallback(() => {
     setFilterEditVisible(false)
   }, [setFilterEditVisible])
 
-  // 子组件
-  const filterContainer = useMemo(() => {
-    return (
-      <FilterDesigner
-        fieldMetas={fieldMetas}
-        value={value}
-        title={title || localeData.lang.filter['defaultTitle']}
-        filterFieldService={filterFieldService}
-        onChange={handleChange}
-        onCancel={cencel}
-        simple={simple}
-      />
-    )
-  }, [fieldMetas, value, filterFieldService])
-
-  return (
-    <div className="filter-model">
-      <Space>
-        <Popover
-          placement="bottom"
-          content={filterContainer}
-          trigger="click"
-          visible={filterEditVisible}
-          onVisibleChange={setFilterEditVisible}
-          destroyTooltipOnHide={false}
-        >
-          <Tooltip placement="top" title={localeData.lang.filter['tip']}>
-            <Button icon={<Filter3Line />} />
-          </Tooltip>
-        </Popover>
-        {simpleFilterKeys.map((key, idx) => {
-          const fieldMeta = fieldMetas.find((field) => field.key === key)
+  const simpleFilter = useMemo(() => {
+    return simple
+      ? simpleFilterKeys.map((simpleFilter, idx) => {
+          const filterKey = isStr(simpleFilter)
+            ? simpleFilter
+            : simpleFilter.key
+          const op = isStr(simpleFilter) ? CompareOP.EQ : simpleFilter.op
+          const fieldMeta = fieldMetas.find((field) => field.key === filterKey)
           return fieldMeta ? (
             <FilterValueInput
               key={idx}
@@ -187,12 +161,32 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
               fieldMetaService={filterFieldService}
               multiple={false}
               fieldMeta={fieldMeta}
-              onChange={(value) => onSimpleValueChange(value, fieldMeta)}
+              onChange={(value) => onSimpleValueChange(value, fieldMeta, op)}
               onSubmit={handleSubmit}
               style={{ width: '160px' }}
             />
           ) : undefined
-        })}
+        })
+      : null
+  }, [simpleFilterKeys, filterValue])
+
+  return (
+    <div className="filter-model">
+      <Space>
+        {!hiddenDesigner && (
+          <FilterWidget
+            title={title}
+            fieldMetas={fieldMetas}
+            visible={filterEditVisible}
+            onVisibleChange={setFilterEditVisible}
+            value={value}
+            filterFieldService={filterFieldService}
+            onChange={handleChange}
+            onCancel={cancel}
+            simple={simple}
+          />
+        )}
+        {simpleFilter}
       </Space>
     </div>
   )

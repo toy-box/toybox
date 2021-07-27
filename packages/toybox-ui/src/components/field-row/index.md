@@ -22,9 +22,14 @@ export default () => {
         </Space>
       </FieldRow>
       <FieldRow key="2">
-        <div>aaa</div>
-        <div>bbb</div>
-        <div>ccc</div>
+        <Space>
+          <Form.Item label="文本字段">
+            <Input />
+          </Form.Item>
+          <Form.Item label="数字字段">
+            <Input />
+          </Form.Item>
+        </Space>
       </FieldRow>
     </div>
   )

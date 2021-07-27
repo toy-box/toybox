@@ -5,7 +5,7 @@
 ```tsx
 import React from 'react'
 import { Form, Space, Input, NumberPicker } from 'antd'
-import { Segment, FieldRow } from '@toy-box/toybox-ui'
+import { Segment, FieldRow, HorizontalRule } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 
 export default () => {
@@ -22,7 +22,7 @@ export default () => {
 ```tsx
 import React from 'react'
 import { Form, Space, Input } from 'antd'
-import { Segment, FieldRow } from '@toy-box/toybox-ui'
+import { Segment, FieldRow, HorizontalRule } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 
 export default () => {
@@ -30,19 +30,21 @@ export default () => {
     <>
       <Segment title="区块A" key="a" collapsible>
         <FieldRow key="1">
-          <Space>
-            <Form.Item label="文本字段">
-              <Input />
-            </Form.Item>
-            <Form.Item label="数字字段">
-              <Input />
-            </Form.Item>
-          </Space>
+          <Form.Item label="文本字段">
+            <Input />
+          </Form.Item>
+          <Form.Item label="数字字段">
+            <Input />
+          </Form.Item>
         </FieldRow>
+        <HorizontalRule type="dashed" />
         <FieldRow key="2">
-          <div>aaa</div>
-          <div>bbb</div>
-          <div>ccc</div>
+          <Form.Item label="文本字段">
+            <Input />
+          </Form.Item>
+          <Form.Item label="数字字段">
+            <Input />
+          </Form.Item>
         </FieldRow>
       </Segment>
     </>

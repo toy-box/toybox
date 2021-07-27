@@ -18,11 +18,8 @@ export declare type FieldSelectProps = Omit<
     selectMode?: SelectProps['mode']
   }
 
-export const FieldSelect = React.forwardRef(
-  (
-    { mode, field, selectMode, onClick, ...otherProps }: FieldSelectProps,
-    ref
-  ) => {
+export const FieldSelect = React.forwardRef<any, FieldSelectProps>(
+  ({ mode, field, selectMode, onClick, ...otherProps }, ref) => {
     const inputRef = useRef<any>()
     useImperativeHandle(ref, () => ({
       ...(inputRef.current || {}),

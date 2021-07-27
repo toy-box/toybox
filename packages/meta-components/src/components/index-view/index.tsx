@@ -213,7 +213,7 @@ export const IndexView = React.forwardRef(
     const {
       pagination: innerPagination,
       tableProps,
-      searchActions,
+      reload,
     } = useTable(
       onloadData,
       {
@@ -240,16 +240,25 @@ export const IndexView = React.forwardRef(
       [pagination, innerPagination, pageable]
     )
 
+    const reset = useCallback(() => {
+      if (urlQuery) {
+        setQuery({})
+      } else {
+        setParams([])
+        setPageable({})
+      }
+    }, [urlQuery])
+
     useImperativeHandle(
       ref,
       () => ({
-        reload: searchActions.submit,
-        reset: searchActions.reset,
+        reload,
+        reset,
         dataSource: tableProps.dataSource,
         selectedRowKeys,
         selectedRows,
       }),
-      [selectedRowKeys, selectedRows, tableProps, searchActions]
+      [selectedRowKeys, selectedRows, tableProps, reload, reset]
     )
 
     // 可配置的字段key
@@ -367,7 +376,6 @@ export const IndexView = React.forwardRef(
         selectedRowKeys,
         selectionType,
         setSelectionType,
-        searchActions,
         filterFields,
         logicFilter,
       }),
@@ -390,7 +398,6 @@ export const IndexView = React.forwardRef(
         selectedRowKeys,
         selectionType,
         setSelectionType,
-        searchActions,
         filterFields,
         logicFilter,
       ]

@@ -13,7 +13,8 @@ import { Button } from '../button'
 
 import './styles'
 
-export interface ISegmentProps {
+export interface ISegmentProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   title: ReactNode
   className?: string
   style?: CSSProperties
@@ -28,6 +29,7 @@ export const Segment: FC<ISegmentProps> = ({
   collapsible,
   empty,
   children,
+  ...otherProps
 }) => {
   const [collapse, setCollapse] = useState(false)
   const handleCollapse = useCallback(
@@ -47,7 +49,11 @@ export const Segment: FC<ISegmentProps> = ({
   }, [collapse])
 
   return (
-    <div className={classNames(prefixCls, className)} style={style}>
+    <div
+      {...otherProps}
+      className={classNames(prefixCls, className)}
+      style={style}
+    >
       <div className={`${prefixCls}-header`}>
         <div className={`${prefixCls}-header__title`}>{title}</div>
         <div className={`${prefixCls}-header__extend`}>

@@ -1,6 +1,6 @@
 import React, { createContext } from 'react'
 import { ISortableSelectProps } from '@toy-box/toybox-ui'
-import { IndexModeType, ISearchActions } from './types'
+import { IndexModeType } from './types'
 
 export interface IIndexViewContextProps {
   setQuerySearch?: (params: any) => void
@@ -22,7 +22,6 @@ export interface IIndexViewContextProps {
   selectionType?: string
   setSelectionType?: (type?: string) => void
   logicFilter?: boolean
-  searchActions: ISearchActions
 }
 
 export const IndexViewContext = createContext<IIndexViewContextProps>(

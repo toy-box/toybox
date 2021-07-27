@@ -1,0 +1,35 @@
+{
+  "name": "@toy-box/formily",
+  "version": "1.0.56",
+  "license": "MIT",
+  "description": "",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "es"
+  ],
+  "scripts": {
+    "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es"
+  },
+  "author": "wishgood@gmail.com",
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@types/react": ">=16.8.0 || >=17.0.0",
+    "@types/react-dom": ">=16.8.0 || >=17.0.0",
+    "react": ">=16.8.0 || >=17.0.0",
+    "react-dom": ">=16.8.0 || >=17.0.0",
+    "react-is": ">=16.8.0 || >=17.0.0"
+  },
+  "dependencies": {
+    "@airclass/icons": "^4.3.4",
+    "@designable/core": "^0.4.8",
+    "@formily/react": "^2.0.0-beta.77",
+    "@toy-box/meta-components": "^1.0.56",
+    "@toy-box/meta-schema": "^1.0.56",
+    "@toy-box/toybox-ui": "^1.0.48"
+  }
+}

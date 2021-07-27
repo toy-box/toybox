@@ -18,8 +18,3 @@ export type LoadDataType = (
   pageable: IPageable,
   filterParams: any
 ) => Promise<IPageResult>
-
-export interface ISearchActions {
-  submit: () => void
-  reset: () => void
-}

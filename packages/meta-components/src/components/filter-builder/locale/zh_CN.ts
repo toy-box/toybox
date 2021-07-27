@@ -19,8 +19,8 @@ const lang = {
   },
   filed: {
     placeholderOp: {
-      select: '请选择维度',
-      value: '请选择维度值',
+      select: '请选择字段',
+      value: '请选择',
       param: '请输入',
       paramSelect: '请选择',
       variable: '请选择变量',

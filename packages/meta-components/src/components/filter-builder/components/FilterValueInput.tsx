@@ -21,6 +21,7 @@ import {
   FieldPercent,
   FieldNumber,
   FieldBoolean,
+  FieldTimestamp,
 } from '../../meta-fields'
 import { IFieldService } from '../interface'
 
@@ -202,7 +203,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             mode={mode}
             style={style}
             placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
-              fieldMeta.name
+              fieldMeta.name || ''
             }`}
             value={value}
             allowClear
@@ -218,7 +219,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             disabled={fieldMeta == null}
             field={fieldMeta}
             placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
-              fieldMeta.name
+              fieldMeta.name || ''
             }`}
             style={style}
             value={value}
@@ -233,7 +234,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             field={fieldMeta}
             mode={'edit'}
             placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
-              fieldMeta.name
+              fieldMeta.name || ''
             }`}
             style={style}
             value={value}
@@ -296,7 +297,55 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
               placeholder={`${get(
                 localeData.lang,
                 'filed.placeholderOp.paramSelect'
-              )}${fieldMeta.name}`}
+              )}${fieldMeta.name || ''}`}
+              onChange={(value, dateString) =>
+                handleValue(value, dateString ? [dateString] : undefined)
+              }
+            />
+          </div>
+        )
+      case MetaValueType.TIMESTAMP:
+        if (operation === CompareOP.UNIT_DATE_RANGE) {
+          return (
+            <DateUnitRange
+              style={style}
+              value={value}
+              onChange={(value, text) => handleValue(value, text ? [text] : [])}
+            />
+          )
+        }
+        if (operation === CompareOP.BETWEEN) {
+          const innerValue =
+            value != null
+              ? ([dayjs(value[0]), dayjs(value[1])] as [Dayjs, Dayjs])
+              : undefined
+          return (
+            <DatePicker.RangePicker
+              value={innerValue}
+              onChange={(value) => {
+                const doValue = value
+                  ? [
+                      value[0] ? dayjs(value[0]).unix() : undefined,
+                      value[1] ? dayjs(value[1]).unix() : undefined,
+                    ]
+                  : []
+                handleValue(doValue)
+              }}
+              style={style}
+              showTime={{ format: 'HH:mm:ss' }}
+            />
+          )
+        }
+        return (
+          <div style={style}>
+            <FieldTimestamp
+              value={value}
+              mode={mode}
+              field={fieldMeta}
+              placeholder={`${get(
+                localeData.lang,
+                'filed.placeholderOp.paramSelect'
+              )}${fieldMeta.name || ''}`}
               onChange={(value, dateString) =>
                 handleValue(value, dateString ? [dateString] : undefined)
               }
@@ -309,7 +358,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             field={fieldMeta}
             disabled={fieldMeta == null}
             placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
-              fieldMeta.name
+              fieldMeta.name || ''
             }`}
             allowClear
             style={style}
@@ -337,26 +386,6 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
           />
         )
       case MetaValueType.OBJECT_ID:
-        // TODO: 需要判断何时用
-        // if (
-        //   fieldMeta.parentKey != null &&
-        //   fieldMeta.parentKey !== '' &&
-        //   multiple
-        // ) {
-        //   return (
-        //     <FieldTreeSelect
-        //       field={fieldMeta}
-        //       style={style}
-        //       mode={mode}
-        //       placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
-        //       multiple={multiple}
-        //       value={value}
-        //       onChange={handleValue}
-        //       loadData={findDataTrees}
-        //       loadByValue={searchByValue}
-        //     />
-        //   )
-        // }
         return (
           <FieldSelect
             placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
@@ -387,7 +416,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             mode={mode}
             style={style}
             placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
-              fieldMeta.name
+              fieldMeta.name || ''
             }`}
             value={value}
             onChange={handleValue}

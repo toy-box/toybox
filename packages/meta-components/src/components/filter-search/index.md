@@ -84,7 +84,7 @@ export default () => {
   }, [])
 
   const filter = {
-    filterFieldMetas: [
+    fieldMetas: [
       {
         description: null,
         exclusiveMaximum: null,
@@ -188,7 +188,7 @@ export default () => {
     },
     simpleFilterKeys: ['deptId', 'copId', 'datetime', 'value'],
   }
-  const filterFieldTags = filter.filterFieldMetas.map((meta) => {
+  const filterFieldTags = filter.fieldMetas.map((meta) => {
     if (meta.type === 'objectId' || meta.type === 'singleOption') {
       return {
         fieldMeta: meta,
@@ -203,7 +203,7 @@ export default () => {
     return new Promise((resolve) => {
       serviceTest(resolve)
     }).then((res) => {
-      const meta = filter.filterFieldMetas.find((filed) => filed.key === key)
+      const meta = filter.fieldMetas.find((filed) => filed.key === key)
       if (meta && meta.options) {
         const list = meta.options.map((op) => {
           const p = value.find((val) => val === op.value)

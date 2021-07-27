@@ -13,6 +13,7 @@ export enum MetaValueType {
   PERCENT = 'percent',
   OBJECT = 'object',
   RATE = 'rate',
+  TIMESTAMP = 'timestamp',
 }
 
 export declare type DefaultRowData = Record<string, any>
@@ -29,9 +30,9 @@ export interface IFieldOption {
   children?: IFieldOption[]
 }
 
-export interface IFieldItems {
+export interface IFieldItems<T = IFieldMeta> {
   type: MetaValueType | string
-  properties: { [key: string]: IFieldMeta }
+  properties?: { [key: string]: T }
 }
 
 export interface IFieldMeta {
@@ -54,13 +55,16 @@ export interface IFieldMeta {
   multipleOf?: number
   minProperties?: number
   maxProperties?: number
+  maxItems?: number
+  minItems?: number
+  uniqueItems?: boolean
   pattern?: string
   format?: string
   titleKey?: string
   primaryKey?: string
   parentKey?: string
   properties?: Record<string, IFieldMeta>
-  items?: IFieldItems
+  items?: IFieldItems<IFieldMeta>
   index?: number
   defaultValue?: any
 }
