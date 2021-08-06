@@ -24,7 +24,7 @@ export const FieldRow: FC<IFieldRowProps> = ({
       ...style,
       gap: `${size}px`,
     }),
-    []
+    [style, size]
   )
   return (
     <div
