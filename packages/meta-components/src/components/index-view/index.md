@@ -648,8 +648,18 @@ export default () => {
     {
       key: 'key-2',
       type: 'string',
-      name: '日期',
+      name: '日期字符串',
       format: 'date',
+    },
+    {
+      key: 'key-3',
+      type: 'date',
+      name: '日期',
+    },
+    {
+      key: 'key-4',
+      type: 'string',
+      name: '名称',
     },
   ]
 
@@ -664,7 +674,7 @@ export default () => {
     >
       <FilterPanel
         fieldMetas={fiterFieldMetas}
-        simpleFilterKeys={['key-2', 'key-1']}
+        simpleFilterKeys={['key-2', 'key-4', 'key-1']}
       />
       <FilterDisplay fieldMetas={fiterFieldMetas} />
       <TableStatusBar />

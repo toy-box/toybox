@@ -1,4 +1,11 @@
-import React, { FC, useState, useMemo, useCallback } from 'react'
+import React, {
+  FC,
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+  useEffect,
+} from 'react'
 import { Space } from 'antd'
 import update from 'immutability-helper'
 import { isStr } from '@toy-box/toybox-shared'
@@ -57,6 +64,10 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
   onSubmit,
 }) => {
   const [filterEditVisible, setFilterEditVisible] = useState(false)
+  const valueRef = useRef(value)
+  useEffect(() => {
+    valueRef.current = value
+  }, [value])
 
   const handleSubmit = useCallback(() => {
     onSubmit && onSubmit()
@@ -92,14 +103,6 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
     [value]
   )
 
-  const onSimpleValueChange = (
-    val: any,
-    fieldMeta: Toybox.MetaSchema.Types.IFieldMeta,
-    op: CompareOP = CompareOP.EQ
-  ) => {
-    handleValueChange(val, fieldMeta, op)
-  }
-
   const handleValueChange = useCallback(
     (
       val,
@@ -112,34 +115,38 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
         target: val,
       }
       // 如果选项设置空则
-      if (val == null) {
+      if (val == null || val === '') {
         return (
           onChange &&
           onChange(
-            (value || []).filter((field) => field.source !== fieldMeta.key)
+            (valueRef.current || []).filter(
+              (field) => field.source !== fieldMeta.key
+            )
           )
         )
       }
-      const refFilters = (value || []).filter(
+      const refFilters = (valueRef.current || []).filter(
         (field) => field.source === fieldMeta.key
       ).length
-      let newValue = value
+      let newValue = valueRef.current
       if (refFilters === 0) {
-        newValue = update(value || [], { $push: [fieldItem] })
+        newValue = update(valueRef.current || [], { $push: [fieldItem] })
       } else if (refFilters === 1) {
-        const idx = (value || []).findIndex(
+        const idx = (valueRef.current || []).findIndex(
           (field) => field.source === fieldMeta.key
         )
-        newValue = update(value || [], { [idx]: { $set: fieldItem } })
+        newValue = update(valueRef.current || [], {
+          [idx]: { $set: fieldItem },
+        })
       } else if (refFilters > 1) {
-        const unSelectValues = (value || []).filter(
+        const unSelectValues = (valueRef.current || []).filter(
           (field) => field.source !== fieldMeta.key
         )
         newValue = update(unSelectValues, { $push: [fieldItem] })
       }
       onChange && onChange(newValue)
     },
-    [value, onChange]
+    [valueRef, onChange]
   )
 
   const cancel = useCallback(() => {
@@ -147,28 +154,24 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
   }, [setFilterEditVisible])
 
   const simpleFilter = useMemo(() => {
-    return simple
-      ? simpleFilterKeys.map((simpleFilter, idx) => {
-          const filterKey = isStr(simpleFilter)
-            ? simpleFilter
-            : simpleFilter.key
-          const op = isStr(simpleFilter) ? CompareOP.EQ : simpleFilter.op
-          const fieldMeta = fieldMetas.find((field) => field.key === filterKey)
-          return fieldMeta ? (
-            <FilterValueInput
-              key={idx}
-              value={filterValue(fieldMeta)}
-              fieldMetaService={filterFieldService}
-              multiple={false}
-              fieldMeta={fieldMeta}
-              onChange={(value) => onSimpleValueChange(value, fieldMeta, op)}
-              onSubmit={handleSubmit}
-              style={{ width: '160px' }}
-            />
-          ) : undefined
-        })
-      : null
-  }, [simpleFilterKeys, filterValue])
+    return simpleFilterKeys.map((simpleFilter, idx) => {
+      const filterKey = isStr(simpleFilter) ? simpleFilter : simpleFilter.key
+      const op = isStr(simpleFilter) ? CompareOP.EQ : simpleFilter.op
+      const fieldMeta = fieldMetas.find((field) => field.key === filterKey)
+      return fieldMeta ? (
+        <FilterValueInput
+          key={idx}
+          value={filterValue(fieldMeta)}
+          fieldMetaService={filterFieldService}
+          multiple={false}
+          fieldMeta={fieldMeta}
+          onChange={(val) => handleValueChange(val, fieldMeta, op)}
+          onSubmit={handleSubmit}
+          style={{ width: '160px' }}
+        />
+      ) : undefined
+    })
+  }, [simpleFilterKeys, filterValue, handleValueChange])
 
   return (
     <div className="filter-model">
@@ -179,7 +182,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
             fieldMetas={fieldMetas}
             visible={filterEditVisible}
             onVisibleChange={setFilterEditVisible}
-            value={value}
+            value={valueRef.current}
             filterFieldService={filterFieldService}
             onChange={handleChange}
             onCancel={cancel}
