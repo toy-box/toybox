@@ -48,6 +48,17 @@ const simpleParams = (
   return sParams
 }
 
+type TableOption = Pick<
+  IMetaTableProps,
+  | 'bordered'
+  | 'scroll'
+  | 'showHeader'
+  | 'title'
+  | 'expandable'
+  | 'rowClassName'
+  | 'size'
+>
+
 export interface IIndexViewProps<IParams = any> {
   /**
    * @description 数据元数据
@@ -86,6 +97,7 @@ export interface IIndexViewProps<IParams = any> {
    */
   logicFilter?: boolean
   pagination?: Omit<PaginationProps, 'onChange'>
+  tableOption?: TableOption
 }
 
 export declare type IndexViewRefType = {
@@ -114,6 +126,7 @@ export const IndexView = React.forwardRef(
       pagination,
       tableOperate,
       urlQuery,
+      tableOption,
       children,
     }: IIndexViewProps & { children: React.ReactNode },
     ref: React.MutableRefObject<IndexViewRefType>
@@ -414,6 +427,7 @@ export const IndexView = React.forwardRef(
               columnComponents={components}
               operate={tableOperate}
               {...tableProps}
+              {...tableOption}
               pagination={false}
             />
           )
@@ -428,6 +442,7 @@ export const IndexView = React.forwardRef(
                 columnComponents={components}
                 operate={tableOperate}
                 {...tableProps}
+                {...tableOption}
                 pagination={false}
               />
               <PaginationBar {...paginationProps} />

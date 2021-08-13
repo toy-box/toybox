@@ -153,6 +153,10 @@ const visibleColumns = [
     key: 'user',
     visiable: true,
   },
+  {
+    key: 'billCycle',
+    visiable: true,
+  },
 ]
 
 export default () => {
@@ -200,6 +204,7 @@ export default () => {
         objectMeta={objectMeta}
         loadData={loadData}
         urlQuery
+        tableOption={{ scroll: { x: 1000 } }}
       >
         <FilterPanel simpleFilterKeys={['amount']} />
         <TableStatusBar />
