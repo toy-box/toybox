@@ -919,5 +919,3 @@ export default () => {
   )
 }
 ```
-
-<API></API>
