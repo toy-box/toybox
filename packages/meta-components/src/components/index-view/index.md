@@ -162,7 +162,6 @@ const visibleColumns = [
 export default () => {
   const ref = useRef()
   const loadData = (pageable, params) => {
-    console.log('load data')
     const result = {
       list: data.map((row) => ({
         ...row,
@@ -186,12 +185,10 @@ export default () => {
   }
 
   const reload = useCallback(() => {
-    console.log('ref.current', ref.current)
     ref.current.reload()
   }, [ref])
 
   const reset = useCallback(() => {
-    console.log('ref.current', ref.current)
     ref.current.reset()
   }, [ref])
 

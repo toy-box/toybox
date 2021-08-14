@@ -98,6 +98,10 @@ export interface IIndexViewProps<IParams = any> {
   logicFilter?: boolean
   pagination?: Omit<PaginationProps, 'onChange'>
   tableOption?: TableOption
+  /**
+   * @description 当翻页时保留已选择的记录
+   */
+  overPageSelect?: boolean
 }
 
 export declare type IndexViewRefType = {
@@ -127,6 +131,7 @@ export const IndexView = React.forwardRef(
       tableOperate,
       urlQuery,
       tableOption,
+      overPageSelect,
       children,
     }: IIndexViewProps & { children: React.ReactNode },
     ref: React.MutableRefObject<IndexViewRefType>
@@ -314,11 +319,42 @@ export const IndexView = React.forwardRef(
               selectedRowKeys,
               selectionType,
               onChange: (keys: string[], rows: RowData[]) => {
-                setSelectedRowKeys(keys), setSelectedRows(rows)
+                if (overPageSelect) {
+                  setSelectedRowKeys(
+                    selectedRowKeys
+                      .filter(
+                        (key) =>
+                          !tableProps.dataSource.some(
+                            (row) => row[objectMeta.primaryKey] === key
+                          )
+                      )
+                      .concat(...keys)
+                  )
+                  setSelectedRows(
+                    selectedRows
+                      .filter(
+                        (selectedRow) =>
+                          !tableProps.dataSource.some(
+                            (row) =>
+                              row[objectMeta.primaryKey] ===
+                              selectedRow[objectMeta.primaryKey]
+                          )
+                      )
+                      .concat(...rows)
+                  )
+                } else {
+                  setSelectedRowKeys(keys)
+                  setSelectedRows(rows)
+                }
               },
             }
           : undefined,
-      [selectedRowKeys, selectionType, setSelectedRowKeys]
+      [
+        selectedRowKeys,
+        selectionType,
+        setSelectedRowKeys,
+        tableProps.dataSource,
+      ]
     )
 
     const columnMetas = useMemo(() => {
