@@ -224,7 +224,7 @@ export const IndexView = React.forwardRef(
           return data
         })
       },
-      [logicFilter]
+      [logicFilter, overPageSelect]
     )
 
     const paramsActions = useMemo(
@@ -328,13 +328,14 @@ export const IndexView = React.forwardRef(
               selectedRowKeys,
               selectionType,
               onChange: (keys: string[], rows: RowData[]) => {
+                console.log('on rowSelection', keys, objectMeta.primaryKey)
                 if (overPageSelect) {
                   setSelectedRowKeys(
                     selectedRowKeys
                       .filter(
                         (key) =>
                           !tableProps.dataSource.some(
-                            (row) => row[objectMeta.primaryKey] === key
+                            (row) => row[objectMeta.primaryKey || 'id'] === key
                           )
                       )
                       .concat(...keys)
@@ -346,7 +347,7 @@ export const IndexView = React.forwardRef(
                           !tableProps.dataSource.some(
                             (row) =>
                               row[objectMeta.primaryKey] ===
-                              selectedRow[objectMeta.primaryKey]
+                              selectedRow[objectMeta.primaryKey || 'id']
                           )
                       )
                       .concat(...rows)
