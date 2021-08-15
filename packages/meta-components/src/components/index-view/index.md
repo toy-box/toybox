@@ -606,10 +606,18 @@ const visibleColumns = [
   },
 ]
 
+const makeData = (current) => {
+  return data.map((row) => ({
+    ...row,
+    id: `${current}-${row.id}`,
+    name: `${current}-${row.name}`,
+  }))
+}
+
 export default () => {
   const loadData = (pageable, filterParams) => {
     const result = {
-      list: data,
+      list: makeData(pageable?.current || 1),
       total: 20,
       current: pageable?.current || 1,
       pageSize: pageable?.pageSize || 10,
@@ -673,6 +681,7 @@ export default () => {
       loadData={loadData}
       defaultSelectionType="checkbox"
       pagination={{ simple: true }}
+      overPageSelect
     >
       <FilterPanel
         fieldMetas={fiterFieldMetas}

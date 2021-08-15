@@ -213,7 +213,16 @@ export const IndexView = React.forwardRef(
 
     const onloadData = useCallback(
       (pageable, params) => {
-        return loadData(pageable, logicFilter ? params : simpleParams(params))
+        return loadData(
+          pageable,
+          logicFilter ? params : simpleParams(params)
+        ).then((data) => {
+          if (!overPageSelect) {
+            setSelectedRowKeys([])
+            setSelectedRows([])
+          }
+          return data
+        })
       },
       [logicFilter]
     )
