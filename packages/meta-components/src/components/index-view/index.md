@@ -44,7 +44,7 @@ const objectMeta = {
       name: '用户',
       type: 'object',
       titleKey: 'name',
-      idKey: 'id',
+      primaryKey: 'id',
       properties: {
         id: {
           key: 'id',
@@ -259,7 +259,7 @@ const objectMeta = {
       name: '用户',
       type: 'object',
       titleKey: 'name',
-      idKey: 'id',
+      primaryKey: 'id',
       properties: {
         id: {
           key: 'id',
@@ -496,7 +496,7 @@ const objectMeta = {
       name: '用户',
       type: 'object',
       titleKey: 'name',
-      idKey: 'id',
+      primaryKey: 'id',
       properties: {
         id: {
           key: 'id',
@@ -737,7 +737,7 @@ const objectMeta = {
       name: '用户',
       type: 'object',
       titleKey: 'name',
-      idKey: 'id',
+      primaryKey: 'id',
       properties: {
         id: {
           key: 'id',

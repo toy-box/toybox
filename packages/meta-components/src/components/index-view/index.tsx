@@ -346,7 +346,7 @@ export const IndexView = React.forwardRef(
                         (selectedRow) =>
                           !tableProps.dataSource.some(
                             (row) =>
-                              row[objectMeta.primaryKey] ===
+                              row[objectMeta.primaryKey || 'id'] ===
                               selectedRow[objectMeta.primaryKey || 'id']
                           )
                       )
