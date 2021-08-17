@@ -23,6 +23,9 @@ declare type RemoteFetchType = (
 ) => Promise<Toybox.MetaSchema.Types.IFieldOption[]>
 
 const formatter = (filedMeta: Toybox.MetaSchema.Types.IFieldMeta) => {
+  if (filedMeta.type === MetaValueType.TIMESTAMP) {
+    return 'LL HH:mm'
+  }
   if (filedMeta.format) {
     return filedMeta.format
   }
@@ -93,9 +96,11 @@ export const FilterTag: FC<IFilterTagProps> = ({
     ) => {
       if (
         compare.target == null ||
-        ![MetaValueType.DATE, MetaValueType.DATETIME].includes(
-          fieldMeta.type as MetaValueType
-        )
+        ![
+          MetaValueType.DATE,
+          MetaValueType.DATETIME,
+          MetaValueType.TIMESTAMP,
+        ].includes(fieldMeta.type as MetaValueType)
       ) {
         return ['']
       }
@@ -147,6 +152,7 @@ export const FilterTag: FC<IFilterTagProps> = ({
       switch (fieldMeta.type) {
         case MetaValueType.DATE:
         case MetaValueType.DATETIME:
+        case MetaValueType.TIMESTAMP:
           setTextValues(dateText(fieldMeta, compare))
           break
         case MetaValueType.SINGLE_OPTION:
