@@ -74,6 +74,7 @@ const FieldOpMap: Record<string, Array<Toybox.MetaSchema.Types.CompareOP>> = {
   [MetaValueType.BOOLEAN]: booleanOps,
   [MetaValueType.DATE]: dateOps,
   [MetaValueType.DATETIME]: dateOps,
+  [MetaValueType.TIMESTAMP]: dateOps,
   [MetaValueType.SINGLE_OPTION]: optionOps,
   [MetaValueType.OBJECT_ID]: optionOps,
   [MetaValueType.OBJECT]: optionOps,
