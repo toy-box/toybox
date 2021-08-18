@@ -2,11 +2,20 @@ import dayjs from 'dayjs'
 import { MetaValueType } from '@toy-box/meta-schema'
 import { ColumnMetaType } from '../interface'
 
-export const useSortColumns = (columnMetas: ColumnMetaType[]) => {
-  return columnMetas.map((columnMeta) => ({
-    ...columnMeta,
-    sorter: sorterProvider(columnMeta),
-  }))
+export const useSortColumns = (
+  columnMetas: ColumnMetaType[],
+  sorter: boolean | string[] | undefined,
+  remote?: boolean
+) => {
+  return columnMetas.map((columnMeta) => {
+    const columnSort = Array.isArray(sorter)
+      ? sorter.includes(columnMeta.key)
+      : sorter
+    return {
+      ...columnMeta,
+      sorter: columnSort ? remote : sorterProvider(columnMeta),
+    }
+  })
 }
 
 const sorterProvider = (columnMeta: ColumnMetaType) => {

@@ -107,7 +107,8 @@ export default () => {
       columnComponents={{ primary: PrimaryCol }}
       dataSource={data}
       columnMetas={columnMetas}
-      sort
+      onChange={(...args) => console.log('onchange', args)}
+      sorter
     />
   )
 }
