@@ -159,9 +159,8 @@ export const CompareOperation: FC<CompareOperationProps> = ({
 
   const multiple = useMemo(
     () =>
-      compare.op === CompareOP.IN ||
-      compare.op === CompareOP.NIN ||
-      compare.op === CompareOP.BETWEEN,
+      compare.op &&
+      [CompareOP.IN, CompareOP.NIN, CompareOP.BETWEEN].includes(compare.op),
     [compare.op]
   )
 
