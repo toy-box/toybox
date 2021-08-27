@@ -27,6 +27,7 @@ export const FieldSelect = React.forwardRef<any, FieldSelectProps>(
           defaultValue={field.defaultValue}
           options={field.options}
           readMode={mode === 'read'}
+          allowClear
           {...otherProps}
         />
       </div>
