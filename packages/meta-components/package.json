@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/meta-components",
-  "version": "1.0.70",
+  "version": "1.0.71",
   "license": "MIT",
   "description": "",
   "main": "lib/index.js",
@@ -32,7 +32,7 @@
     "@airclass/icons": "^4.3.4",
     "@toy-box/meta-schema": "^1.0.56",
     "@toy-box/toybox-shared": "^1.0.69",
-    "@toy-box/toybox-ui": "^1.0.70",
+    "@toy-box/toybox-ui": "^1.0.71",
     "ahooks": "^2.10.6",
     "hoist-non-react-statics": "^3.3.1",
     "immutability-helper": "^3.1.1",
