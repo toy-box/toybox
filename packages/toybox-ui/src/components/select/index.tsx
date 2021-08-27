@@ -272,28 +272,24 @@ export const Select = React.forwardRef(
     }, [mergeOptions])
 
     return (
-      <>
-        <AntSelect
-          value={innerValue}
-          onChange={debounce(handleChange, 500)}
-          defaultValue={defaultValue}
-          size={size}
-          onSearch={debounce(handleSearch, 500)}
-          loading={loading}
-          placeholder={placeholder}
-          ref={inputRef}
-          mode={mode}
-          dropdownRender={dropdownRender}
-          onDropdownVisibleChange={handleOpen}
-          showSearch={showSearch}
-          filterOption={filterOption}
-          {...otherProps}
-        >
-          {optionRender}
-        </AntSelect>
-        {filterOption}
-        {JSON.stringify(mergeOptions)}
-      </>
+      <AntSelect
+        value={innerValue}
+        onChange={debounce(handleChange, 500)}
+        defaultValue={defaultValue}
+        size={size}
+        onSearch={debounce(handleSearch, 500)}
+        loading={loading}
+        placeholder={placeholder}
+        ref={inputRef}
+        mode={mode}
+        dropdownRender={dropdownRender}
+        onDropdownVisibleChange={handleOpen}
+        showSearch={showSearch}
+        filterOption={filterOption}
+        {...otherProps}
+      >
+        {optionRender}
+      </AntSelect>
     )
   }
 )
