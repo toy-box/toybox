@@ -10,7 +10,7 @@
     "es"
   ],
   "scripts": {
-    "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es"
+    "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib --outDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es --outDir ./es"
   },
   "author": "",
   "publishConfig": {
