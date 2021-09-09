@@ -1,11 +1,11 @@
-## IndexView
+## DataGrid
 
 #### 基本用法
 
 ```tsx
 import React, { useCallback, useMemo, useRef } from 'react'
 import {
-  IndexView,
+  DataGrid,
   FilterDisplay,
   FilterPanel,
   TableStatusBar,
@@ -194,7 +194,7 @@ export default () => {
 
   return (
     <>
-      <IndexView
+      <DataGrid
         ref={ref}
         style={{ minWidth: '600px' }}
         visibleColumns={visibleColumns}
@@ -205,7 +205,7 @@ export default () => {
       >
         <FilterPanel simpleFilterKeys={['amount']} />
         <TableStatusBar />
-      </IndexView>
+      </DataGrid>
       <Button onClick={reload}>重新读取数据</Button>
       <Button onClick={reset}>重置</Button>
     </>
@@ -219,7 +219,7 @@ export default () => {
 import React, { useMemo } from 'react'
 import { message } from 'antd'
 import {
-  IndexView,
+  DataGrid,
   FilterPanel,
   TableStatusBar,
   OperatePanel,
@@ -433,7 +433,7 @@ export default () => {
   }
 
   return (
-    <IndexView
+    <DataGrid
       style={{ minWidth: '600px' }}
       visibleColumns={visibleColumns}
       objectMeta={objectMeta}
@@ -448,7 +448,7 @@ export default () => {
       </ToolBar>
       <FilterDisplay />
       <TableStatusBar />
-    </IndexView>
+    </DataGrid>
   )
 }
 ```
@@ -458,7 +458,7 @@ export default () => {
 ```tsx
 import React, { useMemo } from 'react'
 import {
-  IndexView,
+  DataGrid,
   FilterPanel,
   TableStatusBar,
   FilterDisplay,
@@ -674,7 +674,7 @@ export default () => {
   ]
 
   return (
-    <IndexView
+    <DataGrid
       style={{ minWidth: '600px' }}
       visibleColumns={visibleColumns}
       objectMeta={objectMeta}
@@ -689,7 +689,7 @@ export default () => {
       />
       <FilterDisplay fieldMetas={fiterFieldMetas} />
       <TableStatusBar />
-    </IndexView>
+    </DataGrid>
   )
 }
 ```
@@ -699,7 +699,7 @@ export default () => {
 ```tsx
 import React, { useMemo } from 'react'
 import {
-  IndexView,
+  DataGrid,
   FilterPanel,
   TableStatusBar,
   FilterDisplay,
@@ -907,7 +907,7 @@ export default () => {
   ]
 
   return (
-    <IndexView
+    <DataGrid
       style={{ minWidth: '600px' }}
       visibleColumns={visibleColumns}
       objectMeta={objectMeta}
@@ -921,7 +921,7 @@ export default () => {
       />
       <FilterDisplay fieldMetas={fiterFieldMetas} />
       <TableStatusBar />
-    </IndexView>
+    </DataGrid>
   )
 }
 ```

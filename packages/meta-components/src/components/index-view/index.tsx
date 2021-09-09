@@ -522,4 +522,6 @@ export const IndexView = React.forwardRef(
   }
 )
 
-IndexView.displayName = 'IndexView'
+IndexView.displayName = 'DataGrid'
+
+export const DataGrid = IndexView
