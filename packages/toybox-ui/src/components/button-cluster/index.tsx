@@ -72,7 +72,11 @@ export const ButtonCluster: FC<IButtonClusterProps> = ({
             onClick={item.callback}
             icon={item.icon}
             size={item.size}
-            disabled={isFn(item.disabled) ? item.disabled() : item.disabled}
+            disabled={
+              typeof item.disabled === 'function'
+                ? item.disabled()
+                : item.disabled
+            }
             danger={item.danger}
             tooltip={item.tooltip}
           >

@@ -362,6 +362,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             }`}
             allowClear
             style={style}
+            selectMode={multiple ? 'multiple' : undefined}
             showSearch
             value={filterValue}
             onChange={(value, options) =>
@@ -376,6 +377,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             style={style}
             options={fieldMeta.options}
             field={fieldMeta}
+            selectMode={multiple ? 'multiple' : undefined}
             value={filterValue}
             showSearch
             remote={searchOptions}
@@ -391,6 +393,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
             style={style}
             field={fieldMeta}
+            selectMode={multiple ? 'multiple' : undefined}
             value={filterValue}
             showSearch
             remote={searchOptions}

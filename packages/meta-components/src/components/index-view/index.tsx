@@ -48,6 +48,17 @@ const simpleParams = (
   return sParams
 }
 
+type TableOption = Pick<
+  IMetaTableProps,
+  | 'bordered'
+  | 'scroll'
+  | 'showHeader'
+  | 'title'
+  | 'expandable'
+  | 'rowClassName'
+  | 'size'
+>
+
 export interface IIndexViewProps<IParams = any> {
   /**
    * @description 数据元数据
@@ -86,6 +97,11 @@ export interface IIndexViewProps<IParams = any> {
    */
   logicFilter?: boolean
   pagination?: Omit<PaginationProps, 'onChange'>
+  tableOption?: TableOption
+  /**
+   * @description 当翻页时保留已选择的记录
+   */
+  overPageSelect?: boolean
 }
 
 export declare type IndexViewRefType = {
@@ -114,6 +130,8 @@ export const IndexView = React.forwardRef(
       pagination,
       tableOperate,
       urlQuery,
+      tableOption,
+      overPageSelect,
       children,
     }: IIndexViewProps & { children: React.ReactNode },
     ref: React.MutableRefObject<IndexViewRefType>
@@ -195,9 +213,18 @@ export const IndexView = React.forwardRef(
 
     const onloadData = useCallback(
       (pageable, params) => {
-        return loadData(pageable, logicFilter ? params : simpleParams(params))
+        return loadData(
+          pageable,
+          logicFilter ? params : simpleParams(params)
+        ).then((data) => {
+          if (!overPageSelect) {
+            setSelectedRowKeys([])
+            setSelectedRows([])
+          }
+          return data
+        })
       },
-      [logicFilter]
+      [logicFilter, overPageSelect]
     )
 
     const paramsActions = useMemo(
@@ -301,11 +328,43 @@ export const IndexView = React.forwardRef(
               selectedRowKeys,
               selectionType,
               onChange: (keys: string[], rows: RowData[]) => {
-                setSelectedRowKeys(keys), setSelectedRows(rows)
+                console.log('on rowSelection', keys, objectMeta.primaryKey)
+                if (overPageSelect) {
+                  setSelectedRowKeys(
+                    selectedRowKeys
+                      .filter(
+                        (key) =>
+                          !tableProps.dataSource.some(
+                            (row) => row[objectMeta.primaryKey || 'id'] === key
+                          )
+                      )
+                      .concat(...keys)
+                  )
+                  setSelectedRows(
+                    selectedRows
+                      .filter(
+                        (selectedRow) =>
+                          !tableProps.dataSource.some(
+                            (row) =>
+                              row[objectMeta.primaryKey || 'id'] ===
+                              selectedRow[objectMeta.primaryKey || 'id']
+                          )
+                      )
+                      .concat(...rows)
+                  )
+                } else {
+                  setSelectedRowKeys(keys)
+                  setSelectedRows(rows)
+                }
               },
             }
           : undefined,
-      [selectedRowKeys, selectionType, setSelectedRowKeys]
+      [
+        selectedRowKeys,
+        selectionType,
+        setSelectedRowKeys,
+        tableProps.dataSource,
+      ]
     )
 
     const columnMetas = useMemo(() => {
@@ -414,6 +473,7 @@ export const IndexView = React.forwardRef(
               columnComponents={components}
               operate={tableOperate}
               {...tableProps}
+              {...tableOption}
               pagination={false}
             />
           )
@@ -428,6 +488,7 @@ export const IndexView = React.forwardRef(
                 columnComponents={components}
                 operate={tableOperate}
                 {...tableProps}
+                {...tableOption}
                 pagination={false}
               />
               <PaginationBar {...paginationProps} />
@@ -461,4 +522,6 @@ export const IndexView = React.forwardRef(
   }
 )
 
-IndexView.displayName = 'IndexView'
+IndexView.displayName = 'DataGrid'
+
+export const DataGrid = IndexView

@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/meta-components",
-  "version": "1.0.56",
+  "version": "2.0.3",
   "license": "MIT",
   "description": "",
   "main": "lib/index.js",
@@ -11,7 +11,7 @@
     "es"
   ],
   "scripts": {
-    "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es"
+    "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib --outDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es --outDir ./es"
   },
   "author": "wishgood@gmail.com",
   "publishConfig": {
@@ -30,9 +30,9 @@
   "dependencies": {
     "@ahooksjs/antd-table": "^0.2.3",
     "@airclass/icons": "^4.3.4",
-    "@toy-box/meta-schema": "^1.0.56",
-    "@toy-box/toybox-shared": "^1.0.49",
-    "@toy-box/toybox-ui": "^1.0.48",
+    "@toy-box/meta-schema": "^2.0.3",
+    "@toy-box/toybox-shared": "^2.0.3",
+    "@toy-box/toybox-ui": "^2.0.3",
     "ahooks": "^2.10.6",
     "hoist-non-react-statics": "^3.3.1",
     "immutability-helper": "^3.1.1",

@@ -49,7 +49,12 @@ export const DropdownMenu: FC<DropdownMenuProps> = ({
           switch (item.type) {
             case 'subMenu':
               return (
-                <Menu.SubMenu title={item.text} key={index}>
+                <Menu.SubMenu
+                  title={item.text}
+                  icon={item.icon}
+                  disabled={item.disabled}
+                  key={index}
+                >
                   {(item as IMenuSub).items.map((subItem, idx) =>
                     subItem.type === 'divider' ? (
                       <Menu.Divider key={idx} />

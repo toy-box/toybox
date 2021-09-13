@@ -49,7 +49,7 @@ export const MetaTable: FC<IMetaTableProps> = ({
   pivotOption,
   scroll,
   width,
-  sort,
+  sorter,
   summary,
   title,
   onChange,
@@ -94,11 +94,15 @@ export const MetaTable: FC<IMetaTableProps> = ({
   const innerColumnMetas = useMemo(() => {
     if (pivotOption) {
       return [...leftMetas, ...rightMetas]
-    } else if (sort) {
-      return useSortColumns([...leftMetas, ...rightMetas])
+    } else if (sorter) {
+      return useSortColumns(
+        [...leftMetas, ...rightMetas],
+        sorter,
+        onChange != null
+      )
     }
     return [...leftMetas, ...rightMetas]
-  }, [columnMetas, pivotOption])
+  }, [sorter, onChange, columnMetas, pivotOption])
 
   const [rows, posIndexes] = usePivot(
     (dataSource || []).map((item) => item),

@@ -220,8 +220,11 @@ export const Select = React.forwardRef(
       input: string,
       option?: OptionData | OptionGroupData
     ) => {
+      if (remote) {
+        return true
+      }
       return option
-        ? (option.title || option.label?.toString() || '')
+        ? (option.title || option.label?.toString() || option.children || '')
             .toLowerCase()
             .indexOf(input.toLowerCase()) >= 0
         : false
@@ -274,7 +277,7 @@ export const Select = React.forwardRef(
         onChange={debounce(handleChange, 500)}
         defaultValue={defaultValue}
         size={size}
-        onSearch={handleSearch}
+        onSearch={debounce(handleSearch, 500)}
         loading={loading}
         placeholder={placeholder}
         ref={inputRef}

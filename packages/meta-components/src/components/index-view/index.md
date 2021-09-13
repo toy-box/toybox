@@ -1,11 +1,11 @@
-## IndexView
+## DataGrid
 
 #### 基本用法
 
 ```tsx
 import React, { useCallback, useMemo, useRef } from 'react'
 import {
-  IndexView,
+  DataGrid,
   FilterDisplay,
   FilterPanel,
   TableStatusBar,
@@ -44,7 +44,7 @@ const objectMeta = {
       name: '用户',
       type: 'object',
       titleKey: 'name',
-      idKey: 'id',
+      primaryKey: 'id',
       properties: {
         id: {
           key: 'id',
@@ -153,12 +153,15 @@ const visibleColumns = [
     key: 'user',
     visiable: true,
   },
+  {
+    key: 'billCycle',
+    visiable: true,
+  },
 ]
 
 export default () => {
   const ref = useRef()
   const loadData = (pageable, params) => {
-    console.log('load data')
     const result = {
       list: data.map((row) => ({
         ...row,
@@ -182,28 +185,27 @@ export default () => {
   }
 
   const reload = useCallback(() => {
-    console.log('ref.current', ref.current)
     ref.current.reload()
   }, [ref])
 
   const reset = useCallback(() => {
-    console.log('ref.current', ref.current)
     ref.current.reset()
   }, [ref])
 
   return (
     <>
-      <IndexView
+      <DataGrid
         ref={ref}
         style={{ minWidth: '600px' }}
         visibleColumns={visibleColumns}
         objectMeta={objectMeta}
         loadData={loadData}
         urlQuery
+        tableOption={{ scroll: { x: 1000 } }}
       >
         <FilterPanel simpleFilterKeys={['amount']} />
         <TableStatusBar />
-      </IndexView>
+      </DataGrid>
       <Button onClick={reload}>重新读取数据</Button>
       <Button onClick={reset}>重置</Button>
     </>
@@ -217,7 +219,7 @@ export default () => {
 import React, { useMemo } from 'react'
 import { message } from 'antd'
 import {
-  IndexView,
+  DataGrid,
   FilterPanel,
   TableStatusBar,
   OperatePanel,
@@ -257,7 +259,7 @@ const objectMeta = {
       name: '用户',
       type: 'object',
       titleKey: 'name',
-      idKey: 'id',
+      primaryKey: 'id',
       properties: {
         id: {
           key: 'id',
@@ -431,7 +433,7 @@ export default () => {
   }
 
   return (
-    <IndexView
+    <DataGrid
       style={{ minWidth: '600px' }}
       visibleColumns={visibleColumns}
       objectMeta={objectMeta}
@@ -446,7 +448,7 @@ export default () => {
       </ToolBar>
       <FilterDisplay />
       <TableStatusBar />
-    </IndexView>
+    </DataGrid>
   )
 }
 ```
@@ -456,7 +458,7 @@ export default () => {
 ```tsx
 import React, { useMemo } from 'react'
 import {
-  IndexView,
+  DataGrid,
   FilterPanel,
   TableStatusBar,
   FilterDisplay,
@@ -494,7 +496,7 @@ const objectMeta = {
       name: '用户',
       type: 'object',
       titleKey: 'name',
-      idKey: 'id',
+      primaryKey: 'id',
       properties: {
         id: {
           key: 'id',
@@ -604,10 +606,18 @@ const visibleColumns = [
   },
 ]
 
+const makeData = (current) => {
+  return data.map((row) => ({
+    ...row,
+    id: `${current}-${row.id}`,
+    name: `${current}-${row.name}`,
+  }))
+}
+
 export default () => {
   const loadData = (pageable, filterParams) => {
     const result = {
-      list: data,
+      list: makeData(pageable?.current || 1),
       total: 20,
       current: pageable?.current || 1,
       pageSize: pageable?.pageSize || 10,
@@ -648,27 +658,38 @@ export default () => {
     {
       key: 'key-2',
       type: 'string',
-      name: '日期',
+      name: '日期字符串',
       format: 'date',
+    },
+    {
+      key: 'key-3',
+      type: 'date',
+      name: '日期',
+    },
+    {
+      key: 'key-4',
+      type: 'string',
+      name: '名称',
     },
   ]
 
   return (
-    <IndexView
+    <DataGrid
       style={{ minWidth: '600px' }}
       visibleColumns={visibleColumns}
       objectMeta={objectMeta}
       loadData={loadData}
       defaultSelectionType="checkbox"
       pagination={{ simple: true }}
+      overPageSelect
     >
       <FilterPanel
         fieldMetas={fiterFieldMetas}
-        simpleFilterKeys={['key-2', 'key-1']}
+        simpleFilterKeys={['key-2', 'key-4', 'key-1']}
       />
       <FilterDisplay fieldMetas={fiterFieldMetas} />
       <TableStatusBar />
-    </IndexView>
+    </DataGrid>
   )
 }
 ```
@@ -678,7 +699,7 @@ export default () => {
 ```tsx
 import React, { useMemo } from 'react'
 import {
-  IndexView,
+  DataGrid,
   FilterPanel,
   TableStatusBar,
   FilterDisplay,
@@ -716,7 +737,7 @@ const objectMeta = {
       name: '用户',
       type: 'object',
       titleKey: 'name',
-      idKey: 'id',
+      primaryKey: 'id',
       properties: {
         id: {
           key: 'id',
@@ -886,7 +907,7 @@ export default () => {
   ]
 
   return (
-    <IndexView
+    <DataGrid
       style={{ minWidth: '600px' }}
       visibleColumns={visibleColumns}
       objectMeta={objectMeta}
@@ -900,9 +921,7 @@ export default () => {
       />
       <FilterDisplay fieldMetas={fiterFieldMetas} />
       <TableStatusBar />
-    </IndexView>
+    </DataGrid>
   )
 }
 ```
-
-<API></API>

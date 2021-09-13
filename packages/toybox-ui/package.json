@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/toybox-ui",
-  "version": "1.0.48",
+  "version": "2.0.3",
   "license": "MIT",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -13,7 +13,7 @@
     "access": "public"
   },
   "scripts": {
-    "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es"
+    "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib --outDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es --outDir ./es"
   },
   "peerDependencies": {
     "@airclass/icons": "^4.3.4",

@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useContext, useMemo } from 'react'
+import React, { FC, Fragment, useCallback, useContext, useMemo } from 'react'
 import update from 'immutability-helper'
-import { Input, Space } from 'antd'
+import { Input, Space, Form } from 'antd'
 import { CloseLine } from '@airclass/icons'
 import { Button, Select } from '@toy-box/toybox-ui'
 import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
@@ -10,8 +10,9 @@ import { FilterBuilderContext } from '../context'
 import { IFieldService } from '../interface'
 
 const inputStyle = { width: '320px' }
+const verticalStyle = { width: '100%' }
 
-export interface CompareOperationProps {
+export type CompareOperationProps = {
   index: number
   fieldMetas:
     | Toybox.MetaSchema.Types.IFieldMeta[]
@@ -19,6 +20,7 @@ export interface CompareOperationProps {
   compare: Partial<Toybox.MetaSchema.Types.ICompareOperation>
   filterFieldService?: IFieldService
   localeData: any
+  layout?: 'horizontal' | 'vertical'
 }
 
 const numberOps = [
@@ -74,6 +76,7 @@ const FieldOpMap: Record<string, Array<Toybox.MetaSchema.Types.CompareOP>> = {
   [MetaValueType.BOOLEAN]: booleanOps,
   [MetaValueType.DATE]: dateOps,
   [MetaValueType.DATETIME]: dateOps,
+  [MetaValueType.TIMESTAMP]: dateOps,
   [MetaValueType.SINGLE_OPTION]: optionOps,
   [MetaValueType.OBJECT_ID]: optionOps,
   [MetaValueType.OBJECT]: optionOps,
@@ -86,6 +89,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   compare,
   localeData,
   filterFieldService,
+  layout = 'horizontal',
 }) => {
   const context = useContext(FilterBuilderContext)
   const selected = useMemo(
@@ -161,9 +165,8 @@ export const CompareOperation: FC<CompareOperationProps> = ({
 
   const multiple = useMemo(
     () =>
-      compare.op === CompareOP.IN ||
-      compare.op === CompareOP.NIN ||
-      compare.op === CompareOP.BETWEEN,
+      compare.op &&
+      [CompareOP.IN, CompareOP.NIN, CompareOP.BETWEEN].includes(compare.op),
     [compare.op]
   )
 
@@ -267,20 +270,73 @@ export const CompareOperation: FC<CompareOperationProps> = ({
         fieldMetaService={filterFieldService}
         onChange={onValueChange}
         operation={compare.op}
-        style={inputStyle}
+        style={layout === 'vertical' ? verticalStyle : inputStyle}
         type={compare.type}
       />
     ) : (
       <Input
         disabled
         placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
-        style={inputStyle}
+        style={layout === 'vertical' ? verticalStyle : inputStyle}
       />
     )
-  }, [filterFieldMeta, multiple, compare, onValueChange])
+  }, [layout, filterFieldMeta, multiple, compare, onValueChange])
 
-  return (
-    <div className="tbox-filter-compare">
+  const verticalRender = useMemo(
+    () => (
+      <div className="tbox-filter-compare__item-wrapper">
+        <Form.Item>
+          <Select
+            style={{ width: '100%' }}
+            value={compare.source}
+            options={fieldOptions}
+            placeholder={get(localeData.lang, 'filed.placeholderOp.select')}
+            onChange={onKeyChange}
+          />
+        </Form.Item>
+        <Form.Item>
+          <Select
+            style={{ width: '100%' }}
+            value={compare.op}
+            placeholder="运算符"
+            options={filterOperations}
+            onChange={onOperationChange}
+            showArrow={false}
+          />
+        </Form.Item>
+        {context.specialMode && (
+          <Form.Item>
+            <Select
+              style={{ width: '100%' }}
+              value={compare.type}
+              placeholder="类型"
+              options={filterFieldMeta ? context.specialOptions : []}
+              onChange={onTypeChange}
+              showArrow={false}
+            />
+          </Form.Item>
+        )}
+        <Form.Item>{filterValueInput}</Form.Item>
+        <div style={{ textAlign: 'right' }}>
+          <Button type="text" onClick={handleRemove} icon={<CloseLine />} />
+        </div>
+      </div>
+    ),
+    [
+      compare,
+      handleRemove,
+      onTypeChange,
+      onKeyChange,
+      onOperationChange,
+      fieldOptions,
+      filterOperations,
+      filterFieldMeta,
+      context,
+    ]
+  )
+
+  const horizontalRender = useMemo(
+    () => (
       <Space>
         <Select
           style={{ width: '154px' }}
@@ -314,6 +370,23 @@ export const CompareOperation: FC<CompareOperationProps> = ({
           icon={<CloseLine />}
         ></Button>
       </Space>
+    ),
+    [
+      compare,
+      handleRemove,
+      onTypeChange,
+      onKeyChange,
+      onOperationChange,
+      fieldOptions,
+      filterOperations,
+      filterFieldMeta,
+      context,
+    ]
+  )
+
+  return (
+    <div className="tbox-filter-compare">
+      {layout === 'vertical' ? verticalRender : horizontalRender}
     </div>
   )
 }
