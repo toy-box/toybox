@@ -8,9 +8,9 @@ import React, {
 import get from 'lodash.get'
 import { Switch } from 'antd'
 import { useLocale } from '@toy-box/toybox-shared'
+import { MetaValueType } from '@toy-box/meta-schema'
 import { BaseFieldProps } from '../interface'
 import localeMap from './locale'
-import { MetaValueType } from 'packages/meta-schema/src/types'
 
 export interface FieldBooleanProps extends BaseFieldProps {
   value?: boolean
