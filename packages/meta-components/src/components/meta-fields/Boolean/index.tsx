@@ -10,6 +10,7 @@ import { Switch } from 'antd'
 import { useLocale } from '@toy-box/toybox-shared'
 import { BaseFieldProps } from '../interface'
 import localeMap from './locale'
+import { MetaValueType } from 'packages/meta-schema/src/types'
 
 export interface FieldBooleanProps extends BaseFieldProps {
   value?: boolean
@@ -18,7 +19,17 @@ export interface FieldBooleanProps extends BaseFieldProps {
 }
 
 export const FieldBoolean = React.forwardRef<any, FieldBooleanProps>(
-  ({ onChange, value, textValues, field, mode = 'edit', onClick }, ref) => {
+  (
+    {
+      onChange,
+      value,
+      textValues,
+      field = { type: MetaValueType.BOOLEAN },
+      mode = 'edit',
+      onClick,
+    },
+    ref
+  ) => {
     const locale = useLocale()
     const localeData = useMemo(() => localeMap[locale], [locale])
     const inputRef = useRef<HTMLElement>(null)

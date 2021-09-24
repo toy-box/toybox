@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
+import { MetaValueType } from '@toy-box/meta-schema'
 import dayjs, { Dayjs } from 'dayjs'
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 import { PickerBaseProps } from 'antd/lib/date-picker/generatePicker'
@@ -30,7 +31,7 @@ export const FieldTimestamp = React.forwardRef<any, FieldTimestampProps>(
       value,
       placeholder,
       mode,
-      field,
+      field = { type: MetaValueType.TIMESTAMP },
       open,
       bordered,
       onChange,

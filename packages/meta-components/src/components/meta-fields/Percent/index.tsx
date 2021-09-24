@@ -1,4 +1,5 @@
 import { InputNumber, InputNumberProps } from 'antd'
+import { MetaValueType } from '@toy-box/meta-schema'
 import React, {
   useRef,
   useMemo,
@@ -30,7 +31,7 @@ export const FieldPercent = React.forwardRef<any, FieldPercentProps>(
     {
       mode,
       value,
-      field,
+      field = { type: MetaValueType.PERCENT },
       placeholder,
       disabled,
       onChange,
@@ -42,7 +43,7 @@ export const FieldPercent = React.forwardRef<any, FieldPercentProps>(
       style,
       onPressEnter,
       ...otherProps
-    }: FieldPercentProps,
+    },
     ref: Ref<any>
   ) => {
     const inputRef = useRef<HTMLInputElement>(null)
