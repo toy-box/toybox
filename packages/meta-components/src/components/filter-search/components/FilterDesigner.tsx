@@ -32,6 +32,10 @@ export const FilterDesigner: FC<IFilterDesignerProps> = ({
   const [compares, setCompares] =
     useState<Partial<Toybox.MetaSchema.Types.ICompareOperation>[]>(value)
 
+  useEffect(() => {
+    setCompares(value)
+  }, [value])
+
   const handleSave = useCallback(
     () =>
       onChange &&

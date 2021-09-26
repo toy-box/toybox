@@ -38,7 +38,7 @@ export default () => {
   }
 
   const fieldMetaObject = {
-    type: 'objectId',
+    type: 'refId',
     name: '远程对象',
     refObject: 'remote_object',
   }

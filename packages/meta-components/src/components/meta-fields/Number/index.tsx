@@ -1,10 +1,6 @@
 import { InputNumber, InputNumberProps } from 'antd'
-import React, {
-  useRef,
-  useImperativeHandle,
-  Ref,
-  ForwardRefRenderFunction,
-} from 'react'
+import { MetaValueType } from '@toy-box/meta-schema'
+import React, { useRef, useImperativeHandle } from 'react'
 
 import { BaseFieldProps } from '../interface'
 
@@ -25,7 +21,7 @@ export const FieldNumber = React.forwardRef<any, FieldNumberProps>(
       onChange,
       onClick,
       onPressEnter,
-      field,
+      field = { type: MetaValueType.NUMBER },
       ...otherProps
     },
     ref

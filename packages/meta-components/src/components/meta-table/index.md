@@ -107,7 +107,8 @@ export default () => {
       columnComponents={{ primary: PrimaryCol }}
       dataSource={data}
       columnMetas={columnMetas}
-      sort
+      onChange={(...args) => console.log('onchange', args)}
+      sorter
     />
   )
 }
@@ -482,7 +483,7 @@ const objectMeta = {
       description: null,
       type: 'string',
       options: null,
-      refObjectId: null,
+      refRegisterId: null,
       unique: null,
       required: null,
       maximum: null,
@@ -504,7 +505,7 @@ const objectMeta = {
       description: null,
       type: 'object',
       options: null,
-      refObjectId: '5f9630d977b9ec42e4d0dca5',
+      refRegisterId: '5f9630d977b9ec42e4d0dca5',
       unique: null,
       required: null,
       maximum: null,
@@ -525,7 +526,7 @@ const objectMeta = {
           description: null,
           type: 'string',
           options: null,
-          refObjectId: null,
+          refRegisterId: null,
           unique: null,
           required: null,
           maximum: null,
@@ -547,7 +548,7 @@ const objectMeta = {
           description: null,
           type: 'string',
           options: null,
-          refObjectId: null,
+          refRegisterId: null,
           unique: null,
           required: true,
           maximum: null,
@@ -569,7 +570,7 @@ const objectMeta = {
           description: null,
           type: 'string',
           options: null,
-          refObjectId: null,
+          refRegisterId: null,
           unique: null,
           required: null,
           maximum: null,
@@ -593,7 +594,7 @@ const objectMeta = {
       description: null,
       type: 'integer',
       options: null,
-      refObjectId: null,
+      refRegisterId: null,
       unique: null,
       required: null,
       maximum: null,

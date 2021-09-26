@@ -1,10 +1,5 @@
-import React, {
-  ForwardRefRenderFunction,
-  useRef,
-  useImperativeHandle,
-  useMemo,
-  useCallback,
-} from 'react'
+import React, { useRef, useImperativeHandle } from 'react'
+import { MetaValueType } from '@toy-box/meta-schema'
 import { Select, SelectProps } from '@toy-box/toybox-ui'
 import { BaseFieldProps } from '../interface'
 
@@ -19,7 +14,16 @@ export declare type FieldSelectProps = Omit<
   }
 
 export const FieldSelect = React.forwardRef<any, FieldSelectProps>(
-  ({ mode, field, selectMode, onClick, ...otherProps }, ref) => {
+  (
+    {
+      mode,
+      field = { type: MetaValueType.SINGLE_OPTION },
+      selectMode,
+      onClick,
+      ...otherProps
+    },
+    ref
+  ) => {
     const inputRef = useRef<any>()
     useImperativeHandle(ref, () => ({
       ...(inputRef.current || {}),
@@ -33,6 +37,7 @@ export const FieldSelect = React.forwardRef<any, FieldSelectProps>(
           defaultValue={field.defaultValue}
           options={field.options}
           readMode={mode === 'read'}
+          allowClear
           {...otherProps}
         />
       </div>

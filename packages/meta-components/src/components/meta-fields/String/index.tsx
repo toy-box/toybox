@@ -1,11 +1,6 @@
 import { Input, InputProps } from 'antd'
-import React, {
-  Ref,
-  ForwardRefRenderFunction,
-  useCallback,
-  useRef,
-  useImperativeHandle,
-} from 'react'
+import { MetaValueType } from '@toy-box/meta-schema'
+import React, { useCallback, useRef, useImperativeHandle } from 'react'
 import { DatePicker } from '@toy-box/toybox-ui'
 import dayjs, { Dayjs } from 'dayjs'
 
@@ -24,7 +19,7 @@ export declare type FieldStringProps = Omit<
 export const FieldString = React.forwardRef<any, FieldStringProps>(
   (
     {
-      field,
+      field = { type: MetaValueType.STRING },
       mode,
       value,
       placeholder,

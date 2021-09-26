@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { MetaValueType } from '@toy-box/meta-schema'
 import { DateColumn } from './DateColumn'
 import { ObjectColumn } from './ObjectColumn'
 import { DefaultColumn } from './DefaultColumn'
@@ -7,7 +8,6 @@ import { SingleOptionColumn } from './SingleOptionColumn'
 import { RefObjectColumn } from './RefObjectColumn'
 import { TimestampColumn } from './TimestampColumn'
 import { IColumnProps } from '../interface'
-import { MetaValueType } from 'packages/meta-schema/src/types'
 export * from './PrimaryColumn'
 export * from './OperateColumn'
 

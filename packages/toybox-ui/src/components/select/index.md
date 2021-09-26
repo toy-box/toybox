@@ -113,12 +113,15 @@ const options = [
     value: '666',
   },
 ]
-const search = async () => {
+const search = async (name) => {
+  console.log('search', name)
   return await options
 }
 
 export default () => {
-  return <Select remote={search} style={{ width: '200px' }} />
+  return (
+    <Select showSearch allowClear remote={search} style={{ width: '200px' }} />
+  )
 }
 ```
 

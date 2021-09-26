@@ -96,5 +96,5 @@ export interface IMetaTableProps<T = RowData>
    */
   width?: number
 
-  sort?: boolean
+  sorter?: boolean | string[]
 }

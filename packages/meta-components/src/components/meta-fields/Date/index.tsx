@@ -38,7 +38,7 @@ export const FieldDate = React.forwardRef<any, FieldDateProps>(
       value,
       placeholder,
       mode,
-      field,
+      field = { type: MetaValueType.DATE },
       open,
       bordered,
       onChange,

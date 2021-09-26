@@ -101,10 +101,10 @@ export default () => {
         pattern: null,
         primary: null,
         properties: null,
-        refObjectId: '5f9630d977b9ec42e4d0dca5',
+        refRegisterId: '5f9630d977b9ec42e4d0dca5',
         required: null,
         titleKey: 'name',
-        type: 'objectId',
+        type: 'refId',
         unique: null,
         unBasic: true,
       },
@@ -132,7 +132,7 @@ export default () => {
         pattern: null,
         primary: null,
         properties: null,
-        refObjectId: '5f9630d977b9ec42e4d0dca5',
+        refRegisterId: '5f9630d977b9ec42e4d0dca5',
         required: null,
         titleKey: 'name',
         type: 'singleOption',
@@ -189,7 +189,7 @@ export default () => {
     simpleFilterKeys: ['deptId', 'copId', 'datetime', 'value'],
   }
   const filterFieldTags = filter.fieldMetas.map((meta) => {
-    if (meta.type === 'objectId' || meta.type === 'singleOption') {
+    if (meta.type === 'refId' || meta.type === 'singleOption') {
       return {
         fieldMeta: meta,
         remote: remoteOfTags.bind(this),

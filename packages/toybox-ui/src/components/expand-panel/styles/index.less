@@ -1,0 +1,37 @@
+@import '../../../styles/theme.less';
+
+.@{prefix}-expand-panel {
+  flex-wrap: wrap;
+  &-header {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-bottom: 1px solid @border-color-split;
+    background-color: @background-color-base;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    font-size: 13px;
+    &-expand {
+      color: @text-color-secondary;
+      transform: rotate(-90deg);
+      transition: all 0.15s ease-in-out;
+      margin-right: 8px;
+    }
+  }
+  &-content-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  &-content {
+    width: 100%;
+    display: none;
+  }
+  &.expand {
+    .@{prefix}-expand-panel-content {
+      display: block;
+    }
+    .@{prefix}-expand-panel-header-expand {
+      transform: rotate(0);
+    }
+  }
+}

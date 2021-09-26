@@ -1,5 +1,6 @@
 import React, { CSSProperties, useMemo } from 'react'
 import { Button } from 'antd'
+import classNames from 'classnames'
 import update from 'immutability-helper'
 import { AddCircleLine } from '@airclass/icons'
 import { useLocale } from '@toy-box/toybox-shared'
@@ -10,7 +11,6 @@ import { IFieldService, IUncheckCompare, IspecialOption } from '../interface'
 import { FilterBuilderContext } from '../context'
 
 import '../styles/index.less'
-import classNames from 'classnames'
 
 export interface IFilterBuilderProps {
   fieldMetas:
@@ -22,6 +22,7 @@ export interface IFilterBuilderProps {
   addText?: string
   className?: string
   style?: CSSProperties
+  layout?: 'horizontal' | 'vertical'
   specialMode?: boolean
   specialOptions?: IspecialOption[]
   simple?: boolean
@@ -35,6 +36,7 @@ export const FilterBuilder = ({
   addText,
   className,
   style,
+  layout = 'horizontal',
   specialMode,
   specialOptions,
   simple,
@@ -65,6 +67,7 @@ export const FilterBuilder = ({
             compare={filterItem}
             localeData={localeData}
             filterFieldService={filterFieldService}
+            layout={layout}
           />
         ))}
         <Button onClick={addFilter} type="dashed" icon={<AddCircleLine />}>

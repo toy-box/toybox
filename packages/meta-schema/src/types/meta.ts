@@ -7,7 +7,7 @@ export enum MetaValueType {
   DATETIME = 'datetime',
   BOOLEAN = 'boolean',
   ARRAY = 'array',
-  OBJECT_ID = 'objectId',
+  OBJECT_ID = 'refId',
   SINGLE_OPTION = 'singleOption',
   MULTI_OPTION = 'multiOption',
   PERCENT = 'percent',
@@ -42,7 +42,7 @@ export interface IFieldMeta {
   description?: string
   primary?: boolean
   options?: IFieldOption[]
-  refObjectId?: string
+  refRegisterId?: string
   unique?: boolean
   required?: boolean
   maximum?: number
