@@ -18,8 +18,6 @@ export const Text: FC<ITextProps> = ({
   children,
   ...otherProps
 }) => {
-  console.log('text otherprops', otherProps)
-
   switch (type) {
     case 'H1':
       return (
