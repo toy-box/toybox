@@ -10,7 +10,7 @@ export interface IColumnVisible {
   fixed?: boolean | 'left' | 'right'
   align?: 'left' | 'right' | 'center'
   component?: string
-  width?: number
+  width?: number | string
   sorter?: boolean | sorterFun
   sortDirections?: TableProps<RowData>['sortDirections']
   visiable?: boolean
