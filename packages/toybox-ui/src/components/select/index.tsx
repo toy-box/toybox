@@ -144,9 +144,13 @@ export const Select = React.forwardRef(
     }))
 
     useEffect(() => {
+      let didCancel = false
       const init = async () => {
         if (value != null && current == null && !initialed && remoteByValue) {
           const options = await remoteByValue(value, params)
+          if (didCancel) {
+            return
+          }
           if (Array.isArray(options)) {
             setInitOptions(options)
           } else {
@@ -156,9 +160,12 @@ export const Select = React.forwardRef(
         if (remote != null && !initialed) {
           await fetchData('')
         }
-        setInitialed(true)
+        !didCancel && setInitialed(true)
       }
       init()
+      return () => {
+        didCancel = true
+      }
     }, [current, initialed, fetchData, params, remote, remoteByValue, value])
 
     const handleChange = useCallback(
