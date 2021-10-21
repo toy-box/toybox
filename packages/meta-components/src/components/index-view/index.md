@@ -142,19 +142,15 @@ const visibleColumns = [
     fixed: true,
   },
   {
-    key: 'billCycle',
-    visiable: true,
-  },
-  {
-    key: 'amount',
-    visiable: true,
-  },
-  {
     key: 'user',
     visiable: true,
   },
   {
     key: 'billCycle',
+    visiable: true,
+  },
+  {
+    key: 'amount',
     visiable: true,
   },
 ]

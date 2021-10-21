@@ -382,12 +382,12 @@ export const IndexView = React.forwardRef(
       if (properties == null) {
         return []
       }
-      return columns
-        .filter((col) => visibleKeys.some((k) => k === col.value))
-        .map((col) => {
-          const fieldMeta = properties[col.value]
+      return visibleKeys
+        .filter((key) => columns.some((col) => col.value === key))
+        .map((key) => {
+          const fieldMeta = properties[key]
           const column = visibleColumns.find(
-            (c) => c.key === col.value
+            (c) => c.key === key
           ) as IColumnVisible
           return {
             ...column,
