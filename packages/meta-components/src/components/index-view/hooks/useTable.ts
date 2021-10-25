@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import useRequest from '@ahooksjs/use-request'
-import { useUpdateEffect, usePersistFn } from 'ahooks'
 import { useCallback, useEffect } from 'react'
 import {
   CombineService,
@@ -12,7 +11,6 @@ import {
   PaginatedFormatReturn,
   PaginatedResult,
 } from '@ahooksjs/use-request/lib/types'
-import { CompareOP, LogicOP } from '@toy-box/meta-schema'
 
 export {
   CombineService,

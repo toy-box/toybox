@@ -1,6 +1,7 @@
 import React, { createContext } from 'react'
 import { ISortableSelectProps } from '@toy-box/toybox-ui'
 import { IndexModeType } from './types'
+import { RowSelectionType } from 'antd/es/table/interface'
 
 export interface IIndexViewContextProps {
   setQuerySearch?: (params: any) => void
@@ -19,8 +20,8 @@ export interface IIndexViewContextProps {
   visibleKeys: string[]
   setVisibleKeys: (keys: string[]) => void
   selectedRowKeys?: string[]
-  selectionType?: string
-  setSelectionType?: (type?: string) => void
+  selectionType?: RowSelectionType
+  setSelectionType?: (type?: RowSelectionType) => void
   logicFilter?: boolean
 }
 
