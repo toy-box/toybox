@@ -22,6 +22,7 @@ import {
   FieldNumber,
   FieldBoolean,
   FieldTimestamp,
+  FieldTreeSelect,
 } from '../../meta-fields'
 import { IFieldService } from '../interface'
 
@@ -94,7 +95,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
   )
 
   const handleSelectOptions = useCallback(
-    (value: SelectValue, options: OptionItem | OptionItem[]) => {
+    (value: SelectValue, options?: OptionItem | OptionItem[]) => {
       if (Array.isArray(options)) {
         handleValue(value)
       } else {
@@ -146,7 +147,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
   }, [fieldMeta.key, fieldMetaService, value])
 
   const findDataTrees = useCallback(
-    async (parentId) => {
+    async (parentId: string | number) => {
       if (fieldMetaService?.findDataTrees == null) {
         return []
       }
@@ -388,7 +389,18 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
           />
         )
       case MetaValueType.OBJECT_ID:
-        return (
+        return fieldMeta.parentKey && fieldMetaService?.findDataTrees ? (
+          <FieldTreeSelect
+            placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
+            field={fieldMeta}
+            style={style}
+            multiple={multiple}
+            value={filterValue}
+            loadData={findDataTrees}
+            onChange={handleSelectOptions}
+            loadByValue={searchByValue}
+          />
+        ) : (
           <FieldSelect
             placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
             style={style}
