@@ -19,7 +19,7 @@
     "@airclass/icons": "^4.3.4",
     "@types/react": ">=16.8.0 || >=17.0.0",
     "@types/react-dom": ">=16.8.0 || >=17.0.0",
-    "antd": "^4.0.0",
+    "antd": "^4.15.5",
     "classnames": "^2.3.1",
     "react": ">=16.8.0 || >=17.0.0",
     "react-dom": ">=16.8.0 || >=17.0.0",
@@ -28,14 +28,22 @@
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.intersection": "^4.4.6",
-    "@types/react-grid-layout": "^1.1.1"
+    "@types/react-grid-layout": "^1.1.1",
+    "@types/react-beautiful-dnd": "^13.0.0",
+    "antd": "^4.15.5",
+    "classnames": "^2.3.1",
+    "react": ">=16.8.0 || >=17.0.0",
+    "react-dom": ">=16.8.0 || >=17.0.0",
+    "react-is": ">=16.8.0 || >=17.0.0"
   },
   "dependencies": {
-    "@types/react-beautiful-dnd": "^13.0.0",
     "lodash.debounce": "^4.0.8",
     "lodash.intersection": "^4.4.0",
     "react-beautiful-dnd": "^13.1.0",
-    "react-grid-layout": "^1.2.5"
+    "react-grid-layout": "^1.2.5",
+    "rc-table": "^7.0.0",
+    "rc-motion": "^2.4.4",
+    "rc-picker": "^2.5.19"
   },
   "gitHead": "bacf76e04011fd26d75b201ff4ea989511a2ea21"
 }
