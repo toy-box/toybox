@@ -1,4 +1,5 @@
-import React, { useCallback, useRef, useImperativeHandle, Ref } from 'react'
+import React, { useCallback, useRef, useImperativeHandle } from 'react'
+import { MetaValueType } from '@toy-box/meta-schema'
 import { Input } from 'antd'
 import { TextAreaProps } from 'antd/lib/input'
 
@@ -17,7 +18,7 @@ export const FieldText = React.forwardRef<any, FieldTextProps>(
     {
       mode,
       value,
-      field,
+      field = { type: MetaValueType.TEXT },
       onChange,
       placeholder,
       disabled,

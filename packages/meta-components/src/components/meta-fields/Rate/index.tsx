@@ -1,5 +1,6 @@
 import { Rate, RateProps } from 'antd'
-import React, { useRef, useImperativeHandle, Ref } from 'react'
+import { MetaValueType } from '@toy-box/meta-schema'
+import React, { useRef, useImperativeHandle } from 'react'
 
 import { BaseFieldProps } from '../interface'
 
@@ -8,7 +9,17 @@ export interface FieldRateProps
     RateProps {}
 
 export const FieldRate = React.forwardRef<any, FieldRateProps>(
-  ({ mode, value, disabled, style, field, onChange }, ref) => {
+  (
+    {
+      mode,
+      value,
+      disabled,
+      style,
+      field = { type: MetaValueType.RATE },
+      onChange,
+    },
+    ref
+  ) => {
     const inputRef = useRef()
     useImperativeHandle(
       ref,
