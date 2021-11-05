@@ -1,5 +1,5 @@
-import { createContext } from 'react'
-import { IspecialOption } from './interface'
+import React, { createContext } from 'react'
+import { IspecialOption, OpTypeProps, IoperatOption } from './interface'
 
 export interface IFilterBuilderContextProps {
   value: Partial<Toybox.MetaSchema.Types.ICompareOperation>[]
@@ -9,6 +9,9 @@ export interface IFilterBuilderContextProps {
   specialMode?: boolean
   specialOptions?: IspecialOption[]
   simple?: boolean
+  operatType?: OpTypeProps
+  operatOptions?: IoperatOption[]
+  customValueElement?: React.ReactElement
 }
 
 export const FilterBuilderContext = createContext<IFilterBuilderContextProps>({

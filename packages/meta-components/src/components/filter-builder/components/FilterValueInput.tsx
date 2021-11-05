@@ -47,6 +47,7 @@ export interface FilterValueInputProps {
   fieldMetaService?: IFieldService
   locale?: string
   type?: string
+  customValueElement?: React.ReactElement
 }
 
 declare type OptionItem = Toybox.MetaSchema.Types.IFieldOption
@@ -63,6 +64,7 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
   fieldMetaService,
   locale = 'zh_CN',
   type,
+  customValueElement,
 }) => {
   const innerLocale = useLocale()
   const localeData = useMemo(
@@ -167,7 +169,9 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
   }, [value, multiple])
 
   const input = useMemo(() => {
-    if (operation === CompareOP.IS_NULL) {
+    if (customValueElement) {
+      return customValueElement
+    } else if (operation === CompareOP.IS_NULL) {
       return (
         <FieldBoolean
           field={{ type: 'boolean', key: 'target', name: 'target' }}

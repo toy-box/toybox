@@ -20,4 +20,16 @@ export interface IspecialOption {
   label: string
 }
 
+export interface IoperatOption {
+  type: Toybox.MetaSchema.Types.CompareOP | string
+  children: IspecialOption[]
+}
+
+export enum OpTypeEnum {
+  INSERT = 'insert',
+  REPLACE = 'replace',
+}
+
+export type OpTypeProps = OpTypeEnum.INSERT | OpTypeEnum.REPLACE
+
 export type IUncheckCompare = Partial<Toybox.MetaSchema.Types.ICompareOperation>

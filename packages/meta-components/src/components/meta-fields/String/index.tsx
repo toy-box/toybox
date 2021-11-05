@@ -84,7 +84,9 @@ export const FieldString = React.forwardRef<any, FieldStringProps>(
       <Input
         ref={inputRef}
         value={value}
-        onChange={handleChange}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          onChange(e.target?.value)
+        }
         onPressEnter={(e) => onPressEnter && onPressEnter()}
         defaultValue={field.defaultValue}
         placeholder={placeholder}

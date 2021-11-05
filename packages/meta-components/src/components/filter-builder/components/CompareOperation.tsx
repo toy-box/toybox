@@ -7,7 +7,7 @@ import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
 import get from 'lodash.get'
 import { FilterValueInput } from './FilterValueInput'
 import { FilterBuilderContext } from '../context'
-import { IFieldService } from '../interface'
+import { IFieldService, OpTypeEnum } from '../interface'
 
 const inputStyle = { width: '320px' }
 const verticalStyle = { width: '100%' }
@@ -155,12 +155,28 @@ export const CompareOperation: FC<CompareOperationProps> = ({
   function compareOperationData(
     compareOperation: Toybox.MetaSchema.Types.CompareOP[]
   ) {
-    return compareOperation.map((op) => {
+    let compareOperations = compareOperation.map((op) => {
       return {
         label: get(localeData.lang, `compareOperation.${op}`),
         value: op,
       }
     })
+    const operatOptions = context.operatOptions as any
+    const option = operatOptions?.find((op) => op.type === filterFieldMeta.type)
+    if (
+      context?.operatType === OpTypeEnum.INSERT &&
+      context.operatOptions &&
+      option?.children
+    ) {
+      compareOperations.push(...option.children)
+    } else if (
+      context?.operatType === OpTypeEnum.REPLACE &&
+      context.operatOptions &&
+      option?.children
+    ) {
+      compareOperations = option.children
+    }
+    return compareOperations
   }
 
   const multiple = useMemo(
@@ -272,6 +288,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
         operation={compare.op}
         style={layout === 'vertical' ? verticalStyle : inputStyle}
         type={compare.type}
+        customValueElement={context.customValueElement}
       />
     ) : (
       <Input

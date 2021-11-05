@@ -3,7 +3,7 @@
 ### 基础用法
 
 ```tsx
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useMemo } from 'react'
 import { FilterBuilder } from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
 
@@ -162,11 +162,28 @@ export default () => {
     (logicFilter: IUncheckLogicFilter) => setValue(logicFilter),
     []
   )
+  const operatOptions = [
+    {
+      type: 'singleOption',
+      children: [
+        {
+          label: '添加',
+          value: 'add',
+        },
+      ],
+    },
+  ]
+  const customValueElement = useMemo(() => {
+    return <div>123213123</div>
+  }, [])
   return (
     <div>
       <FilterBuilder
         fieldMetas={filter.filterFieldMetas}
         value={value}
+        operatType="insert"
+        operatOptions={operatOptions}
+        // customValueElement={customValueElement}
         filterFieldService={filter.filterFieldService}
         onChange={(filterItem: Partial<ICompareOperation>[]) =>
           handleFilter(filterItem)
@@ -593,7 +610,7 @@ export default () => {
             primary: null,
             properties: null,
             required: null,
-            type: 'date',
+            type: 'percent',
           },
           {
             description: null,

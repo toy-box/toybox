@@ -1,4 +1,4 @@
-import React, { CSSProperties, useMemo } from 'react'
+import React, { CSSProperties, useCallback, useMemo } from 'react'
 import { Button } from 'antd'
 import classNames from 'classnames'
 import update from 'immutability-helper'
@@ -7,7 +7,13 @@ import { useLocale } from '@toy-box/toybox-shared'
 import { CompareOP } from '@toy-box/meta-schema'
 import { CompareOperation } from './CompareOperation'
 import { localeMap } from '../locale'
-import { IFieldService, IUncheckCompare, IspecialOption } from '../interface'
+import {
+  IFieldService,
+  IUncheckCompare,
+  IspecialOption,
+  OpTypeProps,
+  IoperatOption,
+} from '../interface'
 import { FilterBuilderContext } from '../context'
 
 import '../styles/index.less'
@@ -26,6 +32,9 @@ export interface IFilterBuilderProps {
   specialMode?: boolean
   specialOptions?: IspecialOption[]
   simple?: boolean
+  operatType?: OpTypeProps
+  operatOptions?: IoperatOption[]
+  customValueElement?: React.ReactElement
 }
 
 export const FilterBuilder = ({
@@ -40,6 +49,9 @@ export const FilterBuilder = ({
   specialMode,
   specialOptions,
   simple,
+  operatType,
+  operatOptions,
+  customValueElement,
 }: IFilterBuilderProps) => {
   const locale = useLocale()
   const localeData = useMemo(() => localeMap[locale], [locale])
@@ -56,6 +68,9 @@ export const FilterBuilder = ({
         simple,
         specialMode,
         specialOptions,
+        operatType,
+        operatOptions,
+        customValueElement,
       }}
     >
       <div className={classNames(className)} style={style}>
