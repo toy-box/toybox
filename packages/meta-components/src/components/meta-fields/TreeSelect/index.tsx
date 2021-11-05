@@ -52,6 +52,7 @@ export const FieldTreeSelect = React.forwardRef<any, FieldTreeSelectProps>(
       onChange,
       onSelect,
       onDeselect,
+      field,
       mode,
       treeData,
       value,
@@ -76,10 +77,11 @@ export const FieldTreeSelect = React.forwardRef<any, FieldTreeSelectProps>(
     useEffect(() => {
       if (!initialized) {
         if (value) {
-          loadByValue(isArr(value) ? value : [value]).then((data) => {
-            setLabelValueCache(data)
-            setInitialized(true)
-          })
+          loadByValue &&
+            loadByValue(isArr(value) ? value : [value]).then((data) => {
+              setLabelValueCache(data)
+              setInitialized(true)
+            })
         }
       }
     }, [initialized, labelValueCache, loadByValue, value])
@@ -93,11 +95,12 @@ export const FieldTreeSelect = React.forwardRef<any, FieldTreeSelectProps>(
 
     useEffect(() => {
       if (realTreeData == null || realTreeData.length === 0) {
-        loadData().then((data) => {
-          if (data.length > 0) {
-            addNodes(data)
-          }
-        })
+        loadData &&
+          loadData().then((data) => {
+            if (data.length > 0) {
+              addNodes(data)
+            }
+          })
       }
     }, [realTreeData, loadData, addNodes])
 
@@ -117,9 +120,9 @@ export const FieldTreeSelect = React.forwardRef<any, FieldTreeSelectProps>(
 
     const onLoadData = useCallback(
       async (node: LegacyDataNode) => {
-        const nodes = await loadData(node.id)
+        const nodes = await loadData(node.value)
         const newNodes = nodes.filter(
-          (d) => !(realTreeData || []).some((rd) => rd.id === d.id)
+          (d) => !(realTreeData || []).some((rd) => rd.value === d.value)
         )
         if (newNodes.length > 0) {
           addNodes(newNodes)

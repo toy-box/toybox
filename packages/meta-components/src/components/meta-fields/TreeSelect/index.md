@@ -60,16 +60,30 @@ import React, { useCallback, useState } from 'react'
 import { FieldTreeSelect } from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
 
-const genTreeNode = (parentId, isLeaf = false) => {
-  const random = Math.random().toString(36).substring(2, 6)
-  return {
-    id: random,
-    pId: parentId,
-    value: random,
-    label: isLeaf ? 'Tree Node' : 'Expand to load',
-    isLeaf,
-  }
-}
+const departments = [
+  {
+    id: 'dep1',
+    name: 'DEP1',
+    pId: '',
+  },
+  {
+    id: 'dep2_1',
+    name: 'DEP2-1',
+    pId: 'dep1',
+  },
+  {
+    id: 'dep2_2',
+    name: 'DEP2-2',
+    pId: 'dep1',
+    isLeaf: true,
+  },
+  {
+    id: 'dep2_1_1',
+    name: 'DEP2-2-1',
+    pId: 'dep2_1',
+    isLeaf: true,
+  },
+]
 
 const searchTreeNodes = (ids: string[]) => {
   return ids.map((id) => ({
@@ -81,32 +95,60 @@ const searchTreeNodes = (ids: string[]) => {
 }
 
 export default () => {
-  const [treeData, setTreeDate] = useState([
-    { id: 1, pId: 0, value: '1', label: 'Expand to load' },
-    { id: 2, pId: 0, value: '2', label: 'Expand to load' },
-    { id: 3, pId: 0, value: '3', label: 'Tree Node', isLeaf: true },
-  ])
-  const [value, setValue] = useState('23')
+  const [value, setValue] = useState('dep2_1')
 
   const onLoadData = useCallback(
     (id) =>
       new Promise((resolve) => {
         setTimeout(() => {
           if (id) {
-            resolve([genTreeNode(id, false), genTreeNode(id, true)])
+            resolve(
+              departments
+                .filter((dept) => dept.id === id)
+                .map((dept) => ({
+                  id: dept.id,
+                  label: dept.name,
+                  title: dept.name,
+                  value: dept.id,
+                  isLeaf: dept.isLeaf,
+                }))
+            )
           } else {
-            resolve([genTreeNode(0, false)])
+            resolve(
+              departments
+                .filter(
+                  (dept) =>
+                    dept.pId == null || dept.pId === '' || dept.pId === 0
+                )
+                .map((dept) => ({
+                  label: dept.name,
+                  title: dept.name,
+                  value: dept.id,
+                  pId: 0,
+                  isLeaf: false,
+                }))
+            )
           }
         }, 300)
       }),
-    [treeData, setTreeDate]
+    []
   )
 
   const loadByValue = useCallback(
     (ids: string[]) =>
       new Promise((resolve) => {
         setTimeout(() => {
-          resolve([searchTreeNodes(ids)])
+          resolve(
+            departments
+              .filter((dept) => ids.includes(dept.id))
+              .map((dept) => ({
+                id: dept.id,
+                label: dept.name,
+                title: dept.name,
+                value: dept.id,
+                isLeaf: dept.isLeaf,
+              }))
+          )
         }, 300)
       }),
     []

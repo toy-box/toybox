@@ -144,9 +144,13 @@ export const Select = React.forwardRef(
     }))
 
     useEffect(() => {
+      let didCancel = false
       const init = async () => {
         if (value != null && current == null && !initialed && remoteByValue) {
           const options = await remoteByValue(value, params)
+          if (didCancel) {
+            return
+          }
           if (Array.isArray(options)) {
             setInitOptions(options)
           } else {
@@ -156,9 +160,12 @@ export const Select = React.forwardRef(
         if (remote != null && !initialed) {
           await fetchData('')
         }
-        setInitialed(true)
+        !didCancel && setInitialed(true)
       }
       init()
+      return () => {
+        didCancel = true
+      }
     }, [current, initialed, fetchData, params, remote, remoteByValue, value])
 
     const handleChange = useCallback(
@@ -277,14 +284,14 @@ export const Select = React.forwardRef(
         onChange={debounce(handleChange, 500)}
         defaultValue={defaultValue}
         size={size}
-        onSearch={debounce(handleSearch, 500)}
+        onSearch={remote && debounce(handleSearch, 500)}
         loading={loading}
         placeholder={placeholder}
         ref={inputRef}
         mode={mode}
         dropdownRender={dropdownRender}
         onDropdownVisibleChange={handleOpen}
-        showSearch={showSearch}
+        showSearch={!!remote || showSearch}
         filterOption={filterOption}
         {...otherProps}
       >

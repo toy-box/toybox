@@ -142,19 +142,15 @@ const visibleColumns = [
     fixed: true,
   },
   {
-    key: 'billCycle',
-    visiable: true,
-  },
-  {
-    key: 'amount',
-    visiable: true,
-  },
-  {
     key: 'user',
     visiable: true,
   },
   {
     key: 'billCycle',
+    visiable: true,
+  },
+  {
+    key: 'amount',
     visiable: true,
   },
 ]
@@ -178,6 +174,7 @@ export default () => {
       pageSize: number
     }>(function (resolve) {
       setTimeout(function () {
+        console.log('load...', result)
         resolve(result)
       }, 1000)
     })
@@ -200,6 +197,7 @@ export default () => {
         visibleColumns={visibleColumns}
         objectMeta={objectMeta}
         loadData={loadData}
+        pagination={{ current: 1, pageSize: 10 }}
         urlQuery
         tableOption={{ scroll: { x: 1000 } }}
       >

@@ -23,6 +23,7 @@ import {
   IMetaTableProps,
 } from '../meta-table/interface'
 import { IndexViewContext } from './context'
+import { RowSelectionType } from 'antd/es/table/interface'
 
 export * from './hooks'
 export * from './components'
@@ -85,7 +86,7 @@ export interface IIndexViewProps<IParams = any> {
    * @default false
    */
   urlQuery?: boolean
-  defaultSelectionType?: string
+  defaultSelectionType?: RowSelectionType
   tableOperate?: IButtonClusterProps
   /**
    * @description 数据获取方法
@@ -145,8 +146,10 @@ export const IndexView = React.forwardRef(
     const [params, setParams] = useState<
       Toybox.MetaSchema.Types.ICompareOperation[] | undefined
     >()
-    const [pageable, setPageable] =
-      useState<{ current?: number; pageSize?: number }>()
+    const [pageable, setPageable] = useState<{
+      current?: number
+      pageSize?: number
+    }>({ current: pagination?.current, pageSize: pagination?.pageSize })
 
     useEffect(() => setPreParams(params), [params])
     useEffect(() => {
@@ -211,22 +214,6 @@ export const IndexView = React.forwardRef(
       [urlQuery, preParamsRef]
     )
 
-    const onloadData = useCallback(
-      (pageable, params) => {
-        return loadData(
-          pageable,
-          logicFilter ? params : simpleParams(params)
-        ).then((data) => {
-          if (!overPageSelect) {
-            setSelectedRowKeys([])
-            setSelectedRows([])
-          }
-          return data
-        })
-      },
-      [logicFilter, overPageSelect]
-    )
-
     const paramsActions = useMemo(
       () => ({
         getParams: () => paramsRef,
@@ -236,6 +223,19 @@ export const IndexView = React.forwardRef(
       }),
       [preParamsRef, setPreParams]
     )
+
+    const onloadData = (pageable, params) => {
+      return loadData(
+        pageable,
+        logicFilter ? params : simpleParams(params)
+      ).then((data) => {
+        if (!overPageSelect) {
+          setSelectedRowKeys([])
+          setSelectedRows([])
+        }
+        return data
+      })
+    }
 
     const {
       pagination: innerPagination,
@@ -325,10 +325,9 @@ export const IndexView = React.forwardRef(
       () =>
         selectionType != null
           ? {
+              type: selectionType,
               selectedRowKeys,
-              selectionType,
               onChange: (keys: string[], rows: RowData[]) => {
-                console.log('on rowSelection', keys, objectMeta.primaryKey)
                 if (overPageSelect) {
                   setSelectedRowKeys(
                     selectedRowKeys
@@ -382,12 +381,12 @@ export const IndexView = React.forwardRef(
       if (properties == null) {
         return []
       }
-      return columns
-        .filter((col) => visibleKeys.some((k) => k === col.value))
-        .map((col) => {
-          const fieldMeta = properties[col.value]
+      return visibleKeys
+        .filter((key) => columns.some((col) => col.value === key))
+        .map((key) => {
+          const fieldMeta = properties[key]
           const column = visibleColumns.find(
-            (c) => c.key === col.value
+            (c) => c.key === key
           ) as IColumnVisible
           return {
             ...column,

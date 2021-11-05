@@ -7,6 +7,33 @@ import React, { useCallback, useState, useMemo } from 'react'
 import { FilterBuilder } from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
 
+const departments = [
+  {
+    id: 'dep1',
+    name: 'DEP1',
+    pId: 0,
+    isLeaf: false,
+  },
+  {
+    id: 'dep2_1',
+    name: 'DEP2-1',
+    pId: 'dep1',
+    isLeaf: false,
+  },
+  {
+    id: 'dep2_2',
+    name: 'DEP2-2',
+    pId: 'dep1',
+    isLeaf: true,
+  },
+  {
+    id: 'dep2_1_1',
+    name: 'DEP2-1-1',
+    pId: 'dep2_1',
+    isLeaf: true,
+  },
+]
+
 export default () => {
   const serviceTest = async function (resolve, key) {
     setTimeout(() => {
@@ -15,7 +42,6 @@ export default () => {
   }
 
   function findOptions(key, name) {
-    console.log('findOfValues', key, name)
     return new Promise((resolve) => {
       serviceTest(resolve, key)
     }).then((res) => {
@@ -36,8 +62,15 @@ export default () => {
     return new Promise((resolve) => {
       serviceTest(resolve, key)
     }).then((res) => {
-      if (key === 'deptId')
-        return [{ id: '2', value: '1', title: 'Expand to load2' }]
+      if (key === 'department')
+        return departments
+          .filter((dept) => value.some((v) => v === dept.id))
+          .map((dept) => ({
+            label: dept.name,
+            value: dept.id,
+            pId: dept.pId,
+            isLeaf: dept.isLeaf,
+          }))
       return [
         {
           label: 'SIX',
@@ -63,14 +96,32 @@ export default () => {
   }, [])
 
   function findDataTrees(key, parentId) {
+    console.log('findDataTrees', key, parentId)
     return new Promise((resolve) => {
       serviceTest(resolve, key)
     }).then((res) => {
-      if (parentId === '2')
-        return [{ id: '3', pId: '2', value: '3', title: 'Expand to load3' }]
-      if (parentId)
-        return [{ id: '2', pId: '1', value: '2', title: 'Expand to load2' }]
-      return [{ id: '1', pId: 0, value: '1', title: 'Expand to load' }]
+      if (key === 'department') {
+        if (parentId == null || parentId === '' || parentId === 0) {
+          return departments
+            .filter((dept) => dept.pId === 0)
+            .map((dept) => ({
+              id: dept.id,
+              label: dept.name,
+              value: dept.id,
+              pId: dept.pId,
+              isLeaf: dept.isLeaf,
+            }))
+        }
+        return departments
+          .filter((dept) => dept.pId === parentId)
+          .map((dept) => ({
+            id: dept.id,
+            label: dept.name,
+            value: dept.id,
+            pId: dept.pId,
+            isLeaf: dept.isLeaf,
+          }))
+      }
     })
   }
 
@@ -81,14 +132,14 @@ export default () => {
         exclusiveMaximum: null,
         exclusiveMinimum: null,
         format: null,
-        key: 'deptId',
+        key: 'department',
         maxLength: null,
         maximum: null,
         minLength: null,
         minimum: null,
         name: '部门',
         options: null,
-        parentKey: 'parent_id',
+        parentKey: 'pid',
         pattern: null,
         primary: null,
         properties: null,

@@ -1,100 +1,63 @@
-import React, { FC } from 'react'
+import React, { CSSProperties, FC } from 'react'
 import { Typography } from 'antd'
+import { BlockProps, BaseType } from 'antd/es/typography/Base'
 
 export type TextType = 'H1' | 'H2' | 'H3' | 'H4' | 'H5' | 'Text' | 'Paragraph'
 
-export interface ITextProps {
+export interface ITextProps
+  extends Omit<BlockProps, 'type' | 'editable' | 'copyable'> {
   type: TextType
-  italic?: boolean
-  underline?: boolean
-  strong?: boolean
-  color?: string
+  style?: CSSProperties
+  color?: BaseType
 }
 
 export const Text: FC<ITextProps> = ({
   type,
-  italic,
-  underline,
-  strong,
   color,
+  style,
   children,
+  ...otherProps
 }) => {
-  const style: React.CSSProperties = { color }
   switch (type) {
     case 'H1':
       return (
-        <Typography.Title
-          level={1}
-          italic={italic}
-          underline={underline}
-          style={style}
-        >
+        <Typography.Title level={1} style={style} type={color} {...otherProps}>
           {children}
         </Typography.Title>
       )
     case 'H2':
       return (
-        <Typography.Title
-          level={2}
-          italic={italic}
-          underline={underline}
-          style={style}
-        >
+        <Typography.Title level={2} style={style} type={color} {...otherProps}>
           {children}
         </Typography.Title>
       )
     case 'H3':
       return (
-        <Typography.Title
-          level={3}
-          italic={italic}
-          underline={underline}
-          style={style}
-        >
+        <Typography.Title level={3} style={style} type={color} {...otherProps}>
           {children}
         </Typography.Title>
       )
     case 'H4':
       return (
-        <Typography.Title
-          level={4}
-          italic={italic}
-          underline={underline}
-          style={style}
-        >
+        <Typography.Title level={4} style={style} type={color} {...otherProps}>
           {children}
         </Typography.Title>
       )
     case 'H5':
       return (
-        <Typography.Title
-          level={5}
-          italic={italic}
-          underline={underline}
-          style={style}
-        >
+        <Typography.Title level={5} style={style} type={color} {...otherProps}>
           {children}
         </Typography.Title>
       )
     case 'Paragraph':
       return (
-        <Typography.Paragraph
-          italic={italic}
-          underline={italic}
-          strong={strong}
-          style={style}
-        >
+        <Typography.Paragraph style={style} type={color} {...otherProps}>
           {children}
         </Typography.Paragraph>
       )
     default:
       return (
-        <Typography.Text
-          italic={italic}
-          underline={italic}
-          strong={strong}
-          style={style}
-        >
+        <Typography.Text style={style} type={color} {...otherProps}>
           {children}
         </Typography.Text>
       )

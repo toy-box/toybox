@@ -1,5 +1,6 @@
 import React, { ReactNode, useMemo } from 'react'
 import { Tooltip } from 'antd'
+import { TooltipPlacement } from 'antd/es/tooltip'
 import classNames from 'classnames'
 import '../styles'
 
@@ -12,7 +13,8 @@ export interface IconButtonProps {
   color?: string
   pure?: boolean
   type?: IconType
-  tooltip?: string
+  tooltip?: ReactNode
+  placement?: TooltipPlacement
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   disabled?: boolean
   size?: SizeType
@@ -28,6 +30,7 @@ const IconButton: React.ForwardRefRenderFunction<unknown, IconButtonProps> = (
     type = 'default',
     pure,
     tooltip,
+    placement,
     onClick,
     disabled,
     size,
@@ -87,7 +90,7 @@ const IconButton: React.ForwardRefRenderFunction<unknown, IconButtonProps> = (
   )
 
   return tooltip ? (
-    <Tooltip title={tooltip}>
+    <Tooltip title={tooltip} placement={placement}>
       <button
         ref={buttonRef}
         type="button"
