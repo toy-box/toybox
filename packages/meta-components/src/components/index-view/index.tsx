@@ -179,8 +179,7 @@ export const IndexView = React.forwardRef(
     }, [params])
     useEffect(() => {
       if (urlQuery) {
-        console.log('urlQuery', pageable, query.pageable)
-        setPageable(queryOption)
+        setPageable(queryOption())
         setParams(query.params ? JSON.parse(query.params) : undefined)
       }
     }, [query])
