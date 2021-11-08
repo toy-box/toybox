@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/toybox-ui",
-  "version": "2.0.12",
+  "version": "2.0.15",
   "license": "MIT",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -28,8 +28,8 @@
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.intersection": "^4.4.6",
-    "@types/react-grid-layout": "^1.1.1",
     "@types/react-beautiful-dnd": "^13.0.0",
+    "@types/react-grid-layout": "^1.1.1",
     "antd": "^4.15.5",
     "classnames": "^2.3.1",
     "react": ">=16.8.0 || >=17.0.0",
@@ -39,12 +39,12 @@
   "dependencies": {
     "lodash.debounce": "^4.0.8",
     "lodash.intersection": "^4.4.0",
-    "react-beautiful-dnd": "^13.1.0",
-    "react-grid-layout": "^1.2.5",
-    "rc-table": "~7.19.0",
     "rc-motion": "~2.4.4",
     "rc-picker": "~2.5.19",
-    "rc-select": "~13.1.0"
+    "rc-select": "~13.1.0",
+    "rc-table": "~7.19.0",
+    "react-beautiful-dnd": "^13.1.0",
+    "react-grid-layout": "^1.2.5"
   },
   "gitHead": "bacf76e04011fd26d75b201ff4ea989511a2ea21"
 }
