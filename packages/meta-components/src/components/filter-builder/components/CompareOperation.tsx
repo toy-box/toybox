@@ -161,20 +161,19 @@ export const CompareOperation: FC<CompareOperationProps> = ({
         value: op,
       }
     })
-    const operatOptions = context.operatOptions as any
-    const option = operatOptions?.find((op) => op.type === filterFieldMeta.type)
+    const options = filterFieldMeta.operatOptions
     if (
       context?.operatType === OpTypeEnum.INSERT &&
-      context.operatOptions &&
-      option?.children
+      filterFieldMeta.operatOptions &&
+      options
     ) {
-      compareOperations.push(...option.children)
+      compareOperations.push(...options)
     } else if (
       context?.operatType === OpTypeEnum.REPLACE &&
-      context.operatOptions &&
-      option?.children
+      filterFieldMeta.operatOptions &&
+      options
     ) {
-      compareOperations = option.children
+      compareOperations = options
     }
     return compareOperations
   }

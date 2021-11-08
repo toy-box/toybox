@@ -33,7 +33,6 @@ export interface IFilterBuilderProps {
   specialOptions?: IspecialOption[]
   simple?: boolean
   operatType?: OpTypeProps
-  operatOptions?: IoperatOption[]
   customValueElement?: React.ReactElement
 }
 
@@ -50,7 +49,6 @@ export const FilterBuilder = ({
   specialOptions,
   simple,
   operatType,
-  operatOptions,
   customValueElement,
 }: IFilterBuilderProps) => {
   const locale = useLocale()
@@ -69,7 +67,6 @@ export const FilterBuilder = ({
         specialMode,
         specialOptions,
         operatType,
-        operatOptions,
         customValueElement,
       }}
     >

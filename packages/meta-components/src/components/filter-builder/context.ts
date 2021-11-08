@@ -10,7 +10,6 @@ export interface IFilterBuilderContextProps {
   specialOptions?: IspecialOption[]
   simple?: boolean
   operatType?: OpTypeProps
-  operatOptions?: IoperatOption[]
   customValueElement?: React.ReactElement
 }
 

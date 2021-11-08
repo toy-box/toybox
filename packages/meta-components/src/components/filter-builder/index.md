@@ -198,6 +198,12 @@ export default () => {
         type: 'singleOption',
         unique: null,
         unBasic: true,
+        operatOptions: [
+          {
+            label: '添加',
+            value: 'add',
+          },
+        ],
       },
     ],
 
@@ -213,17 +219,6 @@ export default () => {
     (logicFilter: IUncheckLogicFilter) => setValue(logicFilter),
     []
   )
-  const operatOptions = [
-    {
-      type: 'singleOption',
-      children: [
-        {
-          label: '添加',
-          value: 'add',
-        },
-      ],
-    },
-  ]
   const customValueElement = useMemo(() => {
     return <div>123213123</div>
   }, [])
@@ -233,7 +228,6 @@ export default () => {
         fieldMetas={filter.filterFieldMetas}
         value={value}
         operatType="insert"
-        operatOptions={operatOptions}
         // customValueElement={customValueElement}
         filterFieldService={filter.filterFieldService}
         onChange={(filterItem: Partial<ICompareOperation>[]) =>
