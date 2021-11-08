@@ -151,6 +151,23 @@ export const IndexView = React.forwardRef(
       pageSize?: number
     }>({ current: pagination?.current, pageSize: pagination?.pageSize })
 
+    const queryOption = () => {
+      if (query.pageable) {
+        return Number.parseInt(query.pageable.pageSize) === pageable.pageSize &&
+          Number.parseInt(query.pageable.current) === pageable.current
+          ? pageable
+          : {
+              current: query.pageable.current
+                ? Number.parseInt(query.pageable.current)
+                : undefined,
+              pageSize: query.pageable.pageSize
+                ? Number.parseInt(query.pageable.pageSize)
+                : undefined,
+            }
+      }
+      return pageable
+    }
+
     useEffect(() => setPreParams(params), [params])
     useEffect(() => {
       preParamsRef.current = preParams
@@ -162,18 +179,8 @@ export const IndexView = React.forwardRef(
     }, [params])
     useEffect(() => {
       if (urlQuery) {
-        setPageable(
-          query.pageable
-            ? {
-                current: query.pageable.current
-                  ? Number.parseInt(query.pageable.current)
-                  : undefined,
-                pageSize: query.pageable.pageSize
-                  ? Number.parseInt(query.pageable.pageSize)
-                  : undefined,
-              }
-            : undefined
-        )
+        console.log('urlQuery', pageable, query.pageable)
+        setPageable(queryOption)
         setParams(query.params ? JSON.parse(query.params) : undefined)
       }
     }, [query])

@@ -12,6 +12,7 @@ import {
 } from '@toy-box/meta-components'
 import { Button } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
+import request from 'umi-request'
 
 const objectMeta = {
   key: 'bill',
@@ -164,8 +165,8 @@ export default () => {
         name: `${row.name}-${pageable?.current || '1'}`,
       })),
       total: 20,
-      current: pageable?.current || 1,
-      pageSize: pageable?.pageSize || 10,
+      current: 1,
+      pageSize: 10,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
@@ -189,6 +190,26 @@ export default () => {
     ref.current.reset()
   }, [ref])
 
+  // 接口调试
+  // async function query(params: any): Promise<any> {
+  //   return request('https://run.mocky.io/v3/80973e4e-ad93-47bf-8aee-ddc2066fe1b1', {
+  //     method: 'GET',
+  //   });
+  // }
+  // const loadData = useCallback(
+  //   async (pageable: { pageSize: number; current: number }, fieldsValue: Record<string, any>) => {
+  //     const params = {page: pageable?.current || 1,
+  //       pageSize: pageable?.pageSize || 10,
+  //       ...fieldsValue,}
+  //     const data = await query()
+  //     return {
+  //       list: data.data.rows,
+  //       total: data.data.total,
+  //     };
+  //   },
+  //   [],
+  // );
+
   return (
     <>
       <DataGrid
@@ -200,6 +221,7 @@ export default () => {
         pagination={{ current: 1, pageSize: 10 }}
         urlQuery
         tableOption={{ scroll: { x: 1000 } }}
+        logicFilter
       >
         <FilterPanel simpleFilterKeys={['amount']} />
         <TableStatusBar />
@@ -703,6 +725,7 @@ import {
   FilterDisplay,
 } from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
+import request from 'umi-request'
 
 const objectMeta = {
   key: 'bill',
@@ -844,7 +867,9 @@ const visibleColumns = [
     visiable: true,
   },
 ]
-
+// const query = (params) =>{
+//   return request
+// }
 export default () => {
   const loadData = (pageable, filterParams) => {
     const result = {
@@ -860,6 +885,7 @@ export default () => {
       pageSize: number
     }>(function (resolve) {
       setTimeout(function () {
+        console.log('promiseResult')
         resolve(result)
       }, 1000)
     })

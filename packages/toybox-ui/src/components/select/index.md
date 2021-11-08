@@ -8,30 +8,31 @@ import { Select } from '@toy-box/toybox-ui'
 
 const options = [
   {
-    label: '111',
+    label: 'One',
     value: '111',
   },
   {
-    label: '222',
+    label: 'Tow',
     value: '222',
   },
   {
-    label: '333',
+    label: 'Three',
     value: '333',
   },
   {
-    label: '444',
+    label: 'Four',
     value: '444',
   },
   {
-    label: '555',
+    label: 'Five',
     value: '555',
   },
   {
-    label: '666',
+    label: 'Six',
     value: '666',
   },
 ]
+
 export default () => {
   return <Select options={options} style={{ width: '200px' }} />
 }
@@ -42,6 +43,20 @@ export default () => {
 ```tsx
 import React from 'react'
 import { Select } from '@toy-box/toybox-ui'
+import request from 'umi-request'
+
+// 远程多选
+function metaRemote() {
+  return async () => {
+    const data = await request(
+      'https://run.mocky.io/v3/48a53541-6f8f-4e1d-83a9-40189d7e197f',
+      {
+        method: 'GET',
+      }
+    )
+    return data.address
+  }
+}
 
 const options = [
   {
@@ -73,6 +88,7 @@ export default () => {
   return (
     <Select
       mode={'multiple'}
+      // remote={metaRemote()}
       options={options}
       style={{ width: '200px' }}
       showSearch
