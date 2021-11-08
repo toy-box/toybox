@@ -128,7 +128,7 @@ export const Select = React.forwardRef(
       return mergeOptions
         ? mergeOptions.find((opt) => opt.value === innerValue)
         : null
-    }, [mode, mergeOptions, innerValue])
+    }, [mode, innerValue, mergeOptions])
 
     const values = useMemo(() => {
       if (Array.isArray(current)) {
@@ -166,7 +166,7 @@ export const Select = React.forwardRef(
       return () => {
         didCancel = true
       }
-    }, [current, initialed, fetchData, params, remote, remoteByValue, value])
+    }, [initialed, fetchData, params, remote, remoteByValue, value])
 
     const handleChange = useCallback(
       (
