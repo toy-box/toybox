@@ -38,6 +38,8 @@ export enum CompareOP {
 
 export type DateFilterUnitType = 'DAY' | 'WEEK' | 'MONTH' | 'SEASON' | 'YEAR'
 
+export type DateUnit = 'DAY' | 'MONTH' | 'YEAR'
+
 export type DateFilterValueType =
   | 'DAY:0:0'
   | 'DAY:-1:-1'
