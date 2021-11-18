@@ -109,7 +109,7 @@ export declare type IndexViewRefType = {
   reload: () => void
   reset: () => void
   dataSource?: RowData[]
-  selectedRowKey?: string[]
+  selectedRowKeys?: string[]
   selectedRows?: RowData[]
 }
 
