@@ -113,6 +113,7 @@ export interface IDataGridProps<IParams = any> {
   selectedRowKeys?: string[]
   setSelectedRows?: (rows: RowData[]) => void
   setSelectedRowKeys?: (keys: string[]) => void
+  children?: React.ReactNode
 }
 
 export declare type DataGridRefType = {
