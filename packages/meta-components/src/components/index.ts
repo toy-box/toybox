@@ -1,4 +1,5 @@
 export * from './data-view'
+export * from './data-grid'
 export * from './date-unit-range'
 export * from './filter-builder'
 export * from './filter-search'

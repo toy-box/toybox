@@ -1,19 +1,15 @@
-## IndexView
+## DataGrid
 
 #### 基本用法
 
 ```tsx
 import React, { useCallback, useMemo, useRef } from 'react'
-import {
-  IndexView,
-  FilterDisplay,
-  FilterPanel,
-  TableStatusBar,
-} from '@toy-box/meta-components'
+import { DataGrid } from '@toy-box/meta-components'
 import { Button } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 import request from 'umi-request'
 
+const { FilterDisplay, FilterPanel, TableStatusBar } = DataGrid
 const objectMeta = {
   key: 'bill',
   name: '账单',
@@ -212,7 +208,7 @@ export default () => {
 
   return (
     <>
-      <IndexView
+      <DataGrid
         ref={ref}
         style={{ minWidth: '600px' }}
         visibleColumns={visibleColumns}
@@ -225,7 +221,7 @@ export default () => {
       >
         <FilterPanel simpleFilterKeys={['amount']} />
         <TableStatusBar />
-      </IndexView>
+      </DataGrid>
       <Button onClick={reload}>重新读取数据</Button>
       <Button onClick={reset}>重置</Button>
     </>
@@ -238,15 +234,11 @@ export default () => {
 ```tsx
 import React, { useRef, useMemo } from 'react'
 import { message } from 'antd'
-import {
-  IndexView,
-  FilterPanel,
-  TableStatusBar,
-  OperatePanel,
-  FilterDisplay,
-} from '@toy-box/meta-components'
+import { DataGrid } from '@toy-box/meta-components'
 import { ToolBar } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
+
+const { FilterPanel, TableStatusBar, OperatePanel, FilterDisplay } = DataGrid
 
 const objectMeta = {
   key: 'bill',
@@ -392,6 +384,9 @@ const visibleColumns = [
 
 export default () => {
   const ref = useRef()
+  const [selectedRows, setSelectedRows] = React.useState([])
+  const [selectedRowKeys, setSelectedRowKeys] = React.useState([])
+
   const loadData = (pageable, filterParams) => {
     const result = {
       list: data,
@@ -454,7 +449,7 @@ export default () => {
   }
 
   return (
-    <IndexView
+    <DataGrid
       ref={ref}
       style={{ minWidth: '600px' }}
       visibleColumns={visibleColumns}
@@ -463,6 +458,10 @@ export default () => {
       defaultSelectionType="checkbox"
       tableOperate={tableOperate}
       logicFilter
+      selectedRows={selectedRows}
+      setSelectedRows={setSelectedRows}
+      selectedRowKeys={selectedRowKeys}
+      setSelectedRowKeys={setSelectedRowKeys}
     >
       <ToolBar>
         <FilterPanel />
@@ -470,7 +469,7 @@ export default () => {
       </ToolBar>
       <FilterDisplay />
       <TableStatusBar />
-    </IndexView>
+    </DataGrid>
   )
 }
 ```
@@ -479,13 +478,10 @@ export default () => {
 
 ```tsx
 import React, { useMemo } from 'react'
-import {
-  IndexView,
-  FilterPanel,
-  TableStatusBar,
-  FilterDisplay,
-} from '@toy-box/meta-components'
+import { DataGrid } from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
+
+const { FilterPanel, TableStatusBar, FilterDisplay } = DataGrid
 
 const objectMeta = {
   key: 'bill',
@@ -696,7 +692,7 @@ export default () => {
   ]
 
   return (
-    <IndexView
+    <DataGrid
       style={{ minWidth: '600px' }}
       visibleColumns={visibleColumns}
       objectMeta={objectMeta}
@@ -711,7 +707,7 @@ export default () => {
       />
       <FilterDisplay fieldMetas={fiterFieldMetas} />
       <TableStatusBar />
-    </IndexView>
+    </DataGrid>
   )
 }
 ```
@@ -720,14 +716,11 @@ export default () => {
 
 ```tsx
 import React, { useMemo } from 'react'
-import {
-  IndexView,
-  FilterPanel,
-  TableStatusBar,
-  FilterDisplay,
-} from '@toy-box/meta-components'
+import { DataGrid } from '@toy-box/meta-components'
 import 'antd/dist/antd.css'
 import request from 'umi-request'
+
+const { FilterPanel, TableStatusBar, FilterDisplay } = DataGrid
 
 const objectMeta = {
   key: 'bill',
@@ -933,7 +926,7 @@ export default () => {
   ]
 
   return (
-    <IndexView
+    <DataGrid
       style={{ minWidth: '600px' }}
       visibleColumns={visibleColumns}
       objectMeta={objectMeta}
@@ -947,7 +940,7 @@ export default () => {
       />
       <FilterDisplay fieldMetas={fiterFieldMetas} />
       <TableStatusBar />
-    </IndexView>
+    </DataGrid>
   )
 }
 ```
