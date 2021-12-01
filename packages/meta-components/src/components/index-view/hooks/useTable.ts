@@ -80,7 +80,7 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
   const {
     logicFilter,
     paramsActions,
-    refreshDeps = [],
+    refreshDeps = [params],
     manual,
     defaultParams,
     ...restOptions
