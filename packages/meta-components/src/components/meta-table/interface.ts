@@ -2,6 +2,7 @@ import { TableProps } from 'antd/lib/table'
 import { ButtonProps } from 'antd/lib/button'
 import { JSXElementConstructor, ReactNode } from 'react'
 import { IButtonClusterProps } from '@toy-box/toybox-ui'
+import { OperateColumn } from './components'
 
 export type sorterFun = (prev: any, current: any) => number
 
@@ -17,13 +18,6 @@ export interface IColumnVisible {
 }
 
 export type ColumnMetaType = IColumnVisible & Toybox.MetaSchema.Types.IFieldMeta
-
-export interface IColumnProps {
-  text?: any
-  record: RowData
-  index: number
-  columnMeta: ColumnMetaType
-}
 
 export type RowData = Record<string, any>
 
@@ -97,4 +91,16 @@ export interface IMetaTableProps<T = RowData>
   width?: number
 
   sorter?: boolean | string[]
+
+  operateColumn?: typeof OperateColumn
+}
+
+export interface IColumnData {
+  text?: any
+  record: RowData
+  index: number
+}
+
+export interface IColumnProps extends IColumnData {
+  columnMeta: ColumnMetaType
 }

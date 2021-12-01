@@ -20,7 +20,7 @@ import {
 } from './components'
 import { usePivot, useSortColumns } from './hooks'
 import './styles'
-
+export * from './context'
 export * from './utils'
 
 export const columnFactory = (
@@ -41,6 +41,7 @@ export const MetaTable: FC<IMetaTableProps> = ({
   pagination,
   operate,
   operateHeader,
+  operateColumn,
   resizableTitle,
   showHeader,
   expandable,
@@ -189,7 +190,7 @@ export const MetaTable: FC<IMetaTableProps> = ({
         title: operateHeader,
         dataIndex: 'meta-table-operate',
         align: 'right',
-        render: operateFactory(operate, OperateColumn),
+        render: operateFactory(operate, operateColumn || OperateColumn),
         width: 100,
       })
     }
