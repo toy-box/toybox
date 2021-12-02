@@ -41,7 +41,7 @@ export type PivotOptionType = {
 
 export declare type ColumnComponentType = JSXElementConstructor<any>
 
-export interface IMetaTableProps<T = RowData>
+export interface IMetaTableProps<T = RowData, OperateType = any>
   extends Pick<
     TableProps<T>,
     | 'rowKey'
@@ -70,7 +70,7 @@ export interface IMetaTableProps<T = RowData>
   /**
    * @description 操作字段组件配置
    */
-  operate?: IButtonClusterProps
+  operate?: OperateType
   /**
    * @description 操作字段表头
    */
@@ -92,7 +92,7 @@ export interface IMetaTableProps<T = RowData>
 
   sorter?: boolean | string[]
 
-  operateColumn?: typeof OperateColumn
+  operateColumn?: React.FC<IBaseOperateColumnProps<any>>
 }
 
 export interface IColumnData {
@@ -103,4 +103,8 @@ export interface IColumnData {
 
 export interface IColumnProps extends IColumnData {
   columnMeta: ColumnMetaType
+}
+
+export interface IBaseOperateColumnProps<Operate> extends IColumnData {
+  operate: Operate
 }

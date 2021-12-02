@@ -8,6 +8,5 @@ export default defineConfig({
   outputPath: 'docs-dist',
   base: '/toybox',
   publicPath: '/toybox/',
-  mfsu: {},
   // more config: https://d.umijs.org/config
 })

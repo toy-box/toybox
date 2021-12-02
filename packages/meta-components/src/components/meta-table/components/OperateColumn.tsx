@@ -1,27 +1,15 @@
 import React, { FC, useMemo } from 'react'
 import { ButtonCluster, IButtonClusterProps } from '@toy-box/toybox-ui'
 import { isFn } from '@toy-box/toybox-shared'
-import { RowData } from '../interface'
-import { MetaColumnContext } from '../context'
+import { RowData, IColumnData, IBaseOperateColumnProps } from '../interface'
 
 declare type CallbackType = (text: any, record: RowData, index: number) => void
-export interface IOperateColumnProps {
-  text: any
-  record: RowData
-  index: number
-  operate: IButtonClusterProps<CallbackType>
-}
 
-export const operateFactory = (
-  operate: IButtonClusterProps,
-  fc: FC<IOperateColumnProps>
-) => {
-  return (text: any, record: RowData, index: number) => {
-    return fc({ text, record, index, operate })
-  }
-}
+export type OperateColumnProps = IBaseOperateColumnProps<
+  IButtonClusterProps<CallbackType>
+>
 
-export const OperateColumn: FC<IOperateColumnProps> = ({
+export const OperateColumn: FC<OperateColumnProps> = ({
   text,
   record,
   index,

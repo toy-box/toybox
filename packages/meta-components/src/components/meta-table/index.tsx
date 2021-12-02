@@ -9,13 +9,13 @@ import {
   ColumnMetaType,
   RowData,
   IMetaTableProps,
+  IBaseOperateColumnProps,
 } from './interface'
 import { metaRender } from './utils'
 import {
   DefaultColumnRenderMap,
   ResizableTitle,
   ResizeCallbackData,
-  operateFactory,
   OperateColumn,
 } from './components'
 import { usePivot, useSortColumns } from './hooks'
@@ -29,6 +29,12 @@ export const columnFactory = (
 ) => {
   return (text: any, record: { [key: string]: any }, index: number) => {
     return render({ text, record, index, columnMeta })
+  }
+}
+
+function operateFactory<T>(operate: T, render: FC<IBaseOperateColumnProps<T>>) {
+  return (text: any, record: RowData, index: number) => {
+    return render({ text, record, index, operate })
   }
 }
 
