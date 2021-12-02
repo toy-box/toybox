@@ -4,7 +4,8 @@ import { IspecialOption, OpTypeProps, IoperatOption } from './interface'
 export interface IFilterBuilderContextProps {
   value: Partial<Toybox.MetaSchema.Types.ICompareOperation>[]
   onChange: (
-    value: Partial<Toybox.MetaSchema.Types.ICompareOperation>[]
+    value: Partial<Toybox.MetaSchema.Types.ICompareOperation>[],
+    index: number
   ) => void
   specialMode?: boolean
   specialOptions?: IspecialOption[]

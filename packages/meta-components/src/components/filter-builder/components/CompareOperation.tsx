@@ -195,11 +195,22 @@ export const CompareOperation: FC<CompareOperationProps> = ({
           fieldMeta = meta
         }
       })
-      const op =
+      let op =
         fieldMeta?.type &&
         FieldOpMap[fieldMeta.type].some((op) => op === compare.op)
           ? compare.op
           : FieldOpMap[fieldMeta?.type as any]?.[0]
+      if (
+        context?.operatType === OpTypeEnum.REPLACE ||
+        context?.operatType === OpTypeEnum.INSERT
+      ) {
+        op = undefined
+      }
+      // const op =
+      //   fieldMeta?.type &&
+      //   FieldOpMap[fieldMeta.type].some((op) => op === compare.op)
+      //     ? compare.op
+      //     : FieldOpMap[fieldMeta?.type as any]?.[0]
       const type = context?.specialOptions?.some(
         (op) => op.value === compare.type
       )
@@ -212,7 +223,10 @@ export const CompareOperation: FC<CompareOperationProps> = ({
       }
       if (context.specialMode) obj['type'] = { $set: type }
       const newCompare = update(compare, obj)
-      context.onChange(update(context.value, { [index]: { $set: newCompare } }))
+      context.onChange(
+        update(context.value, { [index]: { $set: newCompare } }),
+        index
+      )
     },
     [context, compare, filterFieldMeta, index]
   )
@@ -230,7 +244,8 @@ export const CompareOperation: FC<CompareOperationProps> = ({
           target: { $set: undefined },
         })
         context.onChange(
-          update(context.value, { [index]: { $set: newCompare } })
+          update(context.value, { [index]: { $set: newCompare } }),
+          index
         )
       } else if (op === CompareOP.IS_NULL) {
         const newCompare = update(compare, {
@@ -238,12 +253,14 @@ export const CompareOperation: FC<CompareOperationProps> = ({
           target: { $set: false },
         })
         context.onChange(
-          update(context.value, { [index]: { $set: newCompare } })
+          update(context.value, { [index]: { $set: newCompare } }),
+          index
         )
       } else {
         const newCompare = update(compare, { op: { $set: op } })
         context.onChange(
-          update(context.value, { [index]: { $set: newCompare } })
+          update(context.value, { [index]: { $set: newCompare } }),
+          index
         )
       }
     },
@@ -254,7 +271,10 @@ export const CompareOperation: FC<CompareOperationProps> = ({
     (value: any) => {
       if (value === compare.target) return
       const newCompare = update(compare, { target: { $set: value } })
-      context.onChange(update(context.value, { [index]: { $set: newCompare } }))
+      context.onChange(
+        update(context.value, { [index]: { $set: newCompare } }),
+        index
+      )
     },
     [compare, context, index]
   )
@@ -265,13 +285,17 @@ export const CompareOperation: FC<CompareOperationProps> = ({
         type: { $set: value },
         target: { $set: undefined },
       })
-      context.onChange(update(context.value, { [index]: { $set: newCompare } }))
+      context.onChange(
+        update(context.value, { [index]: { $set: newCompare } }),
+        index
+      )
     },
     [compare, context, index]
   )
 
   const handleRemove = useCallback(
-    () => context.onChange(update(context.value, { $splice: [[index, 1]] })),
+    () =>
+      context.onChange(update(context.value, { $splice: [[index, 1]] }), index),
     [context, index]
   )
 
