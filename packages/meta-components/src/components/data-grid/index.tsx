@@ -64,6 +64,7 @@ type TableOption = Pick<
   | 'expandable'
   | 'rowClassName'
   | 'size'
+  | 'operateColumn'
 >
 
 export interface IDataGridProps<IParams = any> {
