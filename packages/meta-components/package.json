@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/meta-components",
-  "version": "2.0.19",
+  "version": "2.0.20",
   "license": "MIT",
   "description": "",
   "main": "lib/index.js",
@@ -34,7 +34,7 @@
     "@airclass/icons": "^4.3.4",
     "@toy-box/meta-schema": "^2.0.15",
     "@toy-box/toybox-shared": "^2.0.15",
-    "@toy-box/toybox-ui": "^2.0.15",
+    "@toy-box/toybox-ui": "^2.0.20",
     "ahooks": "^2.10.6",
     "antd": "^4.15.5",
     "hoist-non-react-statics": "^3.3.1",
