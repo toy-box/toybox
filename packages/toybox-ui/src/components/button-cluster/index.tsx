@@ -14,6 +14,7 @@ export interface IButtonClusterProps<CallbackType = DefaultCallbackType> {
 type isDisabledType = (...args: any) => boolean
 
 type DefaultCallbackType = (...args: any) => void
+
 export interface IButtonItem<CallbackType = DefaultCallbackType> {
   text: string
   icon?: ReactNode

@@ -13,20 +13,26 @@ import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
 import update from 'immutability-helper'
 import { PaginationBar, IButtonClusterProps } from '@toy-box/toybox-ui'
 import { omit } from '@toy-box/toybox-shared'
+import { RowSelectionType } from 'antd/es/table/interface'
 import { MetaTable } from '../meta-table'
-import { FilterPanel, ColumnsSetValueType, TableStatusBar } from './components'
 import { useTable, useQuery } from './hooks'
-import { LoadDataType, IndexModeType } from './types'
+import { LoadDataType, DataGridModeType } from './types'
 import {
   IColumnVisible,
   RowData,
   IMetaTableProps,
 } from '../meta-table/interface'
-import { IndexViewContext } from './context'
-import { RowSelectionType } from 'antd/es/table/interface'
+import { DataGridContext } from './context'
+import {
+  ViewSetter,
+  TableStatusBar,
+  FilterPanel,
+  OperatePanel,
+  FilterDisplay,
+  ColumnsSetValueType,
+} from './components'
 
-export * from './hooks'
-export * from './components'
+// export * from './hooks'
 
 const LIST_RENDER = 'listRender'
 
@@ -58,9 +64,10 @@ type TableOption = Pick<
   | 'expandable'
   | 'rowClassName'
   | 'size'
+  | 'operateColumn'
 >
 
-export interface IIndexViewProps<IParams = any> {
+export interface IDataGridProps<IParams = any> {
   /**
    * @description 数据元数据
    */
@@ -73,12 +80,12 @@ export interface IIndexViewProps<IParams = any> {
    * @description 当前查看模式
    * @default 'table'
    */
-  mode?: IndexModeType
+  mode?: DataGridModeType
   /**
    * @description 可切换的模式
    * @default null
    */
-  viewModes?: IndexModeType[]
+  viewModes?: DataGridModeType[]
   className?: string
   columnComponents?: IMetaTableProps['columnComponents']
   /**
@@ -100,20 +107,34 @@ export interface IIndexViewProps<IParams = any> {
   pagination?: Omit<PaginationProps, 'onChange'>
   tableOption?: TableOption
   /**
-   * @description 当翻页时保留已选择的记录
+   * @description 当数据重新加载时保留已选择的记录
    */
-  overPageSelect?: boolean
+  keepSelected?: boolean
+  selectedRows?: RowData[]
+  selectedRowKeys?: string[]
+  setSelectedRows?: (rows: RowData[]) => void
+  setSelectedRowKeys?: (keys: string[]) => void
+  children?: React.ReactNode
 }
 
-export declare type IndexViewRefType = {
+export declare type DataGridRefType = {
   reload: () => void
   reset: () => void
   dataSource?: RowData[]
-  selectedRowKeys?: string[]
-  selectedRows?: RowData[]
 }
 
-export const IndexView = React.forwardRef(
+interface CompoundedComponent
+  extends React.ForwardRefExoticComponent<
+    IDataGridProps & React.RefAttributes<DataGridRefType>
+  > {
+  ViewSetter: typeof ViewSetter
+  TableStatusBar: typeof TableStatusBar
+  FilterPanel: typeof FilterPanel
+  OperatePanel: typeof OperatePanel
+  FilterDisplay: typeof FilterDisplay
+}
+
+export const DataGrid = React.forwardRef<DataGridRefType, IDataGridProps>(
   (
     {
       objectMeta,
@@ -132,14 +153,19 @@ export const IndexView = React.forwardRef(
       tableOperate,
       urlQuery,
       tableOption,
-      overPageSelect,
+      keepSelected,
+      selectedRows = [],
+      selectedRowKeys = [],
+      setSelectedRows = (rows: RowData[]) => undefined,
+      setSelectedRowKeys = (keys: string[]) => undefined,
       children,
-    }: IIndexViewProps & { children: React.ReactNode },
-    ref: React.MutableRefObject<IndexViewRefType>
+    },
+    ref: React.MutableRefObject<DataGridRefType>
   ) => {
     const [query, setQuery] = useQuery()
     const preParamsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
     const paramsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
+    console.log('in selectedRowKeys', selectedRowKeys)
     const [preParams, setPreParams] = useState<
       Toybox.MetaSchema.Types.ICompareOperation[] | undefined
     >()
@@ -184,10 +210,8 @@ export const IndexView = React.forwardRef(
       }
     }, [query])
 
-    const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
-    const [selectedRows, setSelectedRows] = useState<RowData[]>([])
     const [selectionType, setSelectionType] = useState(defaultSelectionType)
-    const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
+    const [currentMode, setCurrentMode] = useState<DataGridModeType>(mode)
 
     const setQuerySearch = useCallback(
       (pageable) => {
@@ -235,7 +259,7 @@ export const IndexView = React.forwardRef(
         pageable,
         logicFilter ? params : simpleParams(params)
       ).then((data) => {
-        if (!overPageSelect) {
+        if (!keepSelected) {
           setSelectedRowKeys([])
           setSelectedRows([])
         }
@@ -288,10 +312,8 @@ export const IndexView = React.forwardRef(
         reload,
         reset,
         dataSource: tableProps.dataSource,
-        selectedRowKeys,
-        selectedRows,
       }),
-      [selectedRowKeys, selectedRows, tableProps, reload, reset]
+      [tableProps, reload, reset]
     )
 
     // 可配置的字段key
@@ -334,7 +356,7 @@ export const IndexView = React.forwardRef(
               type: selectionType,
               selectedRowKeys,
               onChange: (keys: string[], rows: RowData[]) => {
-                if (overPageSelect) {
+                if (keepSelected) {
                   setSelectedRowKeys(
                     selectedRowKeys
                       .filter(
@@ -510,7 +532,7 @@ export const IndexView = React.forwardRef(
     ])
 
     return (
-      <IndexViewContext.Provider value={indexViewContext}>
+      <DataGridContext.Provider value={indexViewContext}>
         <div className={classNames('tbox-index-view', className)} style={style}>
           {children ? (
             children
@@ -522,9 +544,15 @@ export const IndexView = React.forwardRef(
           )}
           <IndexContent />
         </div>
-      </IndexViewContext.Provider>
+      </DataGridContext.Provider>
     )
   }
-)
+) as CompoundedComponent
 
-IndexView.displayName = 'IndexView'
+DataGrid.displayName = 'DataGrid'
+
+DataGrid.ViewSetter = ViewSetter
+DataGrid.TableStatusBar = TableStatusBar
+DataGrid.FilterPanel = FilterPanel
+DataGrid.OperatePanel = OperatePanel
+DataGrid.FilterDisplay = FilterDisplay

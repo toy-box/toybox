@@ -2,6 +2,7 @@ import { TableProps } from 'antd/lib/table'
 import { ButtonProps } from 'antd/lib/button'
 import { JSXElementConstructor, ReactNode } from 'react'
 import { IButtonClusterProps } from '@toy-box/toybox-ui'
+import { OperateColumn } from './components'
 
 export type sorterFun = (prev: any, current: any) => number
 
@@ -17,13 +18,6 @@ export interface IColumnVisible {
 }
 
 export type ColumnMetaType = IColumnVisible & Toybox.MetaSchema.Types.IFieldMeta
-
-export interface IColumnProps {
-  text?: any
-  record: RowData
-  index: number
-  columnMeta: ColumnMetaType
-}
 
 export type RowData = Record<string, any>
 
@@ -47,7 +41,7 @@ export type PivotOptionType = {
 
 export declare type ColumnComponentType = JSXElementConstructor<any>
 
-export interface IMetaTableProps<T = RowData>
+export interface IMetaTableProps<T = RowData, OperateType = any>
   extends Pick<
     TableProps<T>,
     | 'rowKey'
@@ -76,7 +70,7 @@ export interface IMetaTableProps<T = RowData>
   /**
    * @description 操作字段组件配置
    */
-  operate?: IButtonClusterProps
+  operate?: OperateType
   /**
    * @description 操作字段表头
    */
@@ -97,4 +91,20 @@ export interface IMetaTableProps<T = RowData>
   width?: number
 
   sorter?: boolean | string[]
+
+  operateColumn?: React.FC<IBaseOperateColumnProps<any>>
+}
+
+export interface IColumnData {
+  text?: any
+  record: RowData
+  index: number
+}
+
+export interface IColumnProps extends IColumnData {
+  columnMeta: ColumnMetaType
+}
+
+export interface IBaseOperateColumnProps<Operate> extends IColumnData {
+  operate: Operate
 }

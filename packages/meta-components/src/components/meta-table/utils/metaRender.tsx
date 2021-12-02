@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { ColumnMetaType, IColumnProps } from '../interface'
+import { MetaColumnContext } from '../context'
 
 export declare type MetaColumnRender = (
   props: Omit<IColumnProps, 'columnMeta'>
@@ -30,22 +31,21 @@ export function metaRender(
     return flat
       ? (text, record, index) => {
           return (
-            <ColumnRender
-              text={text}
-              record={record}
-              index={index}
-              columnMeta={columnMeta}
-            />
+            <MetaColumnContext.Provider value={{ text, record, index }}>
+              <ColumnRender
+                text={text}
+                record={record}
+                index={index}
+                columnMeta={columnMeta}
+              />
+            </MetaColumnContext.Provider>
           )
         }
       : (props: Omit<IColumnProps, 'columnMeta'>) => {
           return (
-            <ColumnRender
-              text={props.text}
-              record={props.record}
-              index={props.index}
-              columnMeta={columnMeta}
-            />
+            <MetaColumnContext.Provider value={props}>
+              <ColumnRender {...props} columnMeta={columnMeta} />
+            </MetaColumnContext.Provider>
           )
         }
   }
