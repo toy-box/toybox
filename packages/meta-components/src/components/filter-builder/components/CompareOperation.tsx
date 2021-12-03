@@ -161,7 +161,7 @@ export const CompareOperation: FC<CompareOperationProps> = ({
         value: op,
       }
     })
-    const options = filterFieldMeta.operatOptions
+    const options = filterFieldMeta?.operatOptions
     if (
       context?.operatType === OpTypeEnum.INSERT &&
       filterFieldMeta.operatOptions &&
