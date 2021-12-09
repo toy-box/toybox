@@ -57,6 +57,8 @@ export interface IMetaTableProps<T = RowData, OperateType = any>
     | 'title'
     | 'scroll'
     | 'onChange'
+    | 'style'
+    | 'className'
   > {
   resizableTitle?: boolean
   /**

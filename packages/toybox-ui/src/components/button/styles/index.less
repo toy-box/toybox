@@ -8,6 +8,9 @@
 @base-padding-vertical: 9px;
 @large-padding-vertical: 12px;
 
+@btn-font-size-hg: @btn-font-size-lg + 6px;
+@huge-padding-horizontal: @large-padding-horizontal - 3px;
+
 .button-size(@height; @padding-horizontal; @font-size; @border-radius) {
   @padding-vertical: max(
     (round(((@height - @font-size * @line-height-base) / 2) * 10) / 10) -
@@ -29,6 +32,12 @@
     @btn-height-base; @base-padding-horizontal; @font-size-base;
       @btn-border-radius-base
   );
+  &-hg {
+    .button-size(
+      @btn-height-lg; @huge-padding-horizontal; @btn-font-size-hg;
+        @btn-border-radius-base
+    );
+  }
   &-lg {
     .button-size(
       @btn-height-lg; @large-padding-horizontal; @btn-font-size-lg;

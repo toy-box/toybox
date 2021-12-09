@@ -65,6 +65,8 @@ type TableOption = Pick<
   | 'rowClassName'
   | 'size'
   | 'operateColumn'
+  | 'style'
+  | 'className'
 >
 
 export interface IDataGridProps<IParams = any> {
