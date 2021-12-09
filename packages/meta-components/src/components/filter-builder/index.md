@@ -216,7 +216,10 @@ export default () => {
 
   const [value, setValue] = useState([])
   const handleFilter = useCallback(
-    (logicFilter: IUncheckLogicFilter) => setValue(logicFilter),
+    (logicFilter: IUncheckLogicFilter, index) => {
+      setValue(logicFilter)
+      console.log(index)
+    },
     []
   )
   const customValueElement = useMemo(() => {
@@ -227,11 +230,11 @@ export default () => {
       <FilterBuilder
         fieldMetas={filter.filterFieldMetas}
         value={value}
-        operatType="insert"
+        operatType="replace"
         // customValueElement={customValueElement}
         filterFieldService={filter.filterFieldService}
-        onChange={(filterItem: Partial<ICompareOperation>[]) =>
-          handleFilter(filterItem)
+        onChange={(filterItem: Partial<ICompareOperation>[], index?: number) =>
+          handleFilter(filterItem, index)
         }
       />
     </div>
