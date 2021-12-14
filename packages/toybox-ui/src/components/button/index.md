@@ -65,6 +65,7 @@ export default () => (
         icon={<HomeFill />}
       />
       <Button.Icon size="large" type="primary" icon={<HomeFill />} circle />
+      <Button.Icon size="huge" type="primary" icon={<HomeFill />} />
     </Space>
   </>
 )

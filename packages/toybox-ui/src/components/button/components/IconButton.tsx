@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import '../styles'
 
 export type IconType = 'primary' | 'danger' | 'default'
-export type SizeType = 'small' | 'medium' | 'large'
+export type SizeType = 'small' | 'medium' | 'large' | 'huge'
 type Loading = number | boolean
 
 export interface IconButtonProps {
@@ -60,6 +60,9 @@ const IconButton: React.ForwardRefRenderFunction<unknown, IconButtonProps> = (
 
   let sizeCls = ''
   switch (size) {
+    case 'huge':
+      sizeCls = 'hg'
+      break
     case 'large':
       sizeCls = 'lg'
       break
@@ -86,7 +89,7 @@ const IconButton: React.ForwardRefRenderFunction<unknown, IconButtonProps> = (
     () => ({
       color,
     }),
-    []
+    [size]
   )
 
   return tooltip ? (
