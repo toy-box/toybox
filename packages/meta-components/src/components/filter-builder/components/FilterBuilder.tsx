@@ -1,4 +1,4 @@
-import React, { CSSProperties, useCallback, useMemo } from 'react'
+import React, { CSSProperties, useCallback, useMemo, FC } from 'react'
 import { Button } from 'antd'
 import classNames from 'classnames'
 import update from 'immutability-helper'
@@ -33,7 +33,8 @@ export interface IFilterBuilderProps {
   specialOptions?: IspecialOption[]
   simple?: boolean
   operatType?: OpTypeProps
-  customValueElement?: React.ReactElement
+  customValueElement?: FC
+  customValueProps?: any
 }
 
 export const FilterBuilder = ({
@@ -50,6 +51,7 @@ export const FilterBuilder = ({
   simple,
   operatType,
   customValueElement,
+  customValueProps,
 }: IFilterBuilderProps) => {
   const locale = useLocale()
   const localeData = useMemo(() => localeMap[locale], [locale])
@@ -68,6 +70,7 @@ export const FilterBuilder = ({
         specialOptions,
         operatType,
         customValueElement,
+        customValueProps,
       }}
     >
       <div className={classNames(className)} style={style}>

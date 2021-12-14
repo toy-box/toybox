@@ -311,7 +311,9 @@ export const CompareOperation: FC<CompareOperationProps> = ({
         operation={compare.op}
         style={layout === 'vertical' ? verticalStyle : inputStyle}
         type={compare.type}
-        customValueElement={context.customValueElement}
+        index={index}
+        CustomValueElement={context.customValueElement}
+        customValueProps={context.customValueProps}
       />
     ) : (
       <Input

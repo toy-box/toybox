@@ -225,13 +225,18 @@ export default () => {
   const customValueElement = useMemo(() => {
     return <div>123213123</div>
   }, [])
+  const customValueProps = {
+    value: '',
+    valueType: 'number',
+  }
   return (
     <div>
       <FilterBuilder
         fieldMetas={filter.filterFieldMetas}
         value={value}
         operatType="replace"
-        // customValueElement={customValueElement}
+        // customValueElement={CustomValueDemo}
+        // customValueProps={customValueProps}
         filterFieldService={filter.filterFieldService}
         onChange={(filterItem: Partial<ICompareOperation>[], index?: number) =>
           handleFilter(filterItem, index)
