@@ -48,7 +48,7 @@ export interface FilterValueInputProps {
   fieldMetaService?: IFieldService
   locale?: string
   type?: string
-  index: number
+  index?: number
   CustomValueElement?: FC
   customValueProps?: any
 }
