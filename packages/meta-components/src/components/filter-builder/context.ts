@@ -1,4 +1,4 @@
-import React, { createContext } from 'react'
+import React, { createContext, FC } from 'react'
 import { IspecialOption, OpTypeProps, IoperatOption } from './interface'
 
 export interface IFilterBuilderContextProps {
@@ -11,7 +11,8 @@ export interface IFilterBuilderContextProps {
   specialOptions?: IspecialOption[]
   simple?: boolean
   operatType?: OpTypeProps
-  customValueElement?: React.ReactElement
+  customValueElement?: FC
+  customValueProps?: any
 }
 
 export const FilterBuilderContext = createContext<IFilterBuilderContextProps>({
