@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react'
 import { ButtonCluster, IButtonClusterProps } from '@toy-box/toybox-ui'
 import { isFn } from '@toy-box/toybox-shared'
-import { RowData, IColumnData, IBaseOperateColumnProps } from '../interface'
+import { RowData, IBaseOperateColumnProps } from '../interface'
 
 declare type CallbackType = (text: any, record: RowData, index: number) => void
 
