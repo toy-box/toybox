@@ -165,7 +165,7 @@ export default () => {
         name: `${row.name}-${pageable?.current || '1'}`,
       })),
       total: 20,
-      current: 1,
+      current: pageable?.current,
       pageSize: 10,
     }
     const promise = new Promise<{
@@ -221,7 +221,7 @@ export default () => {
         pagination={{ current: 1, pageSize: 10 }}
         urlQuery
         tableOption={{ scroll: { x: 1000 } }}
-        logicFilter
+        // logicFilter
       >
         <FilterPanel simpleFilterKeys={['amount']} />
         <TableStatusBar />
@@ -463,6 +463,7 @@ export default () => {
       defaultSelectionType="checkbox"
       tableOperate={tableOperate}
       logicFilter
+      // urlQuery
     >
       <ToolBar>
         <FilterPanel />
@@ -704,6 +705,7 @@ export default () => {
       defaultSelectionType="checkbox"
       pagination={{ simple: true }}
       overPageSelect
+      urlQuery
     >
       <FilterPanel
         fieldMetas={fiterFieldMetas}

@@ -167,7 +167,6 @@ export const IndexView = React.forwardRef(
       }
       return pageable
     }
-
     useEffect(() => setPreParams(params), [params])
     useEffect(() => {
       preParamsRef.current = preParams
@@ -208,12 +207,13 @@ export const IndexView = React.forwardRef(
                       ? JSON.stringify(preParamsRef.current)
                       : undefined,
                   },
+                  pageable: { $set: { current: '1' } },
                 })
               )
             }
           } else {
             setParams(preParamsRef.current)
-            pageable && setPageable(pageable)
+            pageable ? setPageable(pageable) : setPageable({ current: 1 })
           }
         })
       },
