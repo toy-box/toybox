@@ -188,7 +188,7 @@ export const IndexView = React.forwardRef(
     const [selectionType, setSelectionType] = useState(defaultSelectionType)
     const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
     const setQuerySearch = useCallback(
-      (pageable: any, type?: 'turnPage' | 'filterSearch') => {
+      (pageable: any, type: 'turnPage' | 'filterSearch') => {
         setTimeout(() => {
           if (urlQuery) {
             if (type === 'turnPage') {

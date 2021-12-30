@@ -171,7 +171,7 @@ export default () => {
       })),
       total: 2000,
       current: pageable?.current,
-      pageSize: 10,
+      pageSize: pageable?.pageSize,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
