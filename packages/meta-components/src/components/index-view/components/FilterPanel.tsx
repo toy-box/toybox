@@ -20,7 +20,9 @@ export const FilterPanel: FC<IFilterPanelProps> = ({
       onChange={indexView.setPreParams}
       fieldMetas={fieldMetas || indexView.filterFields}
       simple={!indexView.logicFilter}
-      onSubmit={indexView.setQuerySearch}
+      onSubmit={() =>
+        indexView.setQuerySearch(indexView.pageable, 'filterSearch')
+      }
       {...props}
     />
   )

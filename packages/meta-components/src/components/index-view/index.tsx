@@ -187,12 +187,11 @@ export const IndexView = React.forwardRef(
     const [selectedRows, setSelectedRows] = useState<RowData[]>([])
     const [selectionType, setSelectionType] = useState(defaultSelectionType)
     const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
-
     const setQuerySearch = useCallback(
-      (pageable) => {
+      (pageable: any, type?: 'turnPage' | 'filterSearch') => {
         setTimeout(() => {
           if (urlQuery) {
-            if (pageable) {
+            if (type === 'turnPage') {
               setQuery(
                 update(query, {
                   params: { $set: JSON.stringify(preParamsRef.current) },
@@ -207,19 +206,22 @@ export const IndexView = React.forwardRef(
                       ? JSON.stringify(preParamsRef.current)
                       : undefined,
                   },
-                  pageable: { $set: { current: '1' } },
+                  pageable: {
+                    $set: { current: '1', pageSize: pageable.pageSize },
+                  },
                 })
               )
             }
           } else {
             setParams(preParamsRef.current)
-            pageable ? setPageable(pageable) : setPageable({ current: 1 })
+            type === 'turnPage'
+              ? setPageable(pageable)
+              : setPageable({ current: 1, pageSize: pageable.pageSize })
           }
         })
       },
       [urlQuery, preParamsRef]
     )
-
     const paramsActions = useMemo(
       () => ({
         getParams: () => paramsRef,
@@ -262,10 +264,13 @@ export const IndexView = React.forwardRef(
         ...pagination,
         ...omit(innerPagination, ['onChange', 'current', 'pageSize']),
         onChange: (current, pageSize) => {
-          setQuerySearch({
-            current,
-            pageSize,
-          })
+          setQuerySearch(
+            {
+              current,
+              pageSize,
+            },
+            'turnPage'
+          )
         },
         current: pageable?.current || innerPagination.current,
         pageSize: pageable?.pageSize || innerPagination.pageSize,
@@ -442,6 +447,7 @@ export const IndexView = React.forwardRef(
         setSelectionType,
         filterFields,
         logicFilter,
+        pageable,
       }),
       [
         objectMeta,
@@ -464,6 +470,7 @@ export const IndexView = React.forwardRef(
         setSelectionType,
         filterFields,
         logicFilter,
+        pageable,
       ]
     )
 
