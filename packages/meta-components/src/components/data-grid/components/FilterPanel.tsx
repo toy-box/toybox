@@ -20,7 +20,9 @@ export const FilterPanel: FC<IFilterPanelProps> = ({
       onChange={dataGrid.setPreParams}
       fieldMetas={fieldMetas || dataGrid.filterFields}
       simple={!dataGrid.logicFilter}
-      onSubmit={dataGrid.setQuerySearch}
+      onSubmit={() =>
+        dataGrid.setQuerySearch(dataGrid.pageable, 'filterSearch')
+      }
       {...props}
     />
   )

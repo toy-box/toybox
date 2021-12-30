@@ -216,10 +216,10 @@ export const DataGrid = React.forwardRef<DataGridRefType, IDataGridProps>(
     const [currentMode, setCurrentMode] = useState<DataGridModeType>(mode)
 
     const setQuerySearch = useCallback(
-      (pageable) => {
+      (pageable: any, type: 'turnPage' | 'filterSearch') => {
         setTimeout(() => {
           if (urlQuery) {
-            if (pageable) {
+            if (type === 'turnPage') {
               setQuery(
                 update(query, {
                   params: { $set: JSON.stringify(preParamsRef.current) },
@@ -234,12 +234,17 @@ export const DataGrid = React.forwardRef<DataGridRefType, IDataGridProps>(
                       ? JSON.stringify(preParamsRef.current)
                       : undefined,
                   },
+                  pageable: {
+                    $set: { current: '1', pageSize: pageable.pageSize },
+                  },
                 })
               )
             }
           } else {
             setParams(preParamsRef.current)
-            pageable && setPageable(pageable)
+            type === 'turnPage'
+              ? setPageable(pageable)
+              : setPageable({ current: 1, pageSize: pageable.pageSize })
           }
         })
       },
@@ -288,10 +293,13 @@ export const DataGrid = React.forwardRef<DataGridRefType, IDataGridProps>(
         ...pagination,
         ...omit(innerPagination, ['onChange', 'current', 'pageSize']),
         onChange: (current, pageSize) => {
-          setQuerySearch({
-            current,
-            pageSize,
-          })
+          setQuerySearch(
+            {
+              current,
+              pageSize,
+            },
+            'turnPage'
+          )
         },
         current: pageable?.current || innerPagination.current,
         pageSize: pageable?.pageSize || innerPagination.pageSize,
@@ -466,6 +474,7 @@ export const DataGrid = React.forwardRef<DataGridRefType, IDataGridProps>(
         setSelectionType,
         filterFields,
         logicFilter,
+        pageable,
       }),
       [
         objectMeta,
@@ -488,6 +497,7 @@ export const DataGrid = React.forwardRef<DataGridRefType, IDataGridProps>(
         setSelectionType,
         filterFields,
         logicFilter,
+        pageable,
       ]
     )
 

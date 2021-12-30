@@ -4,7 +4,8 @@ import { DataGridModeType } from './types'
 import { RowSelectionType } from 'antd/es/table/interface'
 
 export interface IDataGridContextProps {
-  setQuerySearch?: (params: any) => void
+  setQuerySearch?: (params: any, type: 'turnPage' | 'filterSearch') => void
+  pageable?: { current?: number; pageSize?: number }
   params?: any
   setParams?: (params: any) => void
   preParams?: any

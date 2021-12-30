@@ -49,6 +49,7 @@ export interface IFilterSearchProps {
   onSubmit?: (value?: any) => void
   simple?: boolean
   hiddenDesigner?: boolean
+  pageable?: { current?: number; pageSize?: number }
 }
 
 export const FilterSearch: FC<IFilterSearchProps> = ({

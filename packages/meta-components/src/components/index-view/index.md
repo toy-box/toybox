@@ -159,14 +159,19 @@ const visibleColumns = [
 export default () => {
   const ref = useRef()
   const loadData = (pageable, params) => {
+    console.log(
+      '使用urlQuery情况下模拟接口请求参数，pageable，params',
+      pageable,
+      params
+    )
     const result = {
       list: data.map((row) => ({
         ...row,
         name: `${row.name}-${pageable?.current || '1'}`,
       })),
-      total: 20,
+      total: 2000,
       current: pageable?.current,
-      pageSize: 10,
+      pageSize: pageable?.pageSize,
     }
     const promise = new Promise<{
       list: Record<string, any>[]
@@ -175,7 +180,7 @@ export default () => {
       pageSize: number
     }>(function (resolve) {
       setTimeout(function () {
-        console.log('load...', result)
+        console.log('处理完成result', result)
         resolve(result)
       }, 1000)
     })
