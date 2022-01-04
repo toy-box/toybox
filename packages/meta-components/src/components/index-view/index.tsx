@@ -107,10 +107,6 @@ export interface IIndexViewProps<IParams = any> {
    * @description 当翻页时保留已选择的记录
    */
   overPageSelect?: boolean
-  /**
-   * @description 执行reload时保留已选择的记录
-   */
-  keepReloadSelect?: boolean
   selectedOption?: SelectedOption
 }
 
@@ -142,7 +138,6 @@ export const IndexView = React.forwardRef(
       urlQuery,
       tableOption,
       overPageSelect,
-      keepReloadSelect,
       selectedOption,
       children,
     }: IIndexViewProps & { children: React.ReactNode },
