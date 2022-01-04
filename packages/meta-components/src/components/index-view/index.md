@@ -1,8 +1,8 @@
 ## IndexView
 
-<!-- #### 基本用法 -->
+#### 基本用法
 
-<!-- ```tsx
+```tsx
 import React, { useCallback, useMemo, useRef } from 'react'
 import {
   IndexView,
@@ -236,7 +236,7 @@ export default () => {
     </>
   )
 }
-``` -->
+```
 
 #### 开启多选
 
@@ -485,7 +485,7 @@ export default () => {
 }
 ```
 
-<!-- #### 搜素字段自定义
+#### 搜素字段自定义
 
 ```tsx
 import React, { useMemo } from 'react'
@@ -961,4 +961,4 @@ export default () => {
     </IndexView>
   )
 }
-``` -->
+```
