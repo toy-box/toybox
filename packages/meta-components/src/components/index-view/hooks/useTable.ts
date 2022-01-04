@@ -94,7 +94,7 @@ function useAntdTable<R = any, Item = any, U extends Item = any>(
   const { run } = result
 
   const reload = useCallback(() => {
-    run(pageable, params, true)
+    run(pageable, params, 'reload')
   }, [pageable, params])
 
   useEffect(() => {

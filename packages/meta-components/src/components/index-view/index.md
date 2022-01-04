@@ -472,6 +472,7 @@ export default () => {
       tableOperate={tableOperate}
       logicFilter
       overPageSelect
+      // keepReloadSelect
       // urlQuery
     >
       <ToolBar>
