@@ -1,8 +1,8 @@
 ## IndexView
 
-#### 基本用法
+<!-- #### 基本用法 -->
 
-```tsx
+<!-- ```tsx
 import React, { useCallback, useMemo, useRef } from 'react'
 import {
   IndexView,
@@ -236,7 +236,7 @@ export default () => {
     </>
   )
 }
-```
+``` -->
 
 #### 开启多选
 
@@ -419,9 +419,12 @@ export default () => {
 
   const items = [
     {
-      text: '按钮1',
+      text: '刷新',
       type: 'primary',
-      callback: () => message.success('按钮1被点了'),
+      callback: () => {
+        console.log('按钮1被点了', ref)
+        ref.current.reload()
+      },
     },
     {
       text: '打印选择行',
@@ -468,6 +471,7 @@ export default () => {
       defaultSelectionType="checkbox"
       tableOperate={tableOperate}
       logicFilter
+      overPageSelect
       // urlQuery
     >
       <ToolBar>
@@ -481,7 +485,7 @@ export default () => {
 }
 ```
 
-#### 搜素字段自定义
+<!-- #### 搜素字段自定义
 
 ```tsx
 import React, { useMemo } from 'react'
@@ -957,4 +961,4 @@ export default () => {
     </IndexView>
   )
 }
-```
+``` -->

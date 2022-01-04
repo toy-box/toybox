@@ -232,12 +232,12 @@ export const IndexView = React.forwardRef(
       [preParamsRef, setPreParams]
     )
 
-    const onloadData = (pageable, params) => {
+    const onloadData = (pageable, params, reload?: Boolean) => {
       return loadData(
         pageable,
         logicFilter ? params : simpleParams(params)
       ).then((data) => {
-        if (!overPageSelect) {
+        if (!overPageSelect || reload) {
           setSelectedRowKeys([])
           setSelectedRows([])
         }
