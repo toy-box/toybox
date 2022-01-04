@@ -471,7 +471,7 @@ export default () => {
       defaultSelectionType="checkbox"
       tableOperate={tableOperate}
       logicFilter
-      overPageSelect
+      selectedOption={{ keepSelected: false, overPage: true }}
       // keepReloadSelect
       // urlQuery
     >
@@ -714,7 +714,7 @@ export default () => {
       loadData={loadData}
       defaultSelectionType="checkbox"
       pagination={{ simple: true }}
-      overPageSelect
+      selectedOption={{ keepSelected: true, overPage: true }}
       urlQuery
     >
       <FilterPanel
