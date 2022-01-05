@@ -394,12 +394,19 @@ const visibleColumns = [
     visiable: true,
   },
 ]
+const makeData = (current) => {
+  return data.map((row) => ({
+    ...row,
+    id: `${current}-${row.id}`,
+    name: `${current}-${row.name}`,
+  }))
+}
 
 export default () => {
   const ref = useRef()
   const loadData = (pageable, filterParams) => {
     const result = {
-      list: data,
+      list: makeData(pageable?.current || 1),
       total: 20,
       current: pageable?.current || 1,
       pageSize: pageable?.pageSize || 10,
@@ -471,7 +478,7 @@ export default () => {
       defaultSelectionType="checkbox"
       tableOperate={tableOperate}
       logicFilter
-      selectedOption={{ keepSelected: false, overPage: true }}
+      selectedOption={['overPage', 'keepSelected']}
       // keepReloadSelect
       // urlQuery
     >
@@ -714,7 +721,7 @@ export default () => {
       loadData={loadData}
       defaultSelectionType="checkbox"
       pagination={{ simple: true }}
-      selectedOption={{ keepSelected: true, overPage: true }}
+      selectedOption={['overPage']}
       urlQuery
     >
       <FilterPanel
@@ -899,7 +906,6 @@ export default () => {
       pageSize: number
     }>(function (resolve) {
       setTimeout(function () {
-        console.log('promiseResult')
         resolve(result)
       }, 1000)
     })
