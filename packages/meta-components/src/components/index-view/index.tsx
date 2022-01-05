@@ -59,6 +59,10 @@ type TableOption = Pick<
   | 'rowClassName'
   | 'size'
 >
+interface SelectedOption {
+  keepSelected?: boolean
+  overPage?: boolean
+}
 
 export interface IIndexViewProps<IParams = any> {
   /**
@@ -103,6 +107,7 @@ export interface IIndexViewProps<IParams = any> {
    * @description 当翻页时保留已选择的记录
    */
   overPageSelect?: boolean
+  selectedClear?: ('overPage' | 'keepSelected')[]
 }
 
 export declare type IndexViewRefType = {
@@ -133,10 +138,14 @@ export const IndexView = React.forwardRef(
       urlQuery,
       tableOption,
       overPageSelect,
+      selectedClear,
       children,
     }: IIndexViewProps & { children: React.ReactNode },
     ref: React.MutableRefObject<IndexViewRefType>
   ) => {
+    IndexView.defaultProps = {
+      selectedClear: [],
+    }
     const [query, setQuery] = useQuery()
     const preParamsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
     const paramsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
@@ -231,13 +240,15 @@ export const IndexView = React.forwardRef(
       }),
       [preParamsRef, setPreParams]
     )
-
-    const onloadData = (pageable, params) => {
+    const onloadData = (pageable, params, mode?: 'reload' | 'normal') => {
       return loadData(
         pageable,
         logicFilter ? params : simpleParams(params)
       ).then((data) => {
-        if (!overPageSelect) {
+        if (
+          selectedClear?.indexOf('overPage') === -1 ||
+          (mode === 'reload' && selectedClear?.indexOf('keepSelected') === -1)
+        ) {
           setSelectedRowKeys([])
           setSelectedRows([])
         }
@@ -339,7 +350,7 @@ export const IndexView = React.forwardRef(
               type: selectionType,
               selectedRowKeys,
               onChange: (keys: string[], rows: RowData[]) => {
-                if (overPageSelect) {
+                if (selectedClear?.indexOf('overPage') !== -1) {
                   setSelectedRowKeys(
                     selectedRowKeys
                       .filter(

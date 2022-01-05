@@ -394,12 +394,19 @@ const visibleColumns = [
     visiable: true,
   },
 ]
+const makeData = (current) => {
+  return data.map((row) => ({
+    ...row,
+    id: `${current}-${row.id}`,
+    name: `${current}-${row.name}`,
+  }))
+}
 
 export default () => {
   const ref = useRef()
   const loadData = (pageable, filterParams) => {
     const result = {
-      list: data,
+      list: makeData(pageable?.current || 1),
       total: 20,
       current: pageable?.current || 1,
       pageSize: pageable?.pageSize || 10,
@@ -419,9 +426,12 @@ export default () => {
 
   const items = [
     {
-      text: '按钮1',
+      text: '刷新',
       type: 'primary',
-      callback: () => message.success('按钮1被点了'),
+      callback: () => {
+        console.log('按钮1被点了', ref)
+        ref.current.reload()
+      },
     },
     {
       text: '打印选择行',
@@ -468,6 +478,8 @@ export default () => {
       defaultSelectionType="checkbox"
       tableOperate={tableOperate}
       logicFilter
+      selectedClear={['overPage', 'keepSelected']}
+      // keepReloadSelect
       // urlQuery
     >
       <ToolBar>
@@ -709,7 +721,7 @@ export default () => {
       loadData={loadData}
       defaultSelectionType="checkbox"
       pagination={{ simple: true }}
-      overPageSelect
+      selectedClear={['overPage']}
       urlQuery
     >
       <FilterPanel
@@ -894,7 +906,6 @@ export default () => {
       pageSize: number
     }>(function (resolve) {
       setTimeout(function () {
-        console.log('promiseResult')
         resolve(result)
       }, 1000)
     })
