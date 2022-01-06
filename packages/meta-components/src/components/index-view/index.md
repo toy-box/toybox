@@ -917,20 +917,21 @@ export default () => {
       key: 'key-1',
       type: 'singleOption',
       name: '单选',
-      options: [
-        {
-          label: '选项1',
-          value: 'opt-1',
-        },
-        {
-          label: '选项2',
-          value: 'opt-2',
-        },
-        {
-          label: '选项3',
-          value: 'opt-3',
-        },
-      ],
+      type: 'refId',
+      // options: [
+      //   {
+      //     label: '选项1',
+      //     value: 'opt-1',
+      //   },
+      //   {
+      //     label: '选项2',
+      //     value: 'opt-2',
+      //   },
+      //   {
+      //     label: '选项3',
+      //     value: 'opt-3',
+      //   },
+      // ],
     },
     {
       key: 'key-2',
