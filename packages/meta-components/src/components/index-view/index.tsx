@@ -108,6 +108,10 @@ export interface IIndexViewProps<IParams = any> {
    */
   overPageSelect?: boolean
   selectedClear?: ('overPage' | 'keepSelected')[]
+  /**
+   * @description 控制行元素：'default'显示默认指定行,'disabled'为禁用指定行
+   */
+  selectedKeys?: { default?: string[]; disabled?: string[] }
 }
 
 export declare type IndexViewRefType = {
@@ -140,6 +144,7 @@ export const IndexView = React.forwardRef(
       overPageSelect,
       selectedClear,
       children,
+      selectedKeys,
     }: IIndexViewProps & { children: React.ReactNode },
     ref: React.MutableRefObject<IndexViewRefType>
   ) => {
@@ -191,8 +196,9 @@ export const IndexView = React.forwardRef(
         setParams(query.params ? JSON.parse(query.params) : undefined)
       }
     }, [query])
-
-    const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
+    const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>(
+      selectedKeys?.default || []
+    )
     const [selectedRows, setSelectedRows] = useState<RowData[]>([])
     const [selectionType, setSelectionType] = useState(defaultSelectionType)
     const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
@@ -378,6 +384,12 @@ export const IndexView = React.forwardRef(
                   setSelectedRows(rows)
                 }
               },
+              // TODO:禁用所在行选择框功能
+              getCheckboxProps: (record: RowData) => ({
+                disabled:
+                  selectedKeys?.disabled &&
+                  selectedKeys.disabled.includes(record.id),
+              }),
             }
           : undefined,
       [

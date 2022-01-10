@@ -437,10 +437,17 @@ export default () => {
       text: '打印选择行',
       type: 'danger',
       disabled: (interView) => (interView.selectedRowKeys || []).length === 0,
-      callback: (interView) =>
+      callback: (interView) => {
         message.success(
           `${(interView.selectedRowKeys || []).length} 条记录被选中了`
-        ),
+        )
+        ref.current.injectSelectedKeys(['1-1236'])
+        console.log(
+          '选中记录',
+          ref.current.selectedRowKeys,
+          ref.current.selectedRows
+        )
+      },
     },
   ]
 
@@ -467,6 +474,9 @@ export default () => {
       },
     ],
   }
+  const selectedKeys = {
+    default: ['1-1237', '1-1238'],
+  }
 
   return (
     <IndexView
@@ -478,7 +488,11 @@ export default () => {
       defaultSelectionType="checkbox"
       tableOperate={tableOperate}
       logicFilter
-      selectedClear={['overPage', 'keepSelected']}
+      selectedClear={['overPage']}
+      selectedKeys={{
+        default: ['1-1237', '1-1238'],
+        disabled: ['1-1234', '1-1235'],
+      }}
       // keepReloadSelect
       // urlQuery
     >
