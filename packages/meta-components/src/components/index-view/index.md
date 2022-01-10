@@ -399,6 +399,7 @@ const makeData = (current) => {
     ...row,
     id: `${current}-${row.id}`,
     name: `${current}-${row.name}`,
+    disabled: true,
   }))
 }
 

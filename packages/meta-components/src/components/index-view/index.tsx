@@ -386,9 +386,7 @@ export const IndexView = React.forwardRef(
               },
               // TODO:禁用所在行选择框功能
               getCheckboxProps: (record: RowData) => ({
-                disabled:
-                  selectedKeys?.disabled &&
-                  selectedKeys.disabled.includes(record.id),
+                disabled: record.disabled,
               }),
             }
           : undefined,
