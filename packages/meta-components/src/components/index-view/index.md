@@ -399,7 +399,8 @@ const makeData = (current) => {
     ...row,
     id: `${current}-${row.id}`,
     name: `${current}-${row.name}`,
-    disabled: true,
+    disable: true,
+    select: true,
   }))
 }
 
@@ -490,12 +491,8 @@ export default () => {
       tableOperate={tableOperate}
       logicFilter
       selectedClear={['overPage']}
-      selectedKeys={{
-        default: ['1-1237', '1-1238'],
-        disabled: ['1-1234', '1-1235'],
-      }}
-      // keepReloadSelect
-      // urlQuery
+      defaultSelectedKeys={['1-1237', '1-1238']}
+      // rowKeys={{disabled:true,selected:true,disabledAlias:'disable',selectedAlias:'select'}}
     >
       <ToolBar>
         <FilterPanel />

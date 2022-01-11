@@ -59,9 +59,12 @@ type TableOption = Pick<
   | 'rowClassName'
   | 'size'
 >
-interface SelectedOption {
-  keepSelected?: boolean
-  overPage?: boolean
+
+interface RowKeysType {
+  disabled?: boolean
+  selected?: boolean
+  disabledAlias?: string
+  selectedAlias?: string
 }
 
 export interface IIndexViewProps<IParams = any> {
@@ -109,9 +112,10 @@ export interface IIndexViewProps<IParams = any> {
   overPageSelect?: boolean
   selectedClear?: ('overPage' | 'keepSelected')[]
   /**
-   * @description 控制行元素：'default'显示默认指定行,'disabled'为禁用指定行
+   * @description 'default'显示默认指定行
    */
-  selectedKeys?: { default?: string[]; disabled?: string[] }
+  defaultSelectedKeys?: string[]
+  rowKeys?: RowKeysType
 }
 
 export declare type IndexViewRefType = {
@@ -144,12 +148,14 @@ export const IndexView = React.forwardRef(
       overPageSelect,
       selectedClear,
       children,
-      selectedKeys,
+      defaultSelectedKeys,
+      rowKeys,
     }: IIndexViewProps & { children: React.ReactNode },
     ref: React.MutableRefObject<IndexViewRefType>
   ) => {
     IndexView.defaultProps = {
       selectedClear: [],
+      // rowKeys: [{ type: 'selected', alias: 'select' }, { type: 'disabled', alias: 'disabled' }]
     }
     const [query, setQuery] = useQuery()
     const preParamsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
@@ -197,7 +203,7 @@ export const IndexView = React.forwardRef(
       }
     }, [query])
     const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>(
-      selectedKeys?.default || []
+      defaultSelectedKeys || []
     )
     const [selectedRows, setSelectedRows] = useState<RowData[]>([])
     const [selectionType, setSelectionType] = useState(defaultSelectionType)
@@ -251,6 +257,16 @@ export const IndexView = React.forwardRef(
         pageable,
         logicFilter ? params : simpleParams(params)
       ).then((data) => {
+        if (rowKeys?.selected) {
+          const defaultSelectedKeys =
+            data &&
+            data.list
+              .filter((col) => {
+                return col[rowKeys?.selectedAlias || 'selected']
+              })
+              .map((col) => col.id)
+          setSelectedRowKeys(defaultSelectedKeys)
+        }
         if (
           selectedClear?.indexOf('overPage') === -1 ||
           (mode === 'reload' && selectedClear?.indexOf('keepSelected') === -1)
@@ -386,7 +402,9 @@ export const IndexView = React.forwardRef(
               },
               // TODO:禁用所在行选择框功能
               getCheckboxProps: (record: RowData) => ({
-                disabled: record.disabled,
+                disabled:
+                  rowKeys?.disabled &&
+                  record[rowKeys?.disabledAlias || 'disabled'],
               }),
             }
           : undefined,
