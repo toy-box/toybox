@@ -399,6 +399,8 @@ const makeData = (current) => {
     ...row,
     id: `${current}-${row.id}`,
     name: `${current}-${row.name}`,
+    disable: true,
+    selected: true,
   }))
 }
 
@@ -437,10 +439,17 @@ export default () => {
       text: '打印选择行',
       type: 'danger',
       disabled: (interView) => (interView.selectedRowKeys || []).length === 0,
-      callback: (interView) =>
+      callback: (interView) => {
         message.success(
           `${(interView.selectedRowKeys || []).length} 条记录被选中了`
-        ),
+        )
+        ref.current.injectSelectedKeys(['1-1236'])
+        console.log(
+          '选中记录',
+          ref.current.selectedRowKeys,
+          ref.current.selectedRows
+        )
+      },
     },
   ]
 
@@ -467,6 +476,9 @@ export default () => {
       },
     ],
   }
+  const selectedKeys = {
+    default: ['1-1237', '1-1238'],
+  }
 
   return (
     <IndexView
@@ -478,9 +490,9 @@ export default () => {
       defaultSelectionType="checkbox"
       tableOperate={tableOperate}
       logicFilter
-      selectedClear={['overPage', 'keepSelected']}
-      // keepReloadSelect
-      // urlQuery
+      selectedClear={['overPage']}
+      defaultSelectedKeys={['1-1237', '1-1238']}
+      // rowKeys={{disabled:'disable',selected:true}}
     >
       <ToolBar>
         <FilterPanel />
@@ -917,20 +929,21 @@ export default () => {
       key: 'key-1',
       type: 'singleOption',
       name: '单选',
-      options: [
-        {
-          label: '选项1',
-          value: 'opt-1',
-        },
-        {
-          label: '选项2',
-          value: 'opt-2',
-        },
-        {
-          label: '选项3',
-          value: 'opt-3',
-        },
-      ],
+      type: 'refId',
+      // options: [
+      //   {
+      //     label: '选项1',
+      //     value: 'opt-1',
+      //   },
+      //   {
+      //     label: '选项2',
+      //     value: 'opt-2',
+      //   },
+      //   {
+      //     label: '选项3',
+      //     value: 'opt-3',
+      //   },
+      // ],
     },
     {
       key: 'key-2',

@@ -59,9 +59,10 @@ type TableOption = Pick<
   | 'rowClassName'
   | 'size'
 >
-interface SelectedOption {
-  keepSelected?: boolean
-  overPage?: boolean
+
+interface RowKeysType {
+  disabled?: string | boolean
+  selected?: string | boolean
 }
 
 export interface IIndexViewProps<IParams = any> {
@@ -108,6 +109,11 @@ export interface IIndexViewProps<IParams = any> {
    */
   overPageSelect?: boolean
   selectedClear?: ('overPage' | 'keepSelected')[]
+  /**
+   * @description 'default'显示默认指定行
+   */
+  defaultSelectedKeys?: string[]
+  rowKeys?: RowKeysType
 }
 
 export declare type IndexViewRefType = {
@@ -140,6 +146,8 @@ export const IndexView = React.forwardRef(
       overPageSelect,
       selectedClear,
       children,
+      defaultSelectedKeys,
+      rowKeys,
     }: IIndexViewProps & { children: React.ReactNode },
     ref: React.MutableRefObject<IndexViewRefType>
   ) => {
@@ -191,8 +199,9 @@ export const IndexView = React.forwardRef(
         setParams(query.params ? JSON.parse(query.params) : undefined)
       }
     }, [query])
-
-    const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([])
+    const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>(
+      defaultSelectedKeys || []
+    )
     const [selectedRows, setSelectedRows] = useState<RowData[]>([])
     const [selectionType, setSelectionType] = useState(defaultSelectionType)
     const [currentMode, setCurrentMode] = useState<IndexModeType>(mode)
@@ -245,6 +254,20 @@ export const IndexView = React.forwardRef(
         pageable,
         logicFilter ? params : simpleParams(params)
       ).then((data) => {
+        if (rowKeys?.selected) {
+          const defaultSelectedKeys =
+            data &&
+            data.list
+              .filter((col) => {
+                return col[
+                  typeof rowKeys?.selected === 'boolean'
+                    ? 'selected'
+                    : rowKeys?.selected
+                ]
+              })
+              .map((col) => col.id)
+          setSelectedRowKeys(defaultSelectedKeys)
+        }
         if (
           selectedClear?.indexOf('overPage') === -1 ||
           (mode === 'reload' && selectedClear?.indexOf('keepSelected') === -1)
@@ -378,6 +401,16 @@ export const IndexView = React.forwardRef(
                   setSelectedRows(rows)
                 }
               },
+              // TODO:禁用所在行选择框功能
+              getCheckboxProps: (record: RowData) => ({
+                disabled:
+                  rowKeys?.disabled &&
+                  record[
+                    typeof rowKeys?.disabled === 'boolean'
+                      ? 'disabled'
+                      : rowKeys?.disabled
+                  ],
+              }),
             }
           : undefined,
       [

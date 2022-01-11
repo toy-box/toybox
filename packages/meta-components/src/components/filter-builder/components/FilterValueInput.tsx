@@ -404,7 +404,9 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
       case MetaValueType.OBJECT_ID:
         return fieldMeta.parentKey && fieldMetaService?.findDataTrees ? (
           <FieldTreeSelect
-            placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
+            placeholder={`${get(localeData.lang, 'filed.placeholderOp.value')}${
+              fieldMeta.name || ''
+            }`}
             field={fieldMeta}
             style={style}
             multiple={multiple}
@@ -415,7 +417,9 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
           />
         ) : (
           <FieldSelect
-            placeholder={get(localeData.lang, 'filed.placeholderOp.value')}
+            placeholder={`${get(localeData.lang, 'filed.placeholderOp.value')}${
+              fieldMeta.name || ''
+            }`}
             style={style}
             field={fieldMeta}
             selectMode={multiple ? 'multiple' : undefined}
