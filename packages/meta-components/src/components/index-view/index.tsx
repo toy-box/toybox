@@ -61,10 +61,8 @@ type TableOption = Pick<
 >
 
 interface RowKeysType {
-  disabled?: boolean
-  selected?: boolean
-  disabledAlias?: string
-  selectedAlias?: string
+  disabled?: string | boolean
+  selected?: string | boolean
 }
 
 export interface IIndexViewProps<IParams = any> {
@@ -155,7 +153,6 @@ export const IndexView = React.forwardRef(
   ) => {
     IndexView.defaultProps = {
       selectedClear: [],
-      // rowKeys: [{ type: 'selected', alias: 'select' }, { type: 'disabled', alias: 'disabled' }]
     }
     const [query, setQuery] = useQuery()
     const preParamsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
@@ -262,7 +259,11 @@ export const IndexView = React.forwardRef(
             data &&
             data.list
               .filter((col) => {
-                return col[rowKeys?.selectedAlias || 'selected']
+                return col[
+                  typeof rowKeys?.selected === 'boolean'
+                    ? 'selected'
+                    : rowKeys?.selected
+                ]
               })
               .map((col) => col.id)
           setSelectedRowKeys(defaultSelectedKeys)
@@ -404,7 +405,11 @@ export const IndexView = React.forwardRef(
               getCheckboxProps: (record: RowData) => ({
                 disabled:
                   rowKeys?.disabled &&
-                  record[rowKeys?.disabledAlias || 'disabled'],
+                  record[
+                    typeof rowKeys?.disabled === 'boolean'
+                      ? 'disabled'
+                      : rowKeys?.disabled
+                  ],
               }),
             }
           : undefined,

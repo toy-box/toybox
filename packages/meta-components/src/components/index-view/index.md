@@ -400,7 +400,7 @@ const makeData = (current) => {
     id: `${current}-${row.id}`,
     name: `${current}-${row.name}`,
     disable: true,
-    select: true,
+    selected: true,
   }))
 }
 
@@ -492,7 +492,7 @@ export default () => {
       logicFilter
       selectedClear={['overPage']}
       defaultSelectedKeys={['1-1237', '1-1238']}
-      // rowKeys={{disabled:true,selected:true,disabledAlias:'disable',selectedAlias:'select'}}
+      // rowKeys={{disabled:'disable',selected:true}}
     >
       <ToolBar>
         <FilterPanel />
