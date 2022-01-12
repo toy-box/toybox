@@ -476,9 +476,6 @@ export default () => {
       },
     ],
   }
-  const selectedKeys = {
-    default: ['1-1237', '1-1238'],
-  }
 
   return (
     <IndexView
@@ -491,7 +488,7 @@ export default () => {
       tableOperate={tableOperate}
       logicFilter
       selectedClear={['overPage']}
-      defaultSelectedKeys={['1-1237', '1-1238']}
+      defaultSelectedKeys={['1-1237']}
       // rowKeys={{disabled:'disable',selected:true}}
     >
       <ToolBar>

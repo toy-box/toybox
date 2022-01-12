@@ -329,9 +329,13 @@ export const IndexView = React.forwardRef(
         dataSource: tableProps.dataSource,
         selectedRowKeys,
         selectedRows,
+        injectSelectedKeys,
       }),
       [selectedRowKeys, selectedRows, tableProps, reload, reset]
     )
+    const injectSelectedKeys = (keys: string[]) => {
+      setSelectedRowKeys(keys)
+    }
 
     // 可配置的字段key
     const metaColumnKeys = useMemo(
@@ -373,7 +377,10 @@ export const IndexView = React.forwardRef(
               type: selectionType,
               selectedRowKeys,
               onChange: (keys: string[], rows: RowData[]) => {
-                if (selectedClear?.indexOf('overPage') !== -1) {
+                if (
+                  selectedClear?.indexOf('overPage') !== -1 &&
+                  selectionType === 'checkbox'
+                ) {
                   setSelectedRowKeys(
                     selectedRowKeys
                       .filter(
