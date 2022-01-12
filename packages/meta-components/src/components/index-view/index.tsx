@@ -373,7 +373,10 @@ export const IndexView = React.forwardRef(
               type: selectionType,
               selectedRowKeys,
               onChange: (keys: string[], rows: RowData[]) => {
-                if (selectedClear?.indexOf('overPage') !== -1) {
+                if (
+                  selectedClear?.indexOf('overPage') !== -1 &&
+                  selectionType === 'checkbox'
+                ) {
                   setSelectedRowKeys(
                     selectedRowKeys
                       .filter(
