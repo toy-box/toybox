@@ -329,13 +329,9 @@ export const IndexView = React.forwardRef(
         dataSource: tableProps.dataSource,
         selectedRowKeys,
         selectedRows,
-        injectSelectedKeys,
       }),
       [selectedRowKeys, selectedRows, tableProps, reload, reset]
     )
-    const injectSelectedKeys = (keys: string[]) => {
-      setSelectedRowKeys(keys)
-    }
 
     // 可配置的字段key
     const metaColumnKeys = useMemo(
