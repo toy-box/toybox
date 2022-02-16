@@ -4,6 +4,7 @@ import externalGlobals from 'rollup-plugin-external-globals'
 const basicPkgs = [
   'meta-schema',
   'toybox-shared',
+  'meta-powerfx',
   'toybox-ui',
   'meta-components',
 ]

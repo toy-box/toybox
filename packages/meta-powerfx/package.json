@@ -1,0 +1,26 @@
+{
+  "name": "@toy-box/meta-powerfx",
+  "version": "2.0.24",
+  "license": "MIT",
+  "description": "",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "es"
+  ],
+  "scripts": {
+    "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib --outDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es --outDir ./es"
+  },
+  "author": "wishgood@gmail.com",
+  "peerDependencies": {
+    "@toy-box/power-fx": "^0.1.2-alpha"
+  },
+  "devDependencies": {
+    "@toy-box/power-fx": "^0.1.2-alpha"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
