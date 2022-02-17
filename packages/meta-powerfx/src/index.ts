@@ -7,17 +7,23 @@ import {
   DateTimeValue,
   NamedValue,
   InMemoryRecordValue,
-} from '@toy-box/power-fx'
-import { IFieldMeta, MetaValueType } from '@toy-box/meta-schema'
-import { IRContext } from '@toy-box/power-fx/dist/ir/IRContext'
-import {
+  IRContext,
   FormulaTypeStatic,
   NamedFormulaType,
   RecordType,
-} from '@toy-box/power-fx/dist/public/types'
-import DateTime from '@toy-box/power-fx/dist/utils/typescriptNet/Time/DateTime'
+  DateTime,
+  RecordValue,
+  FormulaValueStatic,
+  TableType,
+  InMemoryTableValue,
+  DValue,
+} from '@toy-box/power-fx'
+import { IFieldItems, IFieldMeta, MetaValueType } from '@toy-box/meta-schema'
 
-export function MakeFormulaValue(fieldMeta: IFieldMeta, value: any) {
+export function MakeFormulaValue(
+  fieldMeta: IFieldMeta | IFieldItems,
+  value: any
+) {
   if (value == null) {
     return new BlankValue(IRContext.NotInSource(FormulaTypeStatic.Blank))
   }
@@ -77,6 +83,60 @@ export function MakeFormulaValue(fieldMeta: IFieldMeta, value: any) {
         )
       }
       return new InMemoryRecordValue(IRContext.NotInSource(type), fields)
+    }
+    case MetaValueType.MULTI_OPTION: {
+      const records: RecordValue[] = []
+
+      for (let i = 0; i < Array.from(value).length; ++i) {
+        const item = value[i]
+        const val = FormulaValueStatic.GuaranteeRecord(
+          FormulaValueStatic.New(item)
+        )
+        records.push(val)
+      }
+
+      // Constructor will handle both single-column table
+      let type: TableType
+      if (records.length == 0) {
+        type = new TableType(undefined)
+      } else {
+        type = TableType.FromRecord(
+          <RecordType>(
+            FormulaValueStatic.GuaranteeRecord(records[0]).irContext.resultType
+          )
+        )
+      }
+      return new InMemoryTableValue(
+        IRContext.NotInSource(type),
+        records.map((r) => new DValue<RecordValue>(r, null, null))
+      )
+    }
+    case MetaValueType.ARRAY: {
+      const records: RecordValue[] = []
+
+      for (let i = 0; i < Array.from(value).length; ++i) {
+        const item = value[i]
+        const val = FormulaValueStatic.GuaranteeRecord(
+          MakeFormulaValue((fieldMeta as IFieldMeta).items, item)
+        )
+        records.push(val)
+      }
+
+      // Constructor will handle both single-column table
+      let type: TableType
+      if (records.length == 0) {
+        type = new TableType(undefined)
+      } else {
+        type = TableType.FromRecord(
+          <RecordType>(
+            FormulaValueStatic.GuaranteeRecord(records[0]).irContext.resultType
+          )
+        )
+      }
+      return new InMemoryTableValue(
+        IRContext.NotInSource(type),
+        records.map((r) => new DValue<RecordValue>(r, null, null))
+      )
     }
     default:
       return new BlankValue(IRContext.NotInSource(FormulaTypeStatic.Blank))

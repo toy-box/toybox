@@ -15,10 +15,10 @@
   },
   "author": "wishgood@gmail.com",
   "peerDependencies": {
-    "@toy-box/power-fx": "^0.1.2-alpha"
+    "@toy-box/power-fx": "^0.1.7-alpha"
   },
   "devDependencies": {
-    "@toy-box/power-fx": "^0.1.2-alpha"
+    "@toy-box/power-fx": "^0.1.7-alpha"
   },
   "publishConfig": {
     "access": "public"
