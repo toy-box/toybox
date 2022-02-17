@@ -1,5 +1,6 @@
 import { MakeFormulaValue } from '../index'
 import { MetaValueType } from '@toy-box/meta-schema'
+import { TableValue } from '@toy-box/power-fx'
 
 test('make number value', () => {
   expect(
@@ -115,4 +116,19 @@ test('make array value', () => {
       ).toObject()
     )
   ).toBe('[{"name":"Jack","value":123},{"name":"Tom","value":321}]')
+})
+
+test('make date value', () => {
+  expect(
+    (
+      MakeFormulaValue(
+        {
+          key: 'date',
+          type: MetaValueType.DATE,
+          name: 'date',
+        },
+        '2012/3/10'
+      ).toObject() as Date
+    ).toISOString()
+  ).toBe('2012-03-09T16:00:00.000Z')
 })
