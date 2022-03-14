@@ -19,19 +19,19 @@ import {
   DValue,
 } from '@toy-box/power-fx'
 import {
-  IFieldItems,
   IFieldMeta,
   MetaValueType,
   IMetaBase,
+  IFieldItems,
 } from '@toy-box/meta-schema'
 import { Path, Pattern } from '@formily/path'
 import { isStr, isNum } from '@toy-box/toybox-shared'
 
-export function MakeFormulaValue(fieldMeta: IMetaBase, value: any) {
+export function MakeFormulaValue(meta: IFieldItems | IFieldMeta, value: any) {
   if (value == null) {
     return new BlankValue(IRContext.NotInSource(FormulaTypeStatic.Blank))
   }
-  switch (fieldMeta.type) {
+  switch (meta.type) {
     case MetaValueType.STRING:
     case MetaValueType.TEXT:
     case MetaValueType.OBJECT_ID:
@@ -77,10 +77,10 @@ export function MakeFormulaValue(fieldMeta: IMetaBase, value: any) {
     case MetaValueType.OBJECT: {
       const fields: NamedValue[] = []
       let type = new RecordType()
-      for (let key in fieldMeta.properties) {
+      for (let key in meta.properties) {
         const name = key
         const fieldValue = value[key]
-        const paValue = MakeFormulaValue(fieldMeta.properties[key], fieldValue)
+        const paValue = MakeFormulaValue(meta.properties[key], fieldValue)
         fields.push(new NamedValue(name, paValue))
         type = type.add(
           new NamedFormulaType(name, paValue.irContext.resultType)
@@ -121,7 +121,7 @@ export function MakeFormulaValue(fieldMeta: IMetaBase, value: any) {
       for (let i = 0; i < Array.from(value).length; ++i) {
         const item = value[i]
         const val = FormulaValueStatic.GuaranteeRecord(
-          MakeFormulaValue((fieldMeta as IFieldMeta).items, item)
+          MakeFormulaValue((meta as IFieldMeta).items, item)
         )
         records.push(val)
       }
