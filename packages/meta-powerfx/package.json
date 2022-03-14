@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/meta-powerfx",
-  "version": "2.0.34",
+  "version": "2.0.35",
   "license": "MIT",
   "description": "",
   "main": "lib/index.js",
@@ -15,12 +15,12 @@
   },
   "author": "wishgood@gmail.com",
   "peerDependencies": {
-    "@toy-box/power-fx": "^0.1.30-alpha",
-    "@formily/path": "2.0.15"
+    "@formily/path": "2.0.15",
+    "@toy-box/power-fx": "^0.1.30-alpha"
   },
   "devDependencies": {
-    "@toy-box/power-fx": "^0.1.30-alpha",
-    "@formily/path": "2.0.15"
+    "@formily/path": "2.0.15",
+    "@toy-box/power-fx": "^0.1.30-alpha"
   },
   "publishConfig": {
     "access": "public"
