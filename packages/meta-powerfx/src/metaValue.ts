@@ -18,12 +18,16 @@ import {
   InMemoryTableValue,
   DValue,
 } from '@toy-box/power-fx'
-import { IFieldItems, IFieldMeta, MetaValueType } from '@toy-box/meta-schema'
+import {
+  IFieldItems,
+  IFieldMeta,
+  MetaValueType,
+  IMetaBase,
+} from '@toy-box/meta-schema'
+import { Path, Pattern } from '@formily/path'
+import { isStr, isNum } from '@toy-box/toybox-shared'
 
-export function MakeFormulaValue(
-  fieldMeta: IFieldMeta | IFieldItems,
-  value: any
-) {
+export function MakeFormulaValue(fieldMeta: IMetaBase, value: any) {
   if (value == null) {
     return new BlankValue(IRContext.NotInSource(FormulaTypeStatic.Blank))
   }
@@ -141,4 +145,22 @@ export function MakeFormulaValue(
     default:
       return new BlankValue(IRContext.NotInSource(FormulaTypeStatic.Blank))
   }
+}
+
+export function getMetasIn(pattern: Pattern, source: IMetaBase): IMetaBase {
+  const segments = Path.parse(pattern).segments
+  let meta = source
+  for (let i = 0; i < segments.length; i++) {
+    const index = segments[i]
+    if (isStr(index)) {
+      meta = source.properties[index]
+    }
+    if (isNum(index) && meta.type === MetaValueType.ARRAY) {
+      meta = (meta as IFieldMeta).items
+    }
+    if (i !== segments.length - 1 || meta == null) {
+      return meta
+    }
+  }
+  return meta
 }
