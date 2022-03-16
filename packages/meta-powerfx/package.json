@@ -16,11 +16,11 @@
   "author": "wishgood@gmail.com",
   "peerDependencies": {
     "@formily/path": "2.0.15",
-    "@toy-box/power-fx": "^0.1.30-alpha"
+    "@toy-box/power-fx": "^0.1.34-alpha"
   },
   "devDependencies": {
     "@formily/path": "2.0.15",
-    "@toy-box/power-fx": "^0.1.30-alpha"
+    "@toy-box/power-fx": "^0.1.34-alpha"
   },
   "publishConfig": {
     "access": "public"

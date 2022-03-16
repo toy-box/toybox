@@ -1,7 +1,14 @@
-import { IFieldItems, IFieldMeta, MetaValueType } from '@toy-box/meta-schema'
+import {
+  IFieldItems,
+  IFieldMeta,
+  IMetaBase,
+  MetaValueType,
+} from '@toy-box/meta-schema'
 import { DKind, DName, DType, TypedName } from '@toy-box/power-fx'
+import { Path, Pattern } from '@formily/path'
+import { isStr, isNum } from '@toy-box/toybox-shared'
 
-export function MakeDType(fieldMeta: IFieldMeta | IFieldItems) {
+export function MakeDType(fieldMeta: IMetaBase) {
   switch (fieldMeta.type) {
     case MetaValueType.STRING:
     case MetaValueType.TEXT:
@@ -42,4 +49,22 @@ export function MakeDType(fieldMeta: IFieldMeta | IFieldItems) {
     default:
       return DType.Invalid
   }
+}
+
+export function getMetasIn(pattern: Pattern, source: IMetaBase): IMetaBase {
+  const segments = Path.parse(pattern).segments
+  let meta = source
+  for (let i = 0; i < segments.length; i++) {
+    const index = segments[i]
+    if (isStr(index)) {
+      meta = source.properties[index]
+    }
+    if (isNum(index) && meta.type === MetaValueType.ARRAY) {
+      meta = (meta as IFieldMeta).items
+    }
+    if (i !== segments.length - 1 || meta == null) {
+      return meta
+    }
+  }
+  return meta
 }
