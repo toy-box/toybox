@@ -1,2 +1,2 @@
 export * from './metaValue'
-export * from './metaValue'
+export * from './metaType'

@@ -16,7 +16,7 @@ export default {
   disableTypeCheck: true,
   pkgs: basicPkgs.concat(packages),
   esm: {
-    type: 'rollup',
+    type: 'babel',
     importLibToEs: true,
     minify: true,
   },

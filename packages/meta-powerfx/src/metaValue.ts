@@ -18,9 +18,14 @@ import {
   InMemoryTableValue,
   DValue,
 } from '@toy-box/power-fx'
-import { IFieldMeta, MetaValueType, IMetaBase } from '@toy-box/meta-schema'
+import {
+  IFieldMeta,
+  MetaValueType,
+  IMetaBase,
+  IFieldItems,
+} from '@toy-box/meta-schema'
 
-export function MakeFormulaValue(meta: IMetaBase, value: any) {
+export function MakeFormulaValue(meta: IFieldMeta | IFieldItems, value: any) {
   if (value == null) {
     return new BlankValue(IRContext.NotInSource(FormulaTypeStatic.Blank))
   }
