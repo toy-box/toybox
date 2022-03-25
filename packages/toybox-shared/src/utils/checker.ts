@@ -30,3 +30,5 @@ export const instOf = (value: any, cls: any) => {
   if (isStr(cls)) return window[cls] ? value instanceof window[cls] : false
   return false
 }
+export const isNumberIndex = (val: any) =>
+  isStr(val) ? /^\d+$/.test(val) : isNum(val)
