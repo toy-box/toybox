@@ -5,7 +5,6 @@ import devWarning from 'antd/es/_util/devWarning'
 import ConfigProvider from 'antd/es/config-provider'
 import { getTransitionName } from 'antd/es/_util/motion'
 import { DialogContext } from './DialogContext'
-import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react'
 
 interface ConfirmDialogProps extends ModalFuncProps {
   afterClose?: () => void
@@ -14,7 +13,7 @@ interface ConfirmDialogProps extends ModalFuncProps {
   rootPrefixCls: string
   iconPrefixCls?: string
   wrapClassName?: string
-  content: (...args: any[]) => ReactNode
+  content: (...args: any[]) => React.ReactNode
 }
 
 const ConfirmDialog = (props: ConfirmDialogProps) => {
