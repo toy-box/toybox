@@ -5,7 +5,15 @@ import { useDataGrid } from '../hooks'
 
 import '../styles/tableStatusBar.less'
 
-export const TableStatusBar = () => {
+export interface ITableStatusBarProps {
+  viewSetter?: boolean
+  selectStatus?: boolean
+}
+
+export const TableStatusBar: FC<ITableStatusBarProps> = ({
+  viewSetter = true,
+  selectStatus = true,
+}) => {
   const dataGrid = useDataGrid()
   const SelectStatus = useCallback(
     () => (
@@ -24,8 +32,8 @@ export const TableStatusBar = () => {
 
   return (
     <ToolBar className="tbox-table-status-bar">
-      <SelectStatus />
-      <ViewSetter />
+      {selectStatus && <SelectStatus />}
+      {viewSetter && <ViewSetter />}
     </ToolBar>
   )
 }

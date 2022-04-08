@@ -167,7 +167,6 @@ export const DataGrid = React.forwardRef<DataGridRefType, IDataGridProps>(
     const [query, setQuery] = useQuery()
     const preParamsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
     const paramsRef = useRef<Toybox.MetaSchema.Types.ICompareOperation[]>()
-    console.log('in selectedRowKeys', selectedRowKeys)
     const [preParams, setPreParams] = useState<
       Toybox.MetaSchema.Types.ICompareOperation[] | undefined
     >()
