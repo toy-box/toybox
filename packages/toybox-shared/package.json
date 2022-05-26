@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/toybox-shared",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "license": "MIT",
   "main": "lib",
   "module": "esm",
