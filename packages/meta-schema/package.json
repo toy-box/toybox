@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/meta-schema",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "license": "MIT",
   "main": "lib",
   "module": "esm",
@@ -22,9 +22,6 @@
   },
   "devDependencies": {
     "dumi": "^1.1.0-rc.8"
-  },
-  "dependencies": {
-    "@toy-box/toybox-shared": "3.0.0"
   },
   "publishConfig": {
     "access": "public"
