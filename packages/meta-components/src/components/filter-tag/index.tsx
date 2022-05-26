@@ -9,7 +9,7 @@ import {
   ICompareOperation,
   MetaValueType,
 } from '@toy-box/meta-schema'
-import { useLocale } from '@toy-box/toybox-shared'
+import { useLocale } from '@toy-box/toybox-ui'
 import localeMap from './locale'
 import dateUnitRangeLocaleMap from '../date-unit-range/locales'
 import './styles'

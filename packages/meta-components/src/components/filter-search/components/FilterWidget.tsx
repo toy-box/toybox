@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react'
 import { Popover, PopoverProps, Tooltip } from 'antd'
 import { Button } from '@toy-box/toybox-ui'
 import { Filter3Line } from '@airclass/icons'
-import { useLocale } from '@toy-box/toybox-shared'
+import { useLocale } from '@toy-box/toybox-ui'
 import { FilterDesigner, IFilterDesignerProps } from './FilterDesigner'
 import localeMap from '../locale'
 

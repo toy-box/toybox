@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState, useEffect, useMemo } from 'react'
 import { Button, Space } from 'antd'
-import { useLocale } from '@toy-box/toybox-shared'
+import { useLocale } from '@toy-box/toybox-ui'
 import localeMap from '../locale'
 import { FilterBuilder } from '../../filter-builder'
 import { IFieldService } from '../../filter-builder/interface'
