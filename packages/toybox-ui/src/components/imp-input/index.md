@@ -3,7 +3,7 @@
 ### 基础用法
 
 ```tsx
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { ImpInput } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 

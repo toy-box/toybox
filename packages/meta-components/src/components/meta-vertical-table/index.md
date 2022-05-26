@@ -185,10 +185,7 @@ const data = [
   },
 ]
 
-const nameComponent: React.FC<{ text: string; record: any }> = ({
-  text,
-  record,
-}) => {
+const nameComponent: React.FC<{ text: string; record: any }> = ({ text }) => {
   return (
     <div
       style={{

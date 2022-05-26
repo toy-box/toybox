@@ -27,7 +27,7 @@ export interface IFieldOption {
   label: string
   value: string
   disabled?: boolean
-  children?: IFieldOption[]
+  options?: IFieldOption[]
 }
 
 export interface IFieldItems extends IMetaBase {

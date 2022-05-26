@@ -30,7 +30,7 @@ export const Search: FC<SearchProps> & { IconSearch: FC<IconSearchProps> } = ({
   disabled = false,
 }) => {
   const [focus, setFocus] = useState(autoFocus)
-  const inputRef = useRef<Input>(null)
+  const inputRef = useRef(null)
 
   useEffect(() => {
     autoFocus && inputRef?.current?.focus()

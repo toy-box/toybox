@@ -12,7 +12,9 @@ export type ExpandPanelProps = {
   arrow?: React.ReactNode
 }
 
-export const ExpandPanel: React.FC<ExpandPanelProps> = ({
+export const ExpandPanel: React.FC<
+  React.PropsWithChildren<ExpandPanelProps>
+> = ({
   className,
   style,
   title,

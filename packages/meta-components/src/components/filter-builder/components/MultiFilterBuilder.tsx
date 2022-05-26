@@ -1,6 +1,5 @@
-import React, { FC, useCallback, useContext, useMemo } from 'react'
+import React, { FC, useCallback, useMemo } from 'react'
 import { Button } from 'antd'
-import LocaleContext from 'antd/lib/locale-provider/context'
 import update from 'immutability-helper'
 import { AddCircleFill } from '@airclass/icons'
 import { useLocale } from '@toy-box/toybox-shared'

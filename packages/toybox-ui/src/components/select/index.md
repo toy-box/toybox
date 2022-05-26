@@ -43,20 +43,20 @@ export default () => {
 ```tsx
 import React from 'react'
 import { Select } from '@toy-box/toybox-ui'
-import request from 'umi-request'
+// import request from 'umi-request'
 
 // 远程多选
-function metaRemote() {
-  return async () => {
-    const data = await request(
-      'https://run.mocky.io/v3/48a53541-6f8f-4e1d-83a9-40189d7e197f',
-      {
-        method: 'GET',
-      }
-    )
-    return data.address
-  }
-}
+// function metaRemote() {
+//   return async () => {
+//     const data = await request(
+//       'https://run.mocky.io/v3/48a53541-6f8f-4e1d-83a9-40189d7e197f',
+//       {
+//         method: 'GET',
+//       }
+//     )
+//     return data.address
+//   }
+// }
 
 const options = [
   {

@@ -1,7 +1,6 @@
 import React, { FC, ReactNode, useMemo } from 'react'
 import { Space, Button as AntButton } from 'antd'
 import { ButtonType, ButtonSize } from 'antd/lib/button'
-import { isFn } from '@toy-box/toybox-shared'
 import { Button } from '../button'
 import { DropdownMenu, IMenuItem } from '../dropdown-menu'
 

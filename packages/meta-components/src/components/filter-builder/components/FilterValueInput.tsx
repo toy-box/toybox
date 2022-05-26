@@ -11,7 +11,7 @@ import dayjs, { Dayjs } from 'dayjs'
 import get from 'lodash.get'
 import { useLocale } from '@toy-box/toybox-shared'
 import { CompareOP, CompareType, MetaValueType } from '@toy-box/meta-schema'
-import { DatePicker, Search } from '@toy-box/toybox-ui'
+import { DatePicker } from '@toy-box/toybox-ui'
 import { DateUnitRange } from '../../date-unit-range'
 import { localeMap } from '../locale'
 import {

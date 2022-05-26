@@ -8,7 +8,11 @@ export interface ICheckTextProps {
   checked?: boolean
 }
 
-export const CheckText: FC<ICheckTextProps> = ({ text, checked, children }) => {
+export const CheckText: FC<React.PropsWithChildren<ICheckTextProps>> = ({
+  text,
+  checked,
+  children,
+}) => {
   const checkIcon = useMemo(() => (children ? children : <CheckFill />), [])
   return (
     <div className={classNames('tbox-check-text', { checked })}>

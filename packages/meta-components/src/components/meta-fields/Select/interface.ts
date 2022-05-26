@@ -1,16 +1,9 @@
-import {
-  OptionData,
-  OptionGroupData,
-  OptionsType,
-} from 'rc-select/lib/interface'
+import { DefaultOptionType } from 'rc-select/lib/Select'
 
-export declare type OptionItem = OptionData | OptionGroupData
+export declare type OptionItem = DefaultOptionType
 
-export declare type OptionItemsType = OptionsType
+export declare type OptionItemsType = DefaultOptionType[]
 
-export declare type OptionReturnType =
-  | OptionsType
-  | OptionData
-  | OptionGroupData
+export declare type OptionReturnType = OptionItem | OptionItemsType
 
 export declare type SelectValue = React.ReactText | React.ReactText[]

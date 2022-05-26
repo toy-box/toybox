@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom'
 import { getConfirmLocale } from 'antd/es/modal/locale'
 import type { ModalFuncProps } from 'antd/es/modal/Modal'
 import { globalConfig } from 'antd/es/config-provider'
-import devWarning from 'antd/es/_util/devWarning'
+import warning from 'antd/es/_util/warning'
 import destroyFns from 'antd/es/modal/destroyFns'
 import ConfirmDialog from './ConfirmDialog'
 
@@ -125,7 +125,7 @@ export function modalGlobalConfig({
 }: {
   rootPrefixCls: string
 }) {
-  devWarning(
+  warning(
     false,
     'Modal',
     'Modal.config is deprecated. Please use ConfigProvider.config instead.'

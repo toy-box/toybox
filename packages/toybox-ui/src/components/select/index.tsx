@@ -1,5 +1,4 @@
 import React, {
-  ForwardRefRenderFunction,
   useRef,
   useMemo,
   useContext,
@@ -25,6 +24,7 @@ import {
   OptionData,
   OptionGroupData,
 } from '../../types/interface'
+import { DefaultOptionType } from 'rc-cascader'
 
 declare type OptionsType = (OptionData | OptionGroupData)[]
 
@@ -116,9 +116,9 @@ export const Select = React.forwardRef(
     }, [initialed, remote, value])
 
     const current = useMemo(() => {
-      if (mode === 'multiple') {
+      if (mode === 'multiple' && Array.isArray(mergeOptions)) {
         return mergeOptions
-          ? mergeOptions.filter((opt) =>
+          ? (mergeOptions as DefaultOptionType[]).filter((opt) =>
               ((innerValue as React.ReactText[]) || []).some(
                 (v) => v === opt.value
               )
@@ -126,7 +126,7 @@ export const Select = React.forwardRef(
           : null
       }
       return mergeOptions
-        ? mergeOptions.find((opt) => opt.value === innerValue)
+        ? (mergeOptions as OptionsType).find((opt) => opt.value === innerValue)
         : null
     }, [mode, innerValue, mergeOptions])
 
@@ -171,7 +171,7 @@ export const Select = React.forwardRef(
     const handleChange = useCallback(
       (
         value: SelectValueType,
-        option: OptionData | OptionGroupData | OptionsType
+        option: DefaultOptionType | DefaultOptionType[]
       ) => {
         onChange && onChange(value, option)
       },
@@ -223,10 +223,7 @@ export const Select = React.forwardRef(
       [searchRef, setOptionSearchKey, optionSearch]
     )
 
-    const filterOption = (
-      input: string,
-      option?: OptionData | OptionGroupData
-    ) => {
+    const filterOption = (input: string, option?: DefaultOptionType) => {
       if (remote) {
         return true
       }

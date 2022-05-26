@@ -69,7 +69,7 @@ export const FieldDate = React.forwardRef<any, FieldDateProps>(
     )
 
     const innerOnChange = useCallback(
-      (date: Dayjs | null, dateString: string = '') => {
+      (date: Dayjs | null, dateString = '') => {
         onChange &&
           onChange(
             date ? dayjs(dateString).toISOString() : undefined,

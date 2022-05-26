@@ -12,7 +12,7 @@ export const useDataView = () => {
   return useContext(DataViewContext)
 }
 
-export const DataView: React.FC<DataViewProps> = ({
+export const DataView: React.FC<React.PropsWithChildren<DataViewProps>> = ({
   schema,
   loadData,
   saveData,

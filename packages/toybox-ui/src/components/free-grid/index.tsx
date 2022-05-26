@@ -41,7 +41,7 @@ export interface IFreeGridProps {
   gridItemClass?: string
 }
 
-export const FreeGrid: FC<IFreeGridProps> = ({
+export const FreeGrid: FC<React.PropsWithChildren<IFreeGridProps>> = ({
   cols,
   width,
   rowHeight,

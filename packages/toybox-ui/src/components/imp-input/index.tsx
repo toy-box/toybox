@@ -20,7 +20,7 @@ export const ImpInput: FC<IImpInputProps> = ({
   inputClassName,
   ...other
 }) => {
-  const inputRef = useRef<Input | null>(null)
+  const inputRef = useRef(null)
   const [active, setActive] = useState(false)
   const [innerValue, setInnerValue] = useState(value)
 

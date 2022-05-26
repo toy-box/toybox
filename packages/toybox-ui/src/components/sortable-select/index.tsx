@@ -28,7 +28,9 @@ type SelectItemCheck = ISelectItem & {
   checked?: boolean
 }
 
-export const SortableSelect: FC<ISortableSelectProps> = ({
+export const SortableSelect: FC<
+  React.PropsWithChildren<ISortableSelectProps>
+> = ({
   title,
   trigger = 'click',
   dataSource,

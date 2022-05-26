@@ -1,40 +1,44 @@
 {
   "name": "@toy-box/meta-components",
-  "version": "2.0.39",
+  "version": "2.1.2",
   "license": "MIT",
-  "description": "",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "types": "lib/index.d.ts",
-  "files": [
-    "lib",
-    "es"
-  ],
-  "scripts": {
-    "build:tsc": "tsc --project tsconfig.build.json --declarationDir ./lib --outDir ./lib && tsc --project tsconfig.build.json --declarationDir ./es --outDir ./es"
+  "main": "lib",
+  "module": "esm",
+  "umd:main": "dist/toybox.metacomponents.umd.production.js",
+  "unpkg": "dist/toybox.metacomponents.umd.production.js",
+  "jsdelivr": "dist/toybox.metacomponents.umd.production.js",
+  "jsnext:main": "esm",
+  "types": "esm/index.d.ts",
+  "engines": {
+    "npm": ">=3.0.0"
   },
-  "author": "wishgood@gmail.com",
-  "publishConfig": {
-    "access": "public"
+  "scripts": {
+    "start": "dumi dev",
+    "build": "rimraf -rf lib esm dist && npm run build:cjs && npm run build:esm && npm run build:umd",
+    "build:cjs": "tsc --project tsconfig.build.json",
+    "build:esm": "tsc --project tsconfig.build.json --module es2015 --outDir esm",
+    "build:umd": "rollup --config",
+    "build:docs": "dumi build"
   },
   "peerDependencies": {
-    "@types/react": ">=16.8.0 || >=17.0.0",
-    "@types/react-dom": ">=16.8.0 || >=17.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.3.0",
     "antd": "^4.15.5",
     "classnames": "^2.3.1",
-    "react": ">=16.8.0 || >=17.0.0",
-    "react-dom": ">=16.8.0 || >=17.0.0",
-    "react-is": ">=16.8.0 || >=17.0.0",
+    "dumi": "^1.1.0-rc.8",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-is": "^17.0.0",
     "react-router-dom": "^5.3.0"
   },
   "dependencies": {
     "@ahooksjs/antd-table": "^0.2.3",
     "@ahooksjs/use-request": "^2.8.13",
     "@airclass/icons": "^4.3.4",
-    "@toy-box/meta-schema": "^2.0.39",
-    "@toy-box/toybox-shared": "^2.0.38",
-    "@toy-box/toybox-ui": "^2.0.38",
+    "@toy-box/meta-schema": "^2.1.0",
+    "@toy-box/toybox-shared": "^2.1.0",
+    "@toy-box/toybox-ui": "^2.1.0",
     "ahooks": "^2.10.6",
     "antd": "^4.15.5",
     "hoist-non-react-statics": "^3.3.1",
@@ -54,10 +58,12 @@
     "@types/react-resizable": "^1.7.2",
     "antd": "^4.15.5",
     "classnames": "^2.3.1",
-    "react": ">=16.8.0 || >=17.0.0",
-    "react-dom": ">=16.8.0 || >=17.0.0",
-    "react-is": ">=16.8.0 || >=17.0.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-is": "^17.0.0",
     "react-router-dom": "^5.3.0"
   },
-  "gitHead": "949718a1749599d88cd74f2d891db4f16bf61ba4"
+  "publishConfig": {
+    "access": "public"
+  }
 }

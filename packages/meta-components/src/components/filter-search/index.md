@@ -3,7 +3,7 @@
 基础用法:
 
 ```tsx
-import React, { useCallback, useState, useMemo } from 'react'
+import React, { useCallback, useState } from 'react'
 import { FilterSearch } from '@toy-box/meta-components'
 import update from 'immutability-helper'
 import 'antd/dist/antd.css'
@@ -15,10 +15,10 @@ export default () => {
     }, 100)
   }
 
-  function findOptions(key, name) {
+  function findOptions(key) {
     return new Promise((resolve) => {
       serviceTest(resolve, key)
-    }).then((res) => {
+    }).then(() => {
       return [
         {
           label: '2IX',

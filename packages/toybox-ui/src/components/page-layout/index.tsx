@@ -9,7 +9,7 @@ export interface IPageLayoutProps {
   single?: boolean
 }
 
-export const PageLayout: FC<IPageLayoutProps> = ({
+export const PageLayout: FC<React.PropsWithChildren<IPageLayoutProps>> = ({
   style,
   className,
   empty,

@@ -1,16 +1,13 @@
 {
+  "version": "2.1.2",
   "npmClient": "yarn",
+  "useWorkspaces": true,
   "npmClientArgs": ["--ignore-engines"],
   "command": {
-    "forcePublish": true,
-    "exact": true,
-    "bootstrap": {
-      "npmClientArgs": ["--no-package-lock"]
-    },
-    "publish": {
-      "ignoreChanges": ["*.md"]
+    "version": {
+      "forcePublish": true,
+      "exact": true,
+      "message": "chore(release): 😊 publish %s"
     }
-  },
-  "useWorkspaces": true,
-  "version": "2.0.39"
+  }
 }
