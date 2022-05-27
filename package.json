@@ -125,8 +125,8 @@
     "ts-import-plugin": "1.6.1",
     "ts-jest": "^26.0.0",
     "ts-loader": "^7.0.4",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.1.5",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"

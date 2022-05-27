@@ -1,15 +1,18 @@
 import postcss from 'rollup-plugin-postcss'
 import NpmImport from 'less-plugin-npm-import'
-import baseConfig from '../../scripts/rollup.base.js'
+import baseConfig, {
+  removeImportStyleFromInputFilePlugin,
+} from '../../scripts/rollup.base.js'
 
 export default baseConfig(
   'toybox.ui',
   'Toybox.Ui',
+  removeImportStyleFromInputFilePlugin(),
   postcss({
     extract: true,
     minimize: true,
     sourceMap: true,
-    // extensions: ['.css', '.less', '.sass'],
+    extensions: ['.css', '.less', '.sass'],
     use: {
       less: {
         plugins: [new NpmImport({ prefix: '~' })],
