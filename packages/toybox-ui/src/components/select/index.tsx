@@ -16,6 +16,8 @@ import {
   SelectProps as AntSelectProps,
 } from 'antd/lib/select'
 import SizeContext from 'antd/lib/config-provider/SizeContext'
+import Option from 'antd/node_modules/rc-select/lib/Option'
+import OptGroup from 'antd/node_modules/rc-select/lib/OptGroup'
 import debounce from 'lodash.debounce'
 import intersection from 'lodash.intersection'
 import { useFetchOptions } from '../../hooks'
@@ -28,7 +30,8 @@ import { DefaultOptionType } from 'rc-cascader'
 
 declare type OptionsType = (OptionData | OptionGroupData)[]
 
-const { Option, OptGroup } = AntSelect
+// const Option = AntSelect.Option
+// const OptGroup = AntSelect.OptGroup
 
 export interface SelectProps extends AntSelectProps<SelectValueType> {
   value?: SelectValueType

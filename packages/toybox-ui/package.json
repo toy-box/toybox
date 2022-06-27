@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/toybox-ui",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "license": "MIT",
   "main": "lib",
   "module": "esm",
@@ -26,7 +26,7 @@
     "@airclass/icons": "^4.3.4",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "antd": "^4.15.5",
+    "antd": "^4.20.0",
     "classnames": "^2.3.1",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
@@ -41,8 +41,8 @@
     "dumi": "^1.1.0-rc.8"
   },
   "dependencies": {
-    "@toy-box/toybox-shared": "3.0.3",
-    "antd": "^4.15.5",
+    "@toy-box/toybox-shared": "3.0.4",
+    "antd": "^4.20.0",
     "classnames": "^2.3.1",
     "lodash.debounce": "^4.0.8",
     "lodash.intersection": "^4.4.0",

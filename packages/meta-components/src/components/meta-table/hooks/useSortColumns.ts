@@ -1,5 +1,7 @@
 import dayjs from 'dayjs'
 import { MetaValueType } from '@toy-box/meta-schema'
+import 'antd/lib/table/interface'
+
 import { ColumnMetaType } from '../interface'
 
 export const useSortColumns = (
