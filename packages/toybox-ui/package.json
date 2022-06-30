@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/toybox-ui",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "license": "MIT",
   "main": "lib",
   "module": "esm",
@@ -41,7 +41,7 @@
     "dumi": "^1.1.0-rc.8"
   },
   "dependencies": {
-    "@toy-box/toybox-shared": "3.0.4",
+    "@toy-box/toybox-shared": "3.0.5",
     "antd": "^4.20.0",
     "classnames": "^2.3.1",
     "lodash.debounce": "^4.0.8",
