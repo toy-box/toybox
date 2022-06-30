@@ -16,8 +16,8 @@ import {
   SelectProps as AntSelectProps,
 } from 'antd/lib/select'
 import SizeContext from 'antd/lib/config-provider/SizeContext'
-import Option from 'antd/node_modules/rc-select/lib/Option'
-import OptGroup from 'antd/node_modules/rc-select/lib/OptGroup'
+import Option from 'rc-select/lib/Option'
+import OptGroup from 'rc-select/lib/OptGroup'
 import debounce from 'lodash.debounce'
 import intersection from 'lodash.intersection'
 import { useFetchOptions } from '../../hooks'
