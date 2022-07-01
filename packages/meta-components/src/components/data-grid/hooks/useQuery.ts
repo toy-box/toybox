@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import qs from 'qs'
 
 export interface QueryData {
@@ -11,11 +11,11 @@ export interface QueryData {
 }
 
 export const useQuery = () => {
-  const history = useHistory()
+  const history = useNavigate()
   const location = useLocation()
 
   const setQuery = (query: any) => {
-    history.replace(`${location.pathname}?${qs.stringify(query)}`)
+    history(`${location.pathname}?${qs.stringify(query)}`, { replace: true })
   }
 
   const query = useMemo(
