@@ -13,7 +13,7 @@ export default () => (
   <Space>
     <Button tooltip="tooltip">this is a button</Button>
     <Button icon={<ArrowLeftSLine />} />
-    <Button>Normal button</Button>
+    <Button type="dashed">Normal button</Button>
   </Space>
 )
 ```
@@ -36,6 +36,7 @@ export default () => (
         type="primary"
         tooltip="Home"
         icon={<HomeFill />}
+        activeCase
       />
       <Button.Icon
         size="small"
@@ -55,17 +56,18 @@ export default () => (
     <Space>
       <Button.Icon
         size="large"
+        type="danger"
         icon={<HomeFill />}
         onClick={() => console.log('xxx')}
       />
       <Button.Icon
         size="large"
-        type="primary"
+        type="dashed"
         tooltip="Home"
         icon={<HomeFill />}
       />
       <Button.Icon size="large" type="primary" icon={<HomeFill />} circle />
-      <Button.Icon size="huge" type="primary" icon={<HomeFill />} />
+      <Button.Icon size="huge" type="primary" icon={<HomeFill />} disabled />
     </Space>
   </>
 )

@@ -12,6 +12,7 @@ export interface IconButtonProps {
   icon: ReactNode
   color?: string
   pure?: boolean
+  activeCase?: true
   type?: IconType
   tooltip?: ReactNode
   placement?: TooltipPlacement
@@ -29,6 +30,7 @@ const IconButton: React.ForwardRefRenderFunction<unknown, IconButtonProps> = (
     color,
     type = 'default',
     pure,
+    activeCase,
     tooltip,
     placement,
     onClick,
@@ -82,6 +84,7 @@ const IconButton: React.ForwardRefRenderFunction<unknown, IconButtonProps> = (
       disabled,
       circle,
       pure,
+      'active-case': activeCase,
     }
   )
 
