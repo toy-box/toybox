@@ -17,6 +17,9 @@ export default baseConfig(
       less: {
         plugins: [new NpmImport({ prefix: '~' })],
         javascriptEnabled: true,
+        modifyVars: {
+          'root-entry-name': 'default',
+        },
       },
       sass: {},
       stylus: {},

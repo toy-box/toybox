@@ -59,10 +59,46 @@
     background: @btn-text-hover-bg;
   }
   &.tbox-icon-button-primary {
-    &:hover,
-    &:focus {
-      color: @primary-color;
-      background-color: @primary-1;
+    position: relative;
+    > span {
+      z-index: 1;
+      position: relative;
+    }
+    &:not(:disabled) {
+      &::before {
+        content: '';
+        display: block;
+        opacity: 0;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 0;
+        background: none;
+        box-sizing: border-box;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: scale(0);
+      }
+      &:hover,
+      &:focus {
+        &::before {
+          border: none;
+          box-shadow: none;
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      &:hover {
+        &::before {
+          background-color: @btn-text-hover-bg;
+        }
+      }
+      &:focus {
+        color: @primary-color;
+        &::before {
+          background-color: @primary-1;
+        }
+      }
     }
   }
   &.pure {
@@ -80,5 +116,8 @@
   }
   &.circle {
     border-radius: 50%;
+    &::before {
+      border-radius: 50%;
+    }
   }
 }

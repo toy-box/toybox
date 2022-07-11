@@ -9,4 +9,7 @@ export default defineConfig({
   base: '/toybox',
   publicPath: '/toybox/',
   // more config: https://d.umijs.org/config
+  theme: {
+    '@root-entry-name': 'default',
+  },
 })
