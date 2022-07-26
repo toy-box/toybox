@@ -10,6 +10,7 @@
   "scripts": {
     "build": "rimraf -rf packages/*/{lib,dist,esm} && lerna run build",
     "build:docs": "dumi build",
+    "bootstrap": "lerna bootstrap",
     "start": "dumi dev",
     "test": "jest --coverage",
     "preversion": "yarn install --ignore-engines && git add -A && npm run build && npm run lint",
