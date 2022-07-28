@@ -18,7 +18,7 @@ import {
   ResizeCallbackData,
   OperateColumn,
 } from './components'
-import { usePivot, useSortColumns } from './hooks'
+import { usePivot, sortColumns } from './hooks'
 import './styles'
 export * from './context'
 export * from './utils'
@@ -96,20 +96,20 @@ export const MetaTable: FC<IMetaTableProps> = ({
       )
     }
     return []
-  }, [columnMetas])
+  }, [columnMetas, pivotOption])
 
   const innerColumnMetas = useMemo(() => {
     if (pivotOption) {
       return [...leftMetas, ...rightMetas]
     } else if (sorter) {
-      return useSortColumns(
+      return sortColumns(
         [...leftMetas, ...rightMetas],
         sorter,
         onChange != null
       )
     }
     return [...leftMetas, ...rightMetas]
-  }, [sorter, onChange, columnMetas, pivotOption])
+  }, [pivotOption, sorter, leftMetas, rightMetas, onChange])
 
   const [rows, posIndexes] = usePivot(
     (dataSource || []).map((item) => item),
@@ -141,7 +141,21 @@ export const MetaTable: FC<IMetaTableProps> = ({
       }
       return undefined
     },
-    [pivotOption]
+    [pivotOption, rowSpanIndexes]
+  )
+
+  const handleResize = useCallback(
+    (index: number) => {
+      return (
+        e: React.SyntheticEvent<Element, Event>,
+        data: ResizeCallbackData
+      ) => {
+        setColumnWidths(
+          update(columnWidths, { [index]: { $set: data.size.width } })
+        )
+      }
+    },
+    [columnWidths]
   )
 
   const makeColumns = useCallback(
@@ -185,7 +199,7 @@ export const MetaTable: FC<IMetaTableProps> = ({
       )
       return columns
     },
-    [mergeRenders, columnWidths, posIndexes]
+    [columnWidths, resizableTitle, mergeRenders, getRowSpan, handleResize]
   )
 
   const columns = useMemo(() => {
@@ -201,18 +215,7 @@ export const MetaTable: FC<IMetaTableProps> = ({
       })
     }
     return columns
-  }, [innerColumnMetas, makeColumns, columnWidths])
-
-  const handleResize = (index: number) => {
-    return (
-      e: React.SyntheticEvent<Element, Event>,
-      data: ResizeCallbackData
-    ) => {
-      setColumnWidths(
-        update(columnWidths, { [index]: { $set: data.size.width } })
-      )
-    }
-  }
+  }, [makeColumns, innerColumnMetas, operate, operateHeader, operateColumn])
 
   const mixExpandable = useMemo(() => {
     return expandable
