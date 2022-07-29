@@ -7,7 +7,6 @@ import React, {
   useState,
   useEffect,
   useCallback,
-  ReactText,
   ReactNode,
 } from 'react'
 import { Divider, Input } from 'antd'
@@ -29,7 +28,7 @@ export interface SelectProProps extends SelectProps<SelectValue> {
   params?: any
   remote?: (key: string, params?: any) => Promise<OptionItem[]>
   remoteByValue?: (
-    value: ReactText | ReactText[],
+    value: string | number | Array<string | number>,
     params?: any
   ) => Promise<OptionItem[]>
   readMode?: boolean
@@ -37,7 +36,7 @@ export interface SelectProProps extends SelectProps<SelectValue> {
   /**
    * @description 自定义只读模式选项渲染方法
    */
-  itemRender?: (value: ReactText, title: ReactNode) => ReactNode
+  itemRender?: (value: string | number, title: ReactNode) => ReactNode
   /**
    * @description 是否在选线中显示搜索框,目前使用有问题
    * @default true
@@ -164,6 +163,15 @@ const SelectRF: ForwardRefRenderFunction<any, SelectProProps> = (
     },
     [onChange]
   )
+  const handleSearch = useCallback(
+    (key: string) => {
+      setOptionSearchKey(key)
+      if (remote) {
+        fetchData(key)
+      }
+    },
+    [remote, fetchData, setOptionSearchKey]
+  )
 
   const dropdownRender = useCallback(
     (menu: React.ReactElement) => {
@@ -183,17 +191,7 @@ const SelectRF: ForwardRefRenderFunction<any, SelectProProps> = (
         <React.Fragment>{menu}</React.Fragment>
       )
     },
-    [optionSearchKey]
-  )
-
-  const handleSearch = useCallback(
-    (key: string) => {
-      setOptionSearchKey(key)
-      if (remote) {
-        fetchData(key)
-      }
-    },
-    [remote, fetchData, setOptionSearchKey, options]
+    [handleSearch, optionSearch, optionSearchKey]
   )
 
   const handleOpen = useCallback(
@@ -207,7 +205,7 @@ const SelectRF: ForwardRefRenderFunction<any, SelectProProps> = (
         handleSearch('')
       }
     },
-    [searchRef, setOptionSearchKey, optionSearch]
+    [optionSearch, handleSearch]
   )
 
   const filterOption = (input: string, option?: OptionItem) => {
@@ -232,6 +230,7 @@ const SelectRF: ForwardRefRenderFunction<any, SelectProProps> = (
     }
     return <span>{Array.isArray(values) ? values.join(', ') : values}</span>
   }
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const optGroup = useMemo(() => {
     return mergeOptions.map((option) =>
       option.children ? (

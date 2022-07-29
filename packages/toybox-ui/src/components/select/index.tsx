@@ -169,7 +169,7 @@ export const Select = React.forwardRef(
       return () => {
         didCancel = true
       }
-    }, [initialed, fetchData, params, remote, remoteByValue, value])
+    }, [initialed, fetchData, params, remote, remoteByValue, value, current])
 
     const handleChange = useCallback(
       (
@@ -179,6 +179,16 @@ export const Select = React.forwardRef(
         onChange && onChange(value, option)
       },
       [onChange]
+    )
+
+    const handleSearch = useCallback(
+      (key: string) => {
+        setOptionSearchKey(key)
+        if (remote) {
+          fetchData(key)
+        }
+      },
+      [remote, fetchData, setOptionSearchKey]
     )
 
     const dropdownRender = useCallback(
@@ -199,17 +209,7 @@ export const Select = React.forwardRef(
           <React.Fragment>{menu}</React.Fragment>
         )
       },
-      [optionSearchKey]
-    )
-
-    const handleSearch = useCallback(
-      (key: string) => {
-        setOptionSearchKey(key)
-        if (remote) {
-          fetchData(key)
-        }
-      },
-      [remote, fetchData, setOptionSearchKey]
+      [handleSearch, optionSearch, optionSearchKey]
     )
 
     const handleOpen = useCallback(
@@ -223,7 +223,7 @@ export const Select = React.forwardRef(
           handleSearch('')
         }
       },
-      [searchRef, setOptionSearchKey, optionSearch]
+      [optionSearch, handleSearch]
     )
 
     const filterOption = (input: string, option?: DefaultOptionType) => {
@@ -252,6 +252,7 @@ export const Select = React.forwardRef(
       return <span>{Array.isArray(values) ? values.join(', ') : values}</span>
     }
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const optionRender = useMemo(() => {
       return mergeOptions?.map((option) =>
         option.children ? (
