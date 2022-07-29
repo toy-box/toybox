@@ -83,7 +83,7 @@ export function VerticalTable<RecordType = DefaultRecordType>({
       headerWidth,
       showHeader,
     }),
-    [rowClassName, showHeader, columns, columnWidth, headerWidth]
+    [dataSource, rowClassName, columns, columnWidth, headerWidth, showHeader]
   )
 
   // =========================== Classes ===========================
