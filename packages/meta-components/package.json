@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/meta-components",
-  "version": "3.0.11",
+  "version": "3.0.12",
   "license": "MIT",
   "main": "lib",
   "module": "esm",
@@ -37,10 +37,11 @@
     "@ahooksjs/antd-table": "^0.2.14",
     "@ahooksjs/use-request": "^2.8.13",
     "@airclass/icons": "^4.3.4",
-    "@toy-box/meta-schema": "3.0.11",
-    "@toy-box/toybox-shared": "3.0.11",
-    "@toy-box/toybox-ui": "3.0.11",
+    "@toy-box/meta-schema": "3.0.12",
+    "@toy-box/toybox-shared": "3.0.12",
+    "@toy-box/toybox-ui": "3.0.12",
     "ahooks": "^3.5.2",
+    "classnames": "^2.3.1",
     "hoist-non-react-statics": "^3.3.1",
     "immutability-helper": "^3.1.1",
     "lodash.debounce": "^4.0.8",
@@ -48,7 +49,7 @@
     "lodash.intersection": "^4.4.0",
     "qs": "^6.10.1",
     "react-resizable": "^3.0.4",
-    "classnames": "^2.3.1"
+    "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
     "@types/hoist-non-react-statics": "^3.3.1",
