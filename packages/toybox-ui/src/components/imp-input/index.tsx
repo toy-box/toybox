@@ -69,14 +69,6 @@ export const ImpInput: FC<IImpInputProps> = ({
     [width]
   )
 
-  const mixStyle = React.useMemo(
-    () => ({
-      ...style,
-      ...sizeStyle,
-    }),
-    [sizeStyle, style]
-  )
-
   const inputStyle = React.useMemo(
     () => ({
       ...widthStyle,
@@ -86,7 +78,7 @@ export const ImpInput: FC<IImpInputProps> = ({
   )
 
   return (
-    <div className={classNames('tbox-imp-input', className)} style={mixStyle}>
+    <div className={classNames('tbox-imp-input', className)} style={style}>
       {active ? (
         <Input
           ref={inputRef}
@@ -103,7 +95,10 @@ export const ImpInput: FC<IImpInputProps> = ({
           className={classNames('tbox-imp-input__button', { disabled })}
           onClick={activeHandle}
         >
-          <span className={classNames('tbox-imp-input__text')}>
+          <span
+            className={classNames('tbox-imp-input__text')}
+            style={sizeStyle}
+          >
             {value}
             <i className={'tbox-imp-input__icon'}>{icon}</i>
           </span>
