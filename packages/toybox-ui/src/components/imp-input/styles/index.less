@@ -1,8 +1,33 @@
 @import '../../../styles/theme.less';
 
 .@{prefix}-imp-input {
-  &__text {
+  &__button {
+    padding: 0;
+    border: none;
+    background: none;
     min-height: 20px;
+    display: inline;
+    user-select: none;
     cursor: text;
+    .@{prefix}-imp-input__text {
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      flex-direction: row;
+    }
+    .@{prefix}-imp-input__icon {
+      cursor: pointer;
+      display: none;
+      margin-left: 8px;
+      margin-right: 4px;
+    }
+    &:hover {
+      .@{prefix}-imp-input__icon {
+        display: block;
+      }
+    }
+  }
+  .@{ant-prefix}-input {
+    padding: 0;
   }
 }
