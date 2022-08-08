@@ -17,6 +17,7 @@ export default () => {
         onSave={setData}
         icon={<HomeFill />}
         size={'18px'}
+        width={'150px'}
       />
     </React.Fragment>
   )

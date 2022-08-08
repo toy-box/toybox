@@ -23,6 +23,7 @@ export const ImpInput: FC<IImpInputProps> = ({
   style,
   icon,
   size,
+  width,
   inputClassName,
   ...other
 }) => {
@@ -61,12 +62,27 @@ export const ImpInput: FC<IImpInputProps> = ({
     onSave && onSave(innerValue)
   }
   const sizeStyle = React.useMemo(() => ({ fontSize: size }), [size])
+  const widthStyle = React.useMemo(
+    () => ({
+      width,
+    }),
+    [width]
+  )
+
   const mixStyle = React.useMemo(
     () => ({
       ...style,
       ...sizeStyle,
     }),
     [sizeStyle, style]
+  )
+
+  const inputStyle = React.useMemo(
+    () => ({
+      ...widthStyle,
+      ...sizeStyle,
+    }),
+    [sizeStyle, widthStyle]
   )
 
   return (
@@ -79,7 +95,7 @@ export const ImpInput: FC<IImpInputProps> = ({
           onPressEnter={onPressEnterHandle}
           onChange={onChangeHandle}
           value={innerValue}
-          style={sizeStyle}
+          style={inputStyle}
           {...other}
         />
       ) : (
