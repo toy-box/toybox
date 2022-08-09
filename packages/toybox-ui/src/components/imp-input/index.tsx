@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef, ReactNode } from 'react'
+import React, { FC, useState, useRef, ReactNode, useEffect } from 'react'
 import { Input } from 'antd'
 import classNames from 'classnames'
 import { InputProps } from 'antd/lib/input'
@@ -10,7 +10,7 @@ export type IImpInputProps = {
   inputClassName?: string
   icon?: ReactNode
   size?: string
-} & InputProps
+} & Omit<InputProps, 'size'>
 
 export const ImpInput: FC<IImpInputProps> = ({
   value,
@@ -30,6 +30,10 @@ export const ImpInput: FC<IImpInputProps> = ({
   const inputRef = useRef(null)
   const [active, setActive] = useState(false)
   const [innerValue, setInnerValue] = useState(value)
+
+  useEffect(() => {
+    setInnerValue(value)
+  }, [value])
 
   const activeHandle = () => {
     if (disabled) {
