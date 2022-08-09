@@ -39,6 +39,7 @@ export const ImpInput: FC<IImpInputProps> = ({
     if (disabled) {
       return
     }
+    setInnerValue(value)
     setActive(true)
     setTimeout(() => inputRef.current?.focus(), 300)
   }
