@@ -30,14 +30,15 @@ export interface IFieldOption {
   children?: IFieldOption[]
 }
 
-export interface IFieldItems extends IMetaBase {
-  type: MetaValueType | string
-  properties?: { [key: string]: IFieldMeta }
-}
 
 export interface IMetaBase {
   type: MetaValueType | string
   properties?: { [key: string]: IMetaBase }
+}
+
+export interface IFieldItems extends IMetaBase {
+  type: MetaValueType | string
+  properties?: { [key: string]: IFieldMeta }
 }
 
 export interface IFieldMeta extends IMetaBase {
@@ -72,6 +73,8 @@ export interface IFieldMeta extends IMetaBase {
   index?: number
   defaultValue?: any
 }
+
+export type FieldItem = IFieldItems | IFieldMeta
 
 export interface IMetaListResult<RowData = DefaultRowData> {
   businessObjectMeta: IObjectMeta

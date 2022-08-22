@@ -1,8 +1,8 @@
 import { isNum } from '@toy-box/toybox-shared'
-import { IFieldMeta, IFieldItems } from '../types'
+import { FieldItem, IFieldMeta } from '../types'
 
 export function fetchMeta(
-  source: IFieldMeta | IFieldItems,
+  source: FieldItem,
   segments: Array<string | number>
 ) {
   let meta = source
