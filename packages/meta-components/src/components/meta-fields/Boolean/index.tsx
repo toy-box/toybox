@@ -1,13 +1,7 @@
-import React, {
-  ForwardRefRenderFunction,
-  useMemo,
-  useRef,
-  useImperativeHandle,
-  Ref,
-} from 'react'
+import React, { useMemo, useRef, useImperativeHandle } from 'react'
 import get from 'lodash.get'
 import { Switch } from 'antd'
-import { useLocale } from '@toy-box/toybox-shared'
+import { useLocale } from '@toy-box/toybox-ui'
 import { MetaValueType } from '@toy-box/meta-schema'
 import { BaseFieldProps } from '../interface'
 import localeMap from './locale'

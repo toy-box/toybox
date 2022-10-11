@@ -3,8 +3,8 @@
 Function Dialog:
 
 ```tsx
-import React, { useState, useCallback, useContext } from 'react'
-import { Button, Modal, LoadingWrapper } from '@toy-box/toybox-ui'
+import React from 'react'
+import { Button, Modal } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 
 const { dialog } = Modal

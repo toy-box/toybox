@@ -85,14 +85,14 @@ const departments = [
   },
 ]
 
-const searchTreeNodes = (ids: string[]) => {
-  return ids.map((id) => ({
-    id,
-    pId: 0,
-    value: id,
-    label: `NODE - ${id}`,
-  }))
-}
+// const searchTreeNodes = (ids: string[]) => {
+//   return ids.map((id) => ({
+//     id,
+//     pId: 0,
+//     value: id,
+//     label: `NODE - ${id}`,
+//   }))
+// }
 
 export default () => {
   const [value, setValue] = useState('dep2_1')

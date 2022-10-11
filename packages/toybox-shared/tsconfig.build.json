@@ -1,4 +1,10 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "include": ["src"]
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./lib",
+    "paths": {
+      "@toy-box/*": ["packages/*"]
+    },
+    "declaration": true
+  }
 }

@@ -1,8 +1,10 @@
 import dayjs from 'dayjs'
 import { MetaValueType } from '@toy-box/meta-schema'
+import 'antd/lib/table/interface'
+
 import { ColumnMetaType } from '../interface'
 
-export const useSortColumns = (
+export const sortColumns = (
   columnMetas: ColumnMetaType[],
   sorter: boolean | string[] | undefined,
   remote?: boolean

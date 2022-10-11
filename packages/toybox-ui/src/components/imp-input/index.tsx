@@ -1,4 +1,4 @@
-import React, { FC, useState, useRef } from 'react'
+import React, { FC, useState, useRef, ReactNode, useEffect } from 'react'
 import { Input } from 'antd'
 import classNames from 'classnames'
 import { InputProps } from 'antd/lib/input'
@@ -8,7 +8,9 @@ import './styles'
 export type IImpInputProps = {
   onSave?: (value: string | number | readonly string[] | undefined) => void
   inputClassName?: string
-} & InputProps
+  icon?: ReactNode
+  size?: string
+} & Omit<InputProps, 'size'>
 
 export const ImpInput: FC<IImpInputProps> = ({
   value,
@@ -17,17 +19,27 @@ export const ImpInput: FC<IImpInputProps> = ({
   onChange,
   onBlur,
   disabled,
+  className,
+  style,
+  icon,
+  size,
+  width,
   inputClassName,
   ...other
 }) => {
-  const inputRef = useRef<Input | null>(null)
+  const inputRef = useRef(null)
   const [active, setActive] = useState(false)
   const [innerValue, setInnerValue] = useState(value)
+
+  useEffect(() => {
+    setInnerValue(value)
+  }, [value])
 
   const activeHandle = () => {
     if (disabled) {
       return
     }
+    setInnerValue(value)
     setActive(true)
     setTimeout(() => inputRef.current?.focus(), 300)
   }
@@ -52,11 +64,26 @@ export const ImpInput: FC<IImpInputProps> = ({
     if (onBlur != null && typeof onBlur === 'function') {
       onBlur(e)
     }
-    setInnerValue(value)
+    onSave && onSave(innerValue)
   }
+  const sizeStyle = React.useMemo(() => ({ fontSize: size }), [size])
+  const widthStyle = React.useMemo(
+    () => ({
+      width,
+    }),
+    [width]
+  )
+
+  const inputStyle = React.useMemo(
+    () => ({
+      ...widthStyle,
+      ...sizeStyle,
+    }),
+    [sizeStyle, widthStyle]
+  )
 
   return (
-    <div className="tbox-imp-input">
+    <div className={classNames('tbox-imp-input', className)} style={style}>
       {active ? (
         <Input
           ref={inputRef}
@@ -65,15 +92,22 @@ export const ImpInput: FC<IImpInputProps> = ({
           onPressEnter={onPressEnterHandle}
           onChange={onChangeHandle}
           value={innerValue}
+          style={inputStyle}
           {...other}
         />
       ) : (
-        <div
-          className={classNames('tbox-imp-input__text', { disabled })}
+        <button
+          className={classNames('tbox-imp-input__button', { disabled })}
           onClick={activeHandle}
         >
-          {value}
-        </div>
+          <span
+            className={classNames('tbox-imp-input__text')}
+            style={sizeStyle}
+          >
+            {value}
+            <i className={'tbox-imp-input__icon'}>{icon}</i>
+          </span>
+        </button>
       )}
     </div>
   )

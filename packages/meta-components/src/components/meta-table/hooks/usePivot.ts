@@ -110,27 +110,22 @@ export const usePivot = (
   columnMetas: ColumnMetaType[],
   dimensions: string[] = []
 ) => {
-  const pivotData = useMemo(() => {
-    let rows = dataSource.map((item) => item)
-    let posIndexes: Array<number[]> = []
-    dimensions.forEach((key, keyIdx) => {
-      const columnMeta = columnMetas.find((c) => c.key === key)
-      if (columnMeta == null) return
-      if (keyIdx === 0) {
-        rows = sortMetaData(columnMeta, rows)
-        posIndexes.push(sortPosIndex(columnMeta, rows))
-      } else {
-        rows = mulSortMetaData(columnMeta, rows, posIndexes[keyIdx - 1])
-        posIndexes.push(
-          mulSortPosIndex(columnMeta, rows, posIndexes[keyIdx - 1])
-        )
-      }
-    })
-    return {
-      rows,
-      posIndexes,
+  let rows = dataSource.map((item) => item)
+  let posIndexes: Array<number[]> = []
+  dimensions.forEach((key, keyIdx) => {
+    const columnMeta = columnMetas.find((c) => c.key === key)
+    if (columnMeta == null) return
+    if (keyIdx === 0) {
+      rows = sortMetaData(columnMeta, rows)
+      posIndexes.push(sortPosIndex(columnMeta, rows))
+    } else {
+      rows = mulSortMetaData(columnMeta, rows, posIndexes[keyIdx - 1])
+      posIndexes.push(mulSortPosIndex(columnMeta, rows, posIndexes[keyIdx - 1]))
     }
-  }, [dataSource, columnMetas, dimensions])
-
+  })
+  const pivotData = {
+    rows,
+    posIndexes,
+  }
   return [pivotData.rows, pivotData.posIndexes] as [RowData[], PosIndex[]]
 }

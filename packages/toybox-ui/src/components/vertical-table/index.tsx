@@ -83,7 +83,7 @@ export function VerticalTable<RecordType = DefaultRecordType>({
       headerWidth,
       showHeader,
     }),
-    [rowClassName, showHeader, columns, columnWidth, headerWidth]
+    [dataSource, rowClassName, columns, columnWidth, headerWidth, showHeader]
   )
 
   // =========================== Classes ===========================
@@ -203,7 +203,7 @@ export function VerticalTable<RecordType = DefaultRecordType>({
 
   // =========================== Render =============================
   const transformColumns = useCallback(
-    (innerColumns: ColumnsType<RecordType>): ColumnsType<RecordType> => {
+    (innerColumns: ColumnsType<RecordType>) => {
       const cols = transformSelectionColumns(innerColumns.map((col) => col))
       return transformTitleColumns(cols)
     },

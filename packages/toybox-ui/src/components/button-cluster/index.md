@@ -56,7 +56,6 @@ export default () => <ButtonCluster items={buttons} />
 
 ```tsx
 import React from 'react'
-import { ArrowLeftSLine } from '@airclass/icons'
 import { ButtonCluster } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 

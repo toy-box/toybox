@@ -4,7 +4,6 @@
 
 ```tsx
 import React from 'react'
-import { Space, Tooltip } from 'antd'
 import { ExpandPanel } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 

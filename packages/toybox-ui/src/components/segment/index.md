@@ -4,8 +4,7 @@
 
 ```tsx
 import React from 'react'
-import { Form, Space, Input, NumberPicker } from 'antd'
-import { Segment, FieldRow, HorizontalRule } from '@toy-box/toybox-ui'
+import { Segment } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 
 export default () => {
@@ -21,7 +20,7 @@ export default () => {
 
 ```tsx
 import React from 'react'
-import { Form, Space, Input } from 'antd'
+import { Form, Input } from 'antd'
 import { Segment, FieldRow, HorizontalRule } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 

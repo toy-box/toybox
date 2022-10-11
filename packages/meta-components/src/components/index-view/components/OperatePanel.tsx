@@ -10,7 +10,7 @@ export interface IOperatePanel {
   placement?: 'left' | 'right'
 }
 
-export const OperatePanel: FC<IOperatePanel> = ({
+export const OperatePanel: FC<React.PropsWithChildren<IOperatePanel>> = ({
   items = [],
   max,
   placement = 'left',

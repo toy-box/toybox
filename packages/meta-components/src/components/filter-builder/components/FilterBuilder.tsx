@@ -1,9 +1,9 @@
-import React, { CSSProperties, useCallback, useMemo, FC } from 'react'
+import React, { CSSProperties, useMemo, FC } from 'react'
 import { Button } from 'antd'
 import classNames from 'classnames'
 import update from 'immutability-helper'
 import { AddCircleLine } from '@airclass/icons'
-import { useLocale } from '@toy-box/toybox-shared'
+import { useLocale } from '@toy-box/toybox-ui'
 import { CompareOP } from '@toy-box/meta-schema'
 import { CompareOperation } from './CompareOperation'
 import { localeMap } from '../locale'
@@ -12,7 +12,6 @@ import {
   IUncheckCompare,
   IspecialOption,
   OpTypeProps,
-  IoperatOption,
 } from '../interface'
 import { FilterBuilderContext } from '../context'
 

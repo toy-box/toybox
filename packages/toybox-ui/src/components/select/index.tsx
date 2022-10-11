@@ -1,5 +1,4 @@
 import React, {
-  ForwardRefRenderFunction,
   useRef,
   useMemo,
   useContext,
@@ -17,6 +16,8 @@ import {
   SelectProps as AntSelectProps,
 } from 'antd/lib/select'
 import SizeContext from 'antd/lib/config-provider/SizeContext'
+import Option from 'rc-select/lib/Option'
+import OptGroup from 'rc-select/lib/OptGroup'
 import debounce from 'lodash.debounce'
 import intersection from 'lodash.intersection'
 import { useFetchOptions } from '../../hooks'
@@ -25,10 +26,12 @@ import {
   OptionData,
   OptionGroupData,
 } from '../../types/interface'
+import { DefaultOptionType } from 'rc-cascader'
 
 declare type OptionsType = (OptionData | OptionGroupData)[]
 
-const { Option, OptGroup } = AntSelect
+// const Option = AntSelect.Option
+// const OptGroup = AntSelect.OptGroup
 
 export interface SelectProps extends AntSelectProps<SelectValueType> {
   value?: SelectValueType
@@ -116,9 +119,9 @@ export const Select = React.forwardRef(
     }, [initialed, remote, value])
 
     const current = useMemo(() => {
-      if (mode === 'multiple') {
+      if (mode === 'multiple' && Array.isArray(mergeOptions)) {
         return mergeOptions
-          ? mergeOptions.filter((opt) =>
+          ? (mergeOptions as DefaultOptionType[]).filter((opt) =>
               ((innerValue as React.ReactText[]) || []).some(
                 (v) => v === opt.value
               )
@@ -126,7 +129,7 @@ export const Select = React.forwardRef(
           : null
       }
       return mergeOptions
-        ? mergeOptions.find((opt) => opt.value === innerValue)
+        ? (mergeOptions as OptionsType).find((opt) => opt.value === innerValue)
         : null
     }, [mode, innerValue, mergeOptions])
 
@@ -166,16 +169,26 @@ export const Select = React.forwardRef(
       return () => {
         didCancel = true
       }
-    }, [initialed, fetchData, params, remote, remoteByValue, value])
+    }, [initialed, fetchData, params, remote, remoteByValue, value, current])
 
     const handleChange = useCallback(
       (
         value: SelectValueType,
-        option: OptionData | OptionGroupData | OptionsType
+        option: DefaultOptionType | DefaultOptionType[]
       ) => {
         onChange && onChange(value, option)
       },
       [onChange]
+    )
+
+    const handleSearch = useCallback(
+      (key: string) => {
+        setOptionSearchKey(key)
+        if (remote) {
+          fetchData(key)
+        }
+      },
+      [remote, fetchData, setOptionSearchKey]
     )
 
     const dropdownRender = useCallback(
@@ -196,17 +209,7 @@ export const Select = React.forwardRef(
           <React.Fragment>{menu}</React.Fragment>
         )
       },
-      [optionSearchKey]
-    )
-
-    const handleSearch = useCallback(
-      (key: string) => {
-        setOptionSearchKey(key)
-        if (remote) {
-          fetchData(key)
-        }
-      },
-      [remote, fetchData, setOptionSearchKey]
+      [handleSearch, optionSearch, optionSearchKey]
     )
 
     const handleOpen = useCallback(
@@ -220,13 +223,10 @@ export const Select = React.forwardRef(
           handleSearch('')
         }
       },
-      [searchRef, setOptionSearchKey, optionSearch]
+      [optionSearch, handleSearch]
     )
 
-    const filterOption = (
-      input: string,
-      option?: OptionData | OptionGroupData
-    ) => {
+    const filterOption = (input: string, option?: DefaultOptionType) => {
       if (remote) {
         return true
       }
@@ -252,6 +252,7 @@ export const Select = React.forwardRef(
       return <span>{Array.isArray(values) ? values.join(', ') : values}</span>
     }
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const optionRender = useMemo(() => {
       return mergeOptions?.map((option) =>
         option.children ? (

@@ -1,8 +1,6 @@
 import { TableProps } from 'antd/lib/table'
 import { ButtonProps } from 'antd/lib/button'
 import { JSXElementConstructor, ReactNode } from 'react'
-import { IButtonClusterProps } from '@toy-box/toybox-ui'
-import { OperateColumn } from './components'
 
 export type sorterFun = (prev: any, current: any) => number
 

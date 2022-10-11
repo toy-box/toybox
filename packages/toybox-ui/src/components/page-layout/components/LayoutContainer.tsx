@@ -9,11 +9,9 @@ export interface LayoutContainerProps {
   type?: LayoutType
 }
 
-export const LayoutContainer: FC<LayoutContainerProps> = ({
-  style,
-  className,
-  children,
-}) => {
+export const LayoutContainer: FC<
+  React.PropsWithChildren<LayoutContainerProps>
+> = ({ style, className, children }) => {
   return (
     <div
       className={classNames('tbox-pagy-layout-container', className)}

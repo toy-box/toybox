@@ -95,7 +95,7 @@ function Cell<RecordType extends DefaultRecordType>(
 
   // ==================== Child Node ====================
   let cellProps: CellType<RecordType> = {}
-  let childNode: React.ReactNode
+  let childNode: React.ReactNode | object
 
   if (children) {
     childNode = children
@@ -129,7 +129,11 @@ function Cell<RecordType extends DefaultRecordType>(
     childNode = null
   }
 
-  if (ellipsis && (lastFixLeft || firstFixRight)) {
+  if (
+    ellipsis &&
+    (lastFixLeft || firstFixRight) &&
+    typeof childNode !== 'object'
+  ) {
     childNode = <span className={`${cellPrefixCls}-content`}>{childNode}</span>
   }
 

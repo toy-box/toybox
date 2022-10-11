@@ -1,6 +1,6 @@
 import React, { CSSProperties, FC, useMemo } from 'react'
 import { Select } from 'antd'
-import { useLocale } from '@toy-box/toybox-shared'
+import { useLocale } from '@toy-box/toybox-ui'
 import locales from './locales'
 import { optionGroups } from './config'
 

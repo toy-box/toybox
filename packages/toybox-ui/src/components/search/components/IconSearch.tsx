@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useCallback,
   useMemo,
-  CSSProperties,
 } from 'react'
 import { Search2Line } from '@airclass/icons'
 import { Input } from 'antd'
@@ -15,7 +14,7 @@ import { IconSearchProps } from '../types'
 
 import '../styles'
 
-export const IconSearch: FC<IconSearchProps> = ({
+export const IconSearch: FC<React.PropsWithChildren<IconSearchProps>> = ({
   addonAfter,
   autoFocus = false,
   defaultValue,
@@ -31,7 +30,7 @@ export const IconSearch: FC<IconSearchProps> = ({
   className,
 }) => {
   const [focus, setFocus] = useState(autoFocus)
-  const inputRef = useRef<Input>(null)
+  const inputRef = useRef(null)
 
   useEffect(() => {
     autoFocus && inputRef?.current?.focus()

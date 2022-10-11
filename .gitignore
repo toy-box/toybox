@@ -16,6 +16,8 @@
 # production
 /dist
 /docs-dist
+lib/
+esm/
 
 # misc
 .DS_Store
@@ -29,3 +31,4 @@
 # ide
 /.vscode
 /.idea
+

@@ -10,7 +10,7 @@ export interface IFieldRowProps extends React.HTMLAttributes<HTMLDivElement> {
   size?: number
 }
 
-export const FieldRow: FC<IFieldRowProps> = ({
+export const FieldRow: FC<React.PropsWithChildren<IFieldRowProps>> = ({
   className,
   allowWrap,
   style,

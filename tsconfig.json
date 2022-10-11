@@ -1,23 +1,23 @@
 {
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "module": "commonjs",
+    "target": "es5",
+    "allowJs": false,
+    "noUnusedLocals": false,
+    "preserveConstEnums": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "declaration": true,
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
       "@toy-box/*": ["packages/*/src"]
-    }
-  },
-  "exclude": [
-    "node_modules",
-    "lib",
-    "**/lib/**",
-    "**/*.js",
-    "es",
-    "dist",
-    "**/__tests__",
-    "**/__test__",
-    "**/test",
-    "jest.config.js",
-    "scripts",
-    "template"
-  ]
+    },
+    "lib": ["ESNext"]
+  }
 }

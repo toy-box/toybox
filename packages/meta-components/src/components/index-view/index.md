@@ -3,16 +3,15 @@
 #### 基本用法
 
 ```tsx
-import React, { useCallback, useMemo, useRef } from 'react'
+import React, { useCallback, useRef } from 'react'
 import {
   IndexView,
-  FilterDisplay,
   FilterPanel,
   TableStatusBar,
 } from '@toy-box/meta-components'
 import { Button } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
-import request from 'umi-request'
+// import request from 'umi-request'
 
 const objectMeta = {
   key: 'bill',

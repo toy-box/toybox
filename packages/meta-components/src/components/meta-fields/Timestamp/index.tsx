@@ -54,7 +54,7 @@ export const FieldTimestamp = React.forwardRef<any, FieldTimestampProps>(
     )
 
     const innerOnChange = useCallback(
-      (date: Dayjs | null, dateString: string = '') => {
+      (date: Dayjs | null, dateString = '') => {
         onChange && onChange(date ? dayjs(date).unix() : undefined, dateString)
       },
       [innerFormat, onChange]

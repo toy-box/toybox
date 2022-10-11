@@ -4,7 +4,6 @@
 
 ```tsx
 import React from 'react'
-import { Space } from 'antd'
 import { CheckText } from '@toy-box/toybox-ui'
 import 'antd/dist/antd.css'
 

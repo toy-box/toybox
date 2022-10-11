@@ -1,12 +1,12 @@
 import * as React from 'react'
 import classNames from 'classnames'
 import Dialog, { ModalFuncProps } from 'antd/es/modal/Modal'
-import devWarning from 'antd/es/_util/devWarning'
+import warning from 'antd/es/_util/warning'
 import ConfigProvider from 'antd/es/config-provider'
 import { getTransitionName } from 'antd/es/_util/motion'
 import { DialogContext } from './DialogContext'
 
-interface ConfirmDialogProps extends ModalFuncProps {
+interface ConfirmDialogProps extends Omit<ModalFuncProps, 'content'> {
   afterClose?: () => void
   close: (...args: any[]) => void
   autoFocusButton?: null | 'ok' | 'cancel'
@@ -40,7 +40,7 @@ const ConfirmDialog = (props: ConfirmDialogProps) => {
     title,
   } = props
 
-  devWarning(
+  warning(
     !(typeof icon === 'string' && icon.length > 2),
     'Modal',
     `\`icon\` is using ReactNode instead of string naming in v4. Please check \`${icon}\` at https://ant.design/components/icon`

@@ -9,13 +9,9 @@ export interface ILoadingWrapperProps {
   height?: number
 }
 
-export const LoadingWrapper: FC<ILoadingWrapperProps> = ({
-  size,
-  loading,
-  indicator,
-  height = 200,
-  children,
-}) => {
+export const LoadingWrapper: FC<
+  React.PropsWithChildren<ILoadingWrapperProps>
+> = ({ size, loading, indicator, height = 200, children }) => {
   const style: CSSProperties = useMemo(
     () => ({
       height: `${height}px`,

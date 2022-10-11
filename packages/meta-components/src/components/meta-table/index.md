@@ -100,7 +100,7 @@ export default () => {
   }, [objectMeta])
   const PrimaryCol = primaryGenerator({
     objectMeta: objectMeta,
-    onClick: (text, record, index) => console.log('click', record),
+    onClick: (text, record) => console.log('click', record),
   })
   return (
     <MetaTable

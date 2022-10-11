@@ -7,7 +7,11 @@ export interface ToolBarProps {
   style?: CSSProperties
 }
 
-export const ToolBar: FC<ToolBarProps> = ({ className, style, children }) => {
+export const ToolBar: FC<React.PropsWithChildren<ToolBarProps>> = ({
+  className,
+  style,
+  children,
+}) => {
   return (
     <div className={classNames('tbox-toolbar', className)} style={style}>
       {children}
