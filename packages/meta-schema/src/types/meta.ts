@@ -30,22 +30,8 @@ export interface IFieldOption {
   options?: IFieldOption[]
 }
 
-
 export interface IMetaBase {
   type: MetaValueType | string
-  properties?: { [key: string]: IMetaBase }
-}
-
-export interface IFieldItems extends IMetaBase {
-  type: MetaValueType | string
-  properties?: { [key: string]: IFieldMeta }
-}
-
-export interface IFieldMeta extends IMetaBase {
-  key: string
-  name: string
-  description?: string
-  primary?: boolean
   options?: IFieldOption[]
   refRegisterId?: string
   unique?: boolean
@@ -66,12 +52,24 @@ export interface IFieldMeta extends IMetaBase {
   pattern?: string
   format?: string
   titleKey?: string
+  defaultValue?: any
+  properties?: Record<string, IFieldMeta>
+}
+
+export interface IFieldItems extends IMetaBase {
+  type: MetaValueType | string
+}
+
+export interface IFieldMeta extends IMetaBase {
+  key: string
+  name: string
+  description?: string
+  primary?: boolean
+  unique?: boolean
   primaryKey?: string
   parentKey?: string
-  properties?: Record<string, IFieldMeta>
   items?: IFieldItems
   index?: number
-  defaultValue?: any
 }
 
 export type FieldItem = IFieldItems | IFieldMeta

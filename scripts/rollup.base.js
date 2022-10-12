@@ -20,6 +20,7 @@ const presets = () => {
     '@toy-box/meta-schema': 'Toybox.MetaSchema',
     '@toy-box/toybox-ui': 'Toybox.Ui',
     '@toy-box/meta-components': 'Toybox.Metacomponents',
+    '@toy-box/meta-abi': 'Toybox.MetaAbi',
   }
   return [
     typescript({
@@ -53,7 +54,7 @@ const createEnvPlugin = (env) => {
 
 const inputFilePath = path.join(process.cwd(), 'src/index.ts')
 
-const noUIDtsPackages = ['toybox.shared', 'toybox.metaSchmea']
+const noUIDtsPackages = ['toybox.shared', 'toybox.metaSchmea', 'toybox.metaAbi']
 
 export const removeImportStyleFromInputFilePlugin = () => ({
   name: 'remove-import-style-from-input-file',

@@ -1,0 +1,34 @@
+{
+  "name": "@toy-box/meta-abi",
+  "version": "3.0.17",
+  "license": "MIT",
+  "main": "lib",
+  "module": "esm",
+  "umd:main": "dist/toybox.metaabi.umd.production.js",
+  "unpkg": "dist/toybox.metaabi.umd.production.js",
+  "jsdelivr": "dist/toybox.metaabi.umd.production.js",
+  "jsnext:main": "esm",
+  "types": "esm/index.d.ts",
+  "engines": {
+    "npm": ">=3.0.0"
+  },
+  "scripts": {
+    "start": "dumi dev",
+    "build": "rimraf -rf lib esm dist && npm run build:cjs && npm run build:esm && npm run build:umd",
+    "build:cjs": "tsc --project tsconfig.build.json",
+    "build:esm": "tsc --project tsconfig.build.json --module es2015 --outDir esm",
+    "build:umd": "rollup --config",
+    "build:docs": "dumi build"
+  },
+  "devDependencies": {
+    "dumi": "^1.1.0-rc.8",
+    "web3": "^1.8.0"
+  },
+  "dependencies": {
+    "@toy-box/meta-schema": "3.0.17",
+    "merge": "^2.1.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
