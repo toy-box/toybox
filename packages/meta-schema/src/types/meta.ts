@@ -14,6 +14,7 @@ export enum MetaValueType {
   OBJECT = 'object',
   RATE = 'rate',
   TIMESTAMP = 'timestamp',
+  BIGINT = 'bigint',
 }
 
 export declare type DefaultRowData = Record<string, any>
@@ -36,10 +37,10 @@ export interface IMetaBase {
   refRegisterId?: string
   unique?: boolean
   required?: boolean
-  maximum?: number
-  minimum?: number
-  exclusiveMaximum?: number
-  exclusiveMinimum?: number
+  maximum?: number | BigInt
+  minimum?: number | BigInt
+  exclusiveMaximum?: number | BigInt
+  exclusiveMinimum?: number | BigInt
   maxLength?: number
   minLength?: number
   precision?: number

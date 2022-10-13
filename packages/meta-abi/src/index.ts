@@ -9,26 +9,16 @@ export type AbiItemSchema = Omit<AbiItem, 'inputs' | 'outputs'> & {
 
 const TypeMaps = {
   int: {
-    type: MetaValueType.INTEGER,
+    type: MetaValueType.BIGINT,
   },
   uint: {
-    type: MetaValueType.INTEGER,
+    type: MetaValueType.BIGINT,
   },
   // address: equivalent to uint160, except for the assumed interpretation and language typing.
   address: {
     type: MetaValueType.STRING,
     pattern: '0x[a-fA-F0-9]{40}',
   },
-  // fixed, ufixed: synonyms for fixed128x18, ufixed128x18
-  fixed: {
-    // fixed128x18
-    type: MetaValueType.NUMBER,
-  },
-  ufixed: {
-    // ufixed128x18
-    type: MetaValueType.NUMBER,
-  },
-
   bytes: {
     // bytes
     type: MetaValueType.TEXT,
@@ -49,8 +39,6 @@ const TypeMaps = {
 const typesRegex = {
   '^int\\d{1,3}$': TypeMaps.int,
   '^uint\\d{1,3}$': TypeMaps.uint,
-  '^fixed\\d{1,3}x\\d{1,2}': TypeMaps.fixed,
-  '^ufixed\\d{1,3}x\\d{1,2}': TypeMaps.ufixed,
   '^bytes\\d{1,3}': TypeMaps.bytes,
 }
 
