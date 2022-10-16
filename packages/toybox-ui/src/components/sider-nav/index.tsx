@@ -11,6 +11,8 @@ export interface ISiderNavProps {
   style?: React.CSSProperties
   menu?: Omit<MenuProps, 'inlineCollapsed'>
   toggle?: ISiderNavToggle | false
+  header?: React.ReactNode
+  footer?: React.ReactNode
 }
 
 export interface ISiderNavToggle {
@@ -31,6 +33,8 @@ export const SiderNav: FC<React.PropsWithChildren<ISiderNavProps>> = ({
   width,
   toggle: _toggle,
   menu,
+  header,
+  footer,
 }) => {
   const prefixCls = 'tbox-sider-nav'
   const [collapsed, setCollapsed] = useState(false)
@@ -79,7 +83,9 @@ export const SiderNav: FC<React.PropsWithChildren<ISiderNavProps>> = ({
       style={mixedSytle}
     >
       {toggleRender}
+      {header}
       {menuRender}
+      {footer}
     </div>
   )
 }
