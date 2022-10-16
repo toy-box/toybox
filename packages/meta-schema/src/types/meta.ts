@@ -37,10 +37,10 @@ export interface IMetaBase {
   refRegisterId?: string
   unique?: boolean
   required?: boolean
-  maximum?: number | BigInt
-  minimum?: number | BigInt
-  exclusiveMaximum?: number | BigInt
-  exclusiveMinimum?: number | BigInt
+  maximum?: number
+  minimum?: number
+  exclusiveMaximum?: number
+  exclusiveMinimum?: number
   maxLength?: number
   minLength?: number
   precision?: number

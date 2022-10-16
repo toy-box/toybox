@@ -1,4 +1,4 @@
-import React, { CSSProperties, FC, ReactNode } from 'react'
+import React, { CSSProperties, FC } from 'react'
 import classNames from 'classnames'
 import './styles'
 
