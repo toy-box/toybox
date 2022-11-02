@@ -28,8 +28,21 @@
     cursor: pointer;
   }
   .@{menu-prefix-cls} {
+    padding: 0 8px;
+    border-right: none;
+    > .@{menu-prefix-cls}-item {
+      border-radius: 8px;
+      height: 48px;
+      line-height: 48px;
+      &::after {
+        content: none;
+      }
+    }
     &.@{menu-prefix-cls}-inline-collapsed {
       width: 64px;
+      > .@{menu-prefix-cls}-item {
+        padding: 0 calc(50% - 14px / 2);
+      }
       > .@{menu-prefix-cls}-item,
       > .@{menu-prefix-cls}-item-group
         > .@{menu-prefix-cls}-item-group-list

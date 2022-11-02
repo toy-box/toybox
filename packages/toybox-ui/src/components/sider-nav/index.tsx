@@ -1,4 +1,11 @@
-import React, { FC, useMemo, useState, useCallback } from 'react'
+import React, {
+  CSSProperties,
+  FC,
+  ReactNode,
+  useMemo,
+  useState,
+  useCallback,
+} from 'react'
 import { ArrowLeftSLine, ArrowRightSLine } from '@airclass/icons'
 import { Menu, MenuProps } from 'antd'
 import classNames from 'classnames'
@@ -8,16 +15,16 @@ import './styles'
 export interface ISiderNavProps {
   className?: string
   width?: number
-  style?: React.CSSProperties
+  style?: CSSProperties
   menu?: Omit<MenuProps, 'inlineCollapsed'>
   toggle?: ISiderNavToggle | false
-  header?: React.ReactNode
-  footer?: React.ReactNode
+  header?: ReactNode
+  footer?: ReactNode
 }
 
 export interface ISiderNavToggle {
-  rightIcon?: React.ReactNode
-  leftIcon?: React.ReactNode
+  rightIcon?: ReactNode
+  leftIcon?: ReactNode
   top?: number
 }
 
