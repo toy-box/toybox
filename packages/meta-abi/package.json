@@ -1,6 +1,6 @@
 {
   "name": "@toy-box/meta-abi",
-  "version": "3.0.19",
+  "version": "3.0.20",
   "license": "MIT",
   "main": "lib",
   "module": "esm",
@@ -25,7 +25,7 @@
     "web3": "^1.8.0"
   },
   "dependencies": {
-    "@toy-box/meta-schema": "3.0.19",
+    "@toy-box/meta-schema": "3.0.20",
     "merge": "^2.1.1"
   },
   "publishConfig": {
