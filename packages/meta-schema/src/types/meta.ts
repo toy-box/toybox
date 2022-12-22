@@ -14,8 +14,9 @@ export enum MetaValueType {
   OBJECT = 'object',
   RATE = 'rate',
   TIMESTAMP = 'timestamp',
-  BIGINT = 'bigInt',
-  BIGDECIMAL = 'bigDecimal',
+  BIG_INT = 'bigInt',
+  BIG_NUMBER = 'bigNumber',
+  ADDRESS = 'address',
 }
 
 export declare type DefaultRowData = Record<string, any>

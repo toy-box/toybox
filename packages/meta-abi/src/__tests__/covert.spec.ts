@@ -1,13 +1,13 @@
 import { MetaValueType } from '@toy-box/meta-schema'
 import { AbiItem } from 'web3-utils'
-import { convertType, convertAbiConstructor } from '../index'
+import { convertIOType, convertAbiConstructor } from '../index'
 
 test('convert type', () => {
-  const typeSchema = convertType({
+  const typeSchema = convertIOType({
     type: 'uint',
     name: 'amount',
   })
-  expect(typeSchema.type).toEqual(MetaValueType.INTEGER)
+  expect(typeSchema.type).toEqual(MetaValueType.BIG_INT)
   expect(typeSchema.key).toEqual('amount')
 })
 
@@ -71,7 +71,7 @@ test('convert abi functions', () => {
 })
 
 test('convert tuple type', () => {
-  const typeSchema = convertType({
+  const typeSchema = convertIOType({
     type: 'tuple',
     components: [
       {
@@ -88,4 +88,13 @@ test('convert tuple type', () => {
     name: 'struct',
   })
   expect(typeSchema.type).toEqual(MetaValueType.OBJECT)
+})
+
+test('convert array type', () => {
+  const typeSchema = convertIOType({
+    type: 'int[][3]',
+    name: 'intArray',
+  })
+  expect(typeSchema.type).toEqual(MetaValueType.ARRAY)
+  expect(typeSchema.items.type).toEqual(MetaValueType.ARRAY)
 })
