@@ -34,7 +34,7 @@ export interface IFieldOption {
 }
 
 export interface IMetaBase {
-  type: MetaValueType | string
+  type?: MetaValueType | string
   options?: IFieldOption[]
   refRegisterId?: string
   unique?: boolean
@@ -59,8 +59,10 @@ export interface IMetaBase {
   properties?: Record<string, IFieldMeta>
 }
 
-export interface IFieldItems extends IMetaBase {
-  type: MetaValueType | string
+export declare type MetaSchemaType = IFieldMeta | IFieldItems
+
+export interface IFieldItems extends IFieldMeta {
+  items?: IFieldItems
 }
 
 export interface IFieldMeta extends IMetaBase {
@@ -76,6 +78,8 @@ export interface IFieldMeta extends IMetaBase {
 }
 
 export type FieldItem = IFieldItems | IFieldMeta
+
+export type tupleItem = Array<IFieldItems>
 
 export interface IMetaListResult<RowData = DefaultRowData> {
   businessObjectMeta: IObjectMeta
