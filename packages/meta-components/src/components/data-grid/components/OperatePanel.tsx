@@ -24,11 +24,14 @@ export const OperatePanel: FC<React.PropsWithChildren<IOperatePanel>> = ({
         disabled: isFn(item.disabled)
           ? item.disabled.bind(this, dataGrid)
           : item.disabled,
+        visible: isFn(item.visible)
+          ? item.visible.bind(this, dataGrid)
+          : item.visible,
         callback: item.callback
           ? item.callback.bind(this, dataGrid)
           : item.callback,
       })),
-    [dataGrid]
+    [dataGrid, items]
   )
 
   const content = useMemo(() => {

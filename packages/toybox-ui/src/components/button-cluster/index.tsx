@@ -24,6 +24,7 @@ export interface IButtonItem<CallbackType = DefaultCallbackType> {
   disabled?: boolean | isDisabledType
   tooltip?: boolean
   callback?: CallbackType
+  visible?: boolean | isDisabledType
 }
 
 export const ButtonCluster: FC<IButtonClusterProps> = ({
@@ -31,11 +32,26 @@ export const ButtonCluster: FC<IButtonClusterProps> = ({
   max = 3,
   group,
 }) => {
-  const overSize = useMemo(() => items.length > max, [])
+  const visibleItems = useMemo(() => {
+    return items.filter((item) => {
+      if (item.visible !== undefined) {
+        return typeof item.visible === 'function'
+          ? item.visible()
+          : item.visible
+      } else return true
+    })
+  }, [items])
+  const overSize = useMemo(
+    () => visibleItems.length > max,
+    [max, visibleItems.length]
+  )
 
   const visiableItems = useMemo(
-    () => (overSize ? items.filter((item, idx) => idx < max - 1) : items),
-    [overSize, items, max]
+    () =>
+      overSize
+        ? visibleItems.filter((item, idx) => idx < max - 1)
+        : visibleItems,
+    [overSize, visibleItems, max]
   )
 
   const dropDownItems = useMemo(
