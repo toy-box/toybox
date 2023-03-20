@@ -21,6 +21,9 @@ export const OperateColumn: FC<OperateColumnProps> = ({
       disabled: isFn(item.disabled)
         ? item.disabled.bind(this, text, record, index)
         : item.disabled,
+      visible: isFn(item.visible)
+        ? item.visible.bind(this, text, record, index)
+        : item.visible,
       callback: item.callback
         ? item.callback.bind(this, text, record, index)
         : undefined,
