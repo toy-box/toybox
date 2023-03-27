@@ -192,7 +192,7 @@ export const MetaTable: FC<IMetaTableProps> = ({
                   ({
                     width: column.width,
                     onResize: handleResize(index),
-                  } as React.HTMLAttributes<HTMLElement>)
+                  } as unknown as React.HTMLAttributes<HTMLElement>)
               : undefined,
           }
         }
