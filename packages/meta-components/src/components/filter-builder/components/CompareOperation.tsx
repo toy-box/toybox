@@ -66,6 +66,8 @@ const optionOps = [
   CompareOP.IS_NULL,
 ]
 
+const optionMultiOps = [CompareOP.EQ, CompareOP.IN, CompareOP.NIN]
+
 const booleanOps = [CompareOP.EQ, CompareOP.NE, CompareOP.IS_NULL]
 
 const FieldOpMap: Record<string, Array<Toybox.MetaSchema.Types.CompareOP>> = {
@@ -78,6 +80,7 @@ const FieldOpMap: Record<string, Array<Toybox.MetaSchema.Types.CompareOP>> = {
   [MetaValueType.DATETIME]: dateOps,
   [MetaValueType.TIMESTAMP]: dateOps,
   [MetaValueType.SINGLE_OPTION]: optionOps,
+  [MetaValueType.MULTI_OPTION]: optionMultiOps,
   [MetaValueType.OBJECT_ID]: optionOps,
   [MetaValueType.OBJECT]: optionOps,
   [MetaValueType.ARRAY]: optionOps,

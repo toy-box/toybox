@@ -9,7 +9,7 @@ import React, {
 import { Space } from 'antd'
 import update from 'immutability-helper'
 import { isStr } from '@toy-box/toybox-shared'
-import { CompareOP } from '@toy-box/meta-schema'
+import { CompareOP, MetaValueType } from '@toy-box/meta-schema'
 import { FilterValueInput } from '../filter-builder/components/FilterValueInput'
 import { FilterWidget } from './components'
 import { IFieldService } from '../filter-builder/interface'
@@ -90,7 +90,8 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
     (filed) => {
       const meta = value?.find((val) => val.source === filed.key)
       const metaArr = value?.filter((val) => val.source === filed.key)
-      if (metaArr && metaArr.length > 1) return
+      if (metaArr && metaArr.length > 1 && !simple) return
+      if (filed?.type === MetaValueType.MULTI_OPTION && meta) return meta.target
       const isShowMeta =
         meta && (meta.op === CompareOP.IN || meta.op === CompareOP.EQ)
       if (
@@ -116,7 +117,7 @@ export const FilterSearch: FC<IFilterSearchProps> = ({
         target: val,
       }
       // 如果选项设置空则
-      if (val == null || val === '') {
+      if (val == null || val === '' || val?.length === 0) {
         return (
           onChange &&
           onChange(

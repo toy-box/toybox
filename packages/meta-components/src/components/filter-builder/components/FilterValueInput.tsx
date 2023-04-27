@@ -127,7 +127,9 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
       }
     } else {
       if (Array.isArray(value) && value.length > 0) {
-        onChange(value[0])
+        onChange(
+          fieldMeta.type === MetaValueType.MULTI_OPTION ? value : value[0]
+        )
       }
     }
   }, [multiple])
@@ -379,6 +381,24 @@ export const FilterValueInput: FC<FilterValueInputProps> = ({
             selectMode={multiple ? 'multiple' : undefined}
             showSearch
             value={filterValue}
+            onChange={(value, options) =>
+              handleSelectOptions(value, options as OptionItem)
+            }
+          />
+        )
+      case MetaValueType.MULTI_OPTION:
+        return (
+          <FieldSelect
+            field={fieldMeta}
+            disabled={fieldMeta == null}
+            placeholder={`${get(localeData.lang, 'filed.placeholderOp.param')}${
+              fieldMeta.name || ''
+            }`}
+            allowClear
+            style={style}
+            selectMode="multiple"
+            showSearch
+            value={value}
             onChange={(value, options) =>
               handleSelectOptions(value, options as OptionItem)
             }
